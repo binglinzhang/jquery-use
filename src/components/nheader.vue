@@ -1,7 +1,7 @@
 <template>
     <header>
         <div class="logo">
-            <img src="./歪歪阅读_files/logo.2d02a34.png">
+            <img src="../assets/logo.png">
         </div>
         <div class="search">
             <div class="sear-btn" style="width: 3.5rem;">输入书名/书号/作者</div>

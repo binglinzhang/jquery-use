@@ -9,6 +9,11 @@ export default new Router({
       path: '/',
       name: 'index',
       component: ()=>import('../components/index.vue')
+    },
+    {
+      path:'/rank',
+      name:'rank',
+      component:()=>import('../components/rankpage.vue')
     }
   ]
 })

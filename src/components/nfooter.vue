@@ -1,5 +1,5 @@
 <template>
-        <footer>
+    <footer>
         <div class="nav">
           <a href="https://m.yyread.com/" class="router-link-exact-active router-link-active">首页</a>
           <a href="https://m.yyread.com/library" class="">书库</a>
@@ -17,7 +17,7 @@
           <p>京ICP备16043940号-3</p>
           <p>北京太和凯旋信息技术有限公司</p>
         </div>
-      </footer>
+    </footer>
 </template>
 
 <script>

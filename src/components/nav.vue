@@ -1,6 +1,20 @@
 <template>
     <div>
     <!---->
+
+        <div class="banner-box">
+            <div class="banner-box">
+                <swiper :options="swiperOption" ref="mySwiper">
+                    <!-- slides -->
+                    <swiper-slide v-for="banner in banners"><img :src="banner" class="banner-img"/></swiper-slide>
+                    <!-- Optional controls -->
+                    <div class="swiper-pagination"  slot="pagination"></div>
+                    <!-- <div class="swiper-button-prev" slot="button-prev"></div>
+                    <div class="swiper-button-next" slot="button-next"></div>
+                    <div class="swiper-scrollbar"   slot="scrollbar"></div> -->
+                </swiper>
+            </div>
+        </div>
         <div class="classification">
             <ul class="ification">
             <li>
@@ -28,19 +42,6 @@
                 </a>
             </li>
             </ul>
-        </div>
-        <div class="banner-box">
-            <div class="banner-box">
-                <swiper :options="swiperOption" ref="mySwiper">
-                    <!-- slides -->
-                    <swiper-slide v-for="banner in banners"><img :src="banner" class="banner-img"/></swiper-slide>
-                    <!-- Optional controls -->
-                    <div class="swiper-pagination"  slot="pagination"></div>
-                    <!-- <div class="swiper-button-prev" slot="button-prev"></div>
-                    <div class="swiper-button-next" slot="button-next"></div>
-                    <div class="swiper-scrollbar"   slot="scrollbar"></div> -->
-                </swiper>
-            </div>
         </div>
     </div>
 </template>
@@ -162,7 +163,7 @@ export default {
   height: 2.8rem;
   overflow: hidden;
   position: relative;
-  margin-top: .2rem;
+//   margin-top: .2rem;
 }
 .banner-box .banner {
   position: absolute;
