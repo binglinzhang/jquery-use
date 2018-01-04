@@ -20,3 +20,8 @@ new Vue({
   template: '<App/>',
   components: { App }
 })
+
+
+Vue.filter('statusFilter',(val)=>{
+  return val==0?'连载中':'已完结'
+})

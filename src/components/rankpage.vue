@@ -1,14 +1,6 @@
 <template>
     <div class="rank">
-      <header>
-        <div class="left">
-          <i class="fa fa-angle-left"></i>
-        </div>
-        <div class="center">排行榜</div>
-        <div class="right">
-          <i class="fa fa-home"></i>
-        </div>
-      </header>
+      <link-head><span>排行榜</span></link-head>
       <div class="container">
         <div class="tabs">
           <a :class="{active:activeFlag==0}" @click="activeFlag=0">点击榜</a>
@@ -31,7 +23,7 @@
             <div class="info">
               <h2>{{item.name}}</h2>
               <h3>
-                作者: {{item.author}}&nbsp;{{item.status}}
+                作者: {{item.author}}&nbsp;{{item.status | statusFilter}}
               </h3>
               <h3>字数:{{item.wordNum}}</h3>
               <p>
@@ -45,10 +37,13 @@
 
       </div>
 
+      <n-footer></n-footer>
     </div>  
 </template>
 
 <script>
+import linkHead from './link_header.vue'
+import nFooter from './nfooter.vue'
 export default {
   data() {
     return {
@@ -56,98 +51,98 @@ export default {
       timeActiveFlag:0,
       clickRank: {
         week: [
-          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
+          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
         ],
         month: [
-            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
+            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心2", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
         ],
         all: [
-            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
+            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心3", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
         ]
       },
       orderRank: {
         week: [
-          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
+          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心4", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
         ],
         month: [
-            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
+            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心5", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
         ],
         all: [
-            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
+            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心6", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
         ]
       },
       newRank: {
         week: [
-          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
+          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+          {name: "哈哈:爱情不走心7", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
         ],
         month: [
-            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
+            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心8", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
         ],
         all: [
-            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
-            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: "连载中", wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
+            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"},
+            {name: "哈哈:爱情不走心9", img: "/static/book_id.jpg", author: "南风向晚", status: 0, wordNum: 7508326, newArticle: "第639章 最美不过遇见你19"}
         ]
       }
     };
@@ -159,6 +154,10 @@ export default {
       timeActiveRank(){
            return this.timeActiveFlag == 0 ? 'week' : (this.timeActiveFlag == 1 ? 'month':'all')
       }
+  },
+  components:{
+    nFooter,
+    linkHead
   }
 };
 
