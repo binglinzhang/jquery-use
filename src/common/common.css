@@ -686,11 +686,4 @@ footer .context p .tel[data-v-5f9d26b1] {
   height: 2.67rem;
 }
 
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.4s;
-}
+

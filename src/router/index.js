@@ -29,6 +29,21 @@ export default new Router({
       path:'/book',
       name:"book",
       component:()=>import('../components/book.vue')
+    },
+    {
+      path:'/comment_page',
+      name:'comment_page',
+      component:()=>import('../components/comment_page.vue')
+    },
+    {
+      path:'/menu',
+      name:'menu',
+      component:()=>import('../components/menu.vue')
+    },
+    {
+      path:'/chapter',
+      name:'chapter',
+      component:()=>import('../components/chapter.vue')
     }
   ]
 })

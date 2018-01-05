@@ -35,7 +35,7 @@
         </div>
         <div class="self_up">
           <span class="round"></span>
-          <span>这本书太棒了，小书币犒劳一下。</span>
+          <span>{{rewardDeatil[activeFlag]}}</span>
           <div class="cnt_btn">
             <button class="btn">打赏作者：{{rewardNum[activeFlag]}}书币</button>
           </div>
@@ -49,7 +49,17 @@ export default {
     data(){
         return {
             activeFlag:0,
-            rewardNum:[100,500,1000,5000,10000,50000,100000,1000000]
+            rewardNum:[100,500,1000,5000,10000,50000,100000,1000000],
+            rewardDeatil:[
+              '这本书太棒了，小书币犒劳一下。',
+              '文如咖啡，醇香浓郁暖人心。',
+              '读后心花路放，送花希望后续更加精彩。',
+              '酒逢知己千杯少，大大写书正合我意！',
+              '文如砖石璀璨夺目，光耀四方恒久远！',
+              '文冠天下当称王，非此犒赏不足以表吾之意!',
+              '天花乱坠，感动涕零，千金跑车，助先生纸墨风流！',
+              '心潮澎湃，相见恨晚，百万别墅，亦难表吾之喜爱！'
+            ]
         }
     }
 }
@@ -60,11 +70,6 @@ export default {
       overflow: hidden;
       margin-bottom: .4rem;
     }
-
-    /*   .reward .btn{ float: left; width: 2rem; text-align: center; margin-top: 1rem; }
-.reward .btn span{ display: block; width: 1.2rem; height: 1.2rem; border-radius: .6rem; background-color: #ed6460; color: #fff; font-size: .55rem; text-align: center; line-height: 1.3rem; margin: 0 auto; }
-.reward .btn a{ display: inline-block; padding: .05rem .1rem; border-radius: .1rem; background-color: #ed6460; color: #fff; margin-top: .2rem; font-size: .3rem; } */
-
     .reward .h1_up {
       padding-bottom: .1rem;
     }

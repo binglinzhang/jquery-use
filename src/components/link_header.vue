@@ -1,7 +1,7 @@
 <template>
     <header>
         <div class="left">
-          <i class="fa fa-angle-left" onclick="window.history.go(-1)"></i>
+          <i class="fa fa-angle-left" @click="$router.go(-1)"></i>
         </div>
         <div class="center"><slot>hello</slot></div>
         <div class="right">
