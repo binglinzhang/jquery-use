@@ -44,6 +44,11 @@ export default new Router({
       path:'/chapter',
       name:'chapter',
       component:()=>import('../components/chapter.vue')
+    },
+    {
+      path:'/bookshelf',
+      name:'bookshelf',
+      component:()=>import('../components/bookshelf.vue')
     }
   ]
 })

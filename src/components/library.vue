@@ -83,35 +83,35 @@
 </template>
 
 <script>
-import linkHead from "./link_header.vue"
-import nFooter from "./nfooter.vue"
+import linkHead from "./link_header.vue";
+import nFooter from "./nfooter.vue";
 export default {
   data() {
     return {
       activeFlag: {
-		  label:-1,
-		  publish:-1,
-		  status:-1,
-		  isVip:-1,  
-	  },
-	  sort:"updateTime",
+        label: -1,
+        publish: -1,
+        status: -1,
+        isVip: -1
+      },
+      sort: "updateTime",
       books: [
         {
           name: "爱情不走心1",
           img: "/static/book_id.jpg",
           author: "南风向晚",
-          status: 0,
+          status: 0,  //更新状态
           label: "都市情缘",
           wordNum: 7508326,
           newArticle: "第639章 最美不过遇见你19",
-          idVip: 0,
-          publish: 0,
+          isVip: 0,
+          publish: 0,   //出版状态
           updateTime: 1515037997832,
           clickNum: 123123,
           orderNum: 123123,
           wordNum: 123123,
-		  bookId: 123,
-		  isVip:0,
+          bookId: 123,
+          isVip: 0
         },
         {
           name: "爱情不走心2",
@@ -121,14 +121,14 @@ export default {
           label: "都市情缘",
           wordNum: 7508326,
           newArticle: "第639章 最美不过遇见你19",
-          idVip: 0,
+          isVip: 0,
           publish: 0,
           updateTime: 1515037997833,
           clickNum: 123123,
           orderNum: 123123,
           wordNum: 123123,
-		  bookId: 123,
-		  isVip:0,
+          bookId: 123,
+          isVip: 0
         },
         {
           name: "爱情不走心4",
@@ -138,14 +138,14 @@ export default {
           label: "古代情缘",
           wordNum: 7508326,
           newArticle: "第639章 最美不过遇见你19",
-          idVip: 0,
+          isVip: 0,
           publish: 0,
           updateTime: 1515037997999,
           clickNum: 123123,
           orderNum: 123123,
           wordNum: 123123,
-		  bookId: 123,
-		  isVip:0,
+          bookId: 123,
+          isVip: 0
         },
         {
           name: "爱情不走心6",
@@ -155,14 +155,14 @@ export default {
           label: "都市情缘",
           wordNum: 7508326,
           newArticle: "第639章 最美不过遇见你19",
-          idVip: 0,
+          isVip: 0,
           publish: 0,
           updateTime: 1515037997835,
           clickNum: 123123,
           orderNum: 123123,
           wordNum: 123123,
-		  bookId: 123,
-		  isVip:0,
+          bookId: 123,
+          isVip: 0
         },
         {
           name: "爱情不走心",
@@ -172,14 +172,14 @@ export default {
           label: "都市情缘",
           wordNum: 7508326,
           newArticle: "第639章 最美不过遇见你19",
-          idVip: 0,
+          isVip: 0,
           publish: 0,
           updateTime: 1515037997836,
           clickNum: 123123,
           orderNum: 123123,
           wordNum: 123123,
-		  bookId: 123,
-		  isVip:0,
+          bookId: 123,
+          isVip: 0
         },
         {
           name: "爱情不走心",
@@ -189,35 +189,35 @@ export default {
           label: "都市情缘",
           wordNum: 7508326,
           newArticle: "第639章 最美不过遇见你19",
-          idVip: 0,
+          isVip: 0,
           publish: 0,
           updateTime: 1515037997837,
           clickNum: 123123,
           orderNum: 123123,
           wordNum: 123123,
-		  bookId: 123,
-		  isVip:0,
+          bookId: 123,
+          isVip: 0
         }
       ]
     };
   },
   computed: {
     activeBooks() {
-		let temp;
-		temp = this.books.filter(item=>{
-			let isSuit = true;
-			for(let i in this.activeFlag){
-				if(this.activeFlag[i]!=-1 && this.activeFlag[i] != item[i]){
-					isSuit = false;
-					break
-				}
-			}
-			return isSuit
-		});
-		temp.sort((a,b)=>{
-			return a[this.sort] - b[this.sort]
-		});
-		return temp;		
+      let temp;
+      temp = this.books.filter(item => {
+        let isSuit = true;
+        for (let i in this.activeFlag) {
+          if (this.activeFlag[i] != -1 && this.activeFlag[i] != item[i]) {
+            isSuit = false;
+            break;
+          }
+        }
+        return isSuit;
+      });
+      temp.sort((a, b) => {
+        return a[this.sort] - b[this.sort];
+      });
+      return temp;
     }
   },
   components: {

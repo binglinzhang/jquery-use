@@ -6,36 +6,15 @@
           </h1>
           <div class="award">
             <ul>
-              <li :class="{active:activeFlag==0}" @click="activeFlag=0">
-                <span>书币</span>
-              </li>
-              <li :class="{active:activeFlag==1}" @click="activeFlag=1">
-                <span>咖啡</span>
-              </li>
-              <li :class="{active:activeFlag==2}" @click="activeFlag=2">
-                <span>鲜花</span>
-              </li>
-              <li :class="{active:activeFlag==3}" @click="activeFlag=3">
-                <span>美酒</span>
-              </li>
-              <li :class="{active:activeFlag==4}" @click="activeFlag=4">
-                <span>钻石</span>
-              </li>
-              <li :class="{active:activeFlag==5}" @click="activeFlag=5">
-                <span>皇冠</span>
-              </li>
-              <li :class="{active:activeFlag==6}" @click="activeFlag=6">
-                <span>跑车</span>
-              </li>
-              <li :class="{active:activeFlag==7}" @click="activeFlag=7">
-                <span>别墅</span>
+              <li :class="{active:activeFlag==index}" @click="activeFlag=0" v-for="(item,index) in reward" :style="{backgroundImage:item.img}">
+                <span>{{item.name}}</span>
               </li>
             </ul>
           </div>
         </div>
         <div class="self_up">
           <span class="round"></span>
-          <span>{{rewardDeatil[activeFlag]}}</span>
+          <span>{{reward[activeFlag].label}}</span>
           <div class="cnt_btn">
             <button class="btn">打赏作者：{{rewardNum[activeFlag]}}书币</button>
           </div>
@@ -44,11 +23,13 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name:"reword",
     data(){
         return {
             activeFlag:0,
+            reward:[],
             rewardNum:[100,500,1000,5000,10000,50000,100000,1000000],
             rewardDeatil:[
               '这本书太棒了，小书币犒劳一下。',
@@ -61,6 +42,19 @@ export default {
               '心潮澎湃，相见恨晚，百万别墅，亦难表吾之喜爱！'
             ]
         }
+    },
+    props:{
+      bookId:{
+        type:String
+      }
+    },
+    created(){
+      // axios.get(`http://m.shengshixiwen.com/apis/0.1/UserLevel/BonusLevel.php?bookId=${this.bookId}`).then(res=>{
+      //   this.reward = res.data.data.BONUS_CONF;
+      // });
+      axios.get(`http://m.shengshixiwen.com/apis/0.1/UserLevel/BonusLevel.php?bookId=229`).then(res=>{
+        this.reward = res.data.data.BONUS_CONF;
+      })
     }
 }
 </script>

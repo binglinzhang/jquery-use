@@ -10,12 +10,13 @@
             </h1>
             <div class="content">
                 <div class="img" v-for="item in hotRecommend">
-                    <a href="https://m.yyread.com/bookinfo/779" class="">
-                        <img :src="item.img"> {{item.name}}
-                    </a>
+                    <router-link :to='{name:"book",params:{id:item.book_id}}'>
+                        <img v-lazy="item.cover"> {{item.short_name}}
+                    </router-link>
                 </div>
             </div>
         </div>
+
 
         <div class="container new-book-recommend">
             <h1>
@@ -25,36 +26,38 @@
                 <div class="item-list">
                     <ul>
                         <li>
-                            <a href="https://m.yyread.com/bookinfo/740" class="">
+                            <router-link :to='{name:"book", params:{id:newBookRecommend[0].book_id} }'>
                                 <div class="top-item">
                                     <div class="item-img">
-                                        <img :src="godBook.first.img">
+                                        <img v-lazy="newBookRecommend[0].cover">
                                     </div>
-                                    <h2>{{godBook.first.name}}</h2>
+                                    <h2>{{newBookRecommend[0].short_name}}</h2>
                                     <div class="item-info">
-                                        <p>{{godBook.first.shortDetail}}</p>
+                                        <p>{{newBookRecommend[0].intro}}</p>
                                     </div>
                                 </div>
-                            </a>
+                            </router-link>
                         </li>
-                        <li v-for="item in godBook.others">
-                            <a href="https://m.yyread.com/bookinfo/761"  :class="{hot:item.hot}">
-                                <span>[{{item.label}}]</span> {{item.shortDetail}}
-                            </a>
+                        <li v-for="item in newBookRecommend.slice(1)">
+                            <router-link :to='{name:"book", params:{id:newBookRecommend[0].book_id} }'  :class="{hot:item.hot}">
+                                <span>[{{item.cate_name}}]</span> {{item.title||item.short_name}}
+                            </router-link>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
+
+        
         <div class="container picture-recommend">
             <h1>
                 <span> 短言情</span>
             </h1>
             <div class="content">
                 <div class="img" v-for="item in shortLove">
-                    <a href="https://m.yyread.com/bookinfo/938" class="">
-                        <img :src="item.img"> {{item.name}}
-                    </a>
+                    <router-link :to='{name:"book", params:{id:item.book_id} }'>
+                        <img :src="item.cover"> {{item.short_name}}
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -66,22 +69,22 @@
                 <div class="item-list">
                     <ul>
                         <li>
-                            <a href="https://m.yyread.com/bookinfo/817" class="">
+                            <router-link :to='{name:"book", params:{id:newBookRecommend[0].book_id} }'>
                                 <div class="top-item">
                                     <div class="item-img">
-                                        <img :src="newBookRecommend.first.img">
+                                        <img v-lazy="newBookRecommend[0].cover">
                                     </div>
-                                    <h2>{{newBookRecommend.first.name}}</h2>
+                                    <h2>{{newBookRecommend[0].short_name}}</h2>
                                     <div class="item-info">
-                                        <p>{{newBookRecommend.first.shortDetail}}</p>
+                                        <p>{{newBookRecommend[0].intro}}</p>
                                     </div>
                                 </div>
-                            </a>
+                            </router-link>
                         </li>
-                        <li v-for="item in newBookRecommend.others">
-                            <a href="https://m.yyread.com/bookinfo/907" :class="{hot:item.hot}">
-                                <span>[{{item.label}}]</span> {{item.shortDetail}}
-                            </a>
+                        <li v-for="item in newBookRecommend.slice(1)">
+                            <router-link :to='{name:"book", params:{id:newBookRecommend[0].book_id} }'  :class="{hot:item.hot}">
+                                <span>[{{item.cate_name}}]</span> {{item.title||item.short_name}}
+                            </router-link>
                         </li>
                     </ul>
                 </div>
@@ -99,50 +102,13 @@ import nHeader from "./nheader.vue"
 import nNav from "./nav.vue"
 import rankList from './rankingList.vue'
 import nFooter from './nfooter.vue'
+import axios from 'axios'
 export default {
   name: "index",
   data() {
     return {
-      hotRecommend: [
-        { img: "/static/book_id.jpg", name: "爱情不走心", bookId: 123 },
-        { img: "/static/book_id.jpg", name: "爱情不走心", bookId: 123 },
-        { img: "/static/book_id.jpg", name: "爱情不走心", bookId: 123 },
-        { img: "/static/book_id.jpg", name: "爱情不走心", bookId: 123 },
-        { img: "/static/book_id.jpg", name: "爱情不走心", bookId: 123 },
-        { img: "/static/book_id.jpg", name: "爱情不走心", bookId: 123 }
-      ],
-      godBook: {
-        first: {
-          img: "/static/book_id.jpg",
-          name: "爱情不走心",
-          shortDetail:
-            "19岁那年我剪断了养父的命根子，因为飞哥，我逃过了牢狱之灾，开始坐台……在那里，遇到了一个后来让我交付了一生的人！",
-          bookId: 123
-        },
-        others: [
-          {
-            label: "都市情缘",
-            shortDetail: " 这是一首简单的小情歌，唱歌我们心中的百合……",
-            bookId: 123
-          },
-          {
-            label: "都市情缘",
-            shortDetail: " 这是一首简单的小情歌，唱歌我们心中的百合……",
-            bookId: 123
-          },
-          {
-            label: "都市情缘",
-            shortDetail: " 这是一首简单的小情歌，唱歌我们心中的百合……",
-            bookId: 123
-          },
-          {
-            label: "都市情缘",
-            shortDetail: " 这是一首简单的小情歌，唱歌我们心中的百合……",
-            bookId: 123
-          },
-          { label: "都市情缘", shortDetail: " 这是一首简单的小情歌，唱歌我们心中的百合……", bookId: 123 }
-        ]
-      },
+      hotRecommend: [],
+      godBook: [],
       shortLove: [
         { name: "爱情不走心", img: "/static/book_id.jpg", bookId: 123 },
         { name: "爱情不走心", img: "/static/book_id.jpg", bookId: 123 },
@@ -151,39 +117,7 @@ export default {
         { name: "爱情不走心", img: "/static/book_id.jpg", bookId: 123 },
         { name: "爱情不走心", img: "/static/book_id.jpg", bookId: 123 }
       ],
-      newBookRecommend: {
-        first: {
-          img: "/static/book_id.jpg",
-          name: "爱情不走心",
-          shortDetail:
-            "19岁那年我剪断了养父的命根子，因为飞哥，我逃过了牢狱之灾，开始坐台……在那里，遇到了一个后来让我交付了一生的人！",
-          bookId: 123
-        },
-        others: [
-          {
-            label: "都市情缘",
-            shortDetail: " 这是一首简单的小情歌，唱歌我们心中的百合……",
-            bookId: 123
-          },
-          {
-            label: "都市情缘",
-            shortDetail: " 这是一首简单的小情歌，唱歌我们心中的百合……",
-            bookId: 123
-          },
-          {
-            label: "都市情缘",
-            shortDetail: " 这是一首简单的小情歌，唱歌我们心中的百合……",
-            hot: true,
-            bookId: 123
-          },
-          {
-            label: "都市情缘",
-            shortDetail: " 这是一首简单的小情歌，唱歌我们心中的百合……",
-            bookId: 123
-          },
-          { label: "都市情缘", shortDetail: " 这是一首简单的小情歌，唱歌我们心中的百合……", bookId: 123 }
-        ]
-      }
+      newBookRecommend: []
     };
   },
   components: {
@@ -191,6 +125,20 @@ export default {
     nNav,
     rankList,
     nFooter
+  },
+  created(){
+      axios.get('http://m.shengshixiwen.com/apis/0.1/hotRecommend.php').then(res=>{
+          this.hotRecommend = res.data.data;
+      });
+      axios.get('http://m.shengshixiwen.com/apis/0.1/new-book-recommend.php').then(res=>{
+          this.godBook = res.data.data;
+      });
+      axios.get('http://m.shengshixiwen.com/apis/0.1/picture-recommend.php').then(res=>{
+          this.shortLove = res.data.data;
+      });
+      axios.get('http://m.shengshixiwen.com/apis/0.1/updata-recommend.php').then(res=>{
+          this.newBookRecommend = res.data.data;
+      });
   }
 };
 </script>

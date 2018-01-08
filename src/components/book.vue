@@ -10,11 +10,10 @@
           <div class="info">
             <h2>作者：{{book.author}}</h2>
             <h2>分类：{{book.label}}</h2>
-            <h2>字数：{{book.wordNum}} 万字</h2>
-            <h2>收藏：<span>{{book.orderNum}}</span> 次</h2>
+            <h2>字数：{{book.wordNum}} 字</h2>
             <div class="read-btn">
               <div class="btn">
-                <a href="https://m.yyread.com/read/944/395460" class="">立即阅读</a>
+                <a class="" @click="$router.push({name:'chapter',params:{id:$route.params.id}})">立即阅读</a>
               </div>
               <div class="btn">
                 <a class="shelf">加入书架</a>
@@ -24,29 +23,29 @@
           </div>
         </div>
         <div class="content summary">
-          {{book.shortIntro}}...
-          <!-- <a>展开</a> -->
+          <span>{{showAllFlag?book.shortIntro:book.shortIntro.slice(0,43)}}...</span>
+          <a @click="showAllFlag=!showAllFlag">{{showAllFlag?'收起':'展开'}}</a>
         </div>
         <div class="content new-chapter">
-          <a href="https://m.yyread.com/read/944/400268" class="">
+          <a @click="$router.push({name:'chapter',params:{id:$route.params.id}})" class="">
             <span>最新章节：</span>
-            <span>{{book.newArticle}}</span>
+            <span>{{book.last_chapter_name}}</span>
             <i v-if="book.isVip==0">vip</i>
           </a>
         </div>
         <div class="content catalog">
-          <a href="https://m.yyread.com/catalog/944" class="">查看目录：共{{book.allChapter}}章
+          <a @click="$router.push({name:'menu',params:{id:$route.params.id}})">查看目录：共{{book.allChapter}}章
             <span>{{book.status | statusFilter}} &gt;</span>
           </a>
         </div>
     
       </div>
 
-      <funs-rank></funs-rank> 
+      <funs-rank :bookId="$route.params.id"></funs-rank> 
 
-      <reward></reward>
+      <reward :bookId="$route.params.id"></reward>
 
-      <comment></comment>
+      <comment :bookId="$route.params.id"></comment>
 
       <n-footer></n-footer>
       <!---->
@@ -59,33 +58,21 @@ import nFooter from "./nfooter.vue"
 import funsRank from './funsRank.vue'
 import reward from './reward.vue'
 import comment from './comment.vue'
+import axios from 'axios'
 export default {
   name: "book",
   data() {
     return {
-      book: {
-        name: "爱情不走心",
-        img: "/static/book_id.jpg",
-        author: "南风向晚",
-        //0为连载   1为已完结
-        status: 0,
-        label: "都市情缘",
-        wordNum: 7508326,
-        newArticle: "第639章 最美不过遇见你19",
-        //0为是，1为不是vip
-        isVip: 0,
-        //0为已出版   1为未出版
-        publish: 0,
-        //更新时间为时间戳，精确到毫秒
-        updateTime: 1515037997832,
-        shortIntro:"五年前，她为了爱放手。 五年后，他却将她，逼入深渊。 爱有余毒，唯情可解。...",
-        allChapter:123,
-        clickNum: 123123,
-        orderNum: 123123,
-        wordNum: 123123,
-        bookId: 123
-      }
+      showAllFlag:false,
+      book: {}
     };
+  },
+  created(){
+    var id = this.$route.params.id;
+    axios.get(`http://m.shengshixiwen.com/apis/0.1/BookInfo.php?bookId=${id}`).then(res=>{
+      this.book = res.data.data;
+      
+    })
   },
   components: {
     linkHead,
@@ -121,7 +108,7 @@ export default {
   position: relative;
 }
 .base-info .content .info h2 {
-  height: .43rem;
+  height: .58rem;
   font-size: .26rem;
 }
 .base-info .content .info h2 span {

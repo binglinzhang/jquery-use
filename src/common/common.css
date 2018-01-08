@@ -685,5 +685,14 @@ footer .context p .tel[data-v-5f9d26b1] {
   width: 2rem;
   height: 2.67rem;
 }
-
+.clearfix:after {
+  height:0;
+  line-height: 0;
+  visibility: hidden;
+  clear: both;
+}
+.clearfix:after, .clearfix:before {
+  content: " ";
+  display: table;
+}
 

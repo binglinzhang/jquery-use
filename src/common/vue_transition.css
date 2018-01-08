@@ -31,6 +31,6 @@
 .slideLeftToRight-enter,.slideLeftToRight-leave-to{
     transform: translateX(-100%);
 }
-.slideLeftToRight-enter-active,.slideLeftToRight-leave-active{
+.slideLeftToRight-enter-active{
     transition: transform .4s;
 }

@@ -5,34 +5,35 @@
 		</h1>
 		<div class="button">
 			<a :class="{active:activeFlag==0}" @click="activeFlag=0">
-				<span>点击榜</span>
+				<span>推荐榜</span>
 			</a>
 			<a :class="{active:activeFlag==1}" @click="activeFlag=1">
 				<span>订阅榜</span>
 			</a>
 			<a :class="{active:activeFlag==2}" @click="activeFlag=2">
-				<span>新书榜</span>
+				<span>点击榜</span>
 			</a>
 		</div>
 		<div class="content">
 			<dl class="top" v-for="(item,index) in activeRank">
-				<a href="https://m.yyread.com/book/779" class="">
+				<router-link :to="{name:'book',params:{id:item.bookId}}">
 					<span :class="{hot:index<3}">{{index<3?"":index+1}}</span>
 					<dt>{{item.name}}</dt>
 					<dd v-if="false">{{item.num}}</dd>
-				</a>
+				</router-link>
 			</dl>
 		</div>
 	</div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: "rankingList",
   data() {
     return {
       activeFlag: 0,
-      clickRank: [
+      recommendRank: [
         { name: "哈哈:爱情不走心", num: 98562, bookId: 123 },
         { name: "哈哈:爱情不走心", num: 98562, bookId: 123 },
         { name: "哈哈:爱情不走心", num: 98562, bookId: 123 },
@@ -56,7 +57,7 @@ export default {
         { name: "哈哈:爱情不走心2", num: 98562, bookId: 123 },
         { name: "哈哈:爱情不走心2", num: 98562, bookId: 123 }
       ],
-      newRank: [
+      clickRank: [
         { name: "哈哈:爱情不走心3", bookId: 123 },
         { name: "哈哈:爱情不走心3", bookId: 123 },
         { name: "哈哈:爱情不走心3", bookId: 123 },
@@ -73,11 +74,22 @@ export default {
   computed: {
     activeRank() {
       return this.activeFlag == 0
-        ? this.clickRank
-        : this.activeFlag == 1 ? this.orderRank : this.newRank;
+        ? this.recommendRank
+        : this.activeFlag == 1 ? this.orderRank : this.clickRank;
     }
   },
-  methods() {}
+  methods() {},
+  created(){
+    axios.get('http://m.shengshixiwen.com/apis/0.1/TopList.php?type=recommend_month').then(res=>{
+      this.recommendRank = res.data.data.bookinfo;
+    });
+    axios.get('http://m.shengshixiwen.com/apis/0.1/TopList.php?type=subscribe_month').then(res=>{
+      this.orderRank = res.data.data.bookinfo;
+    });
+    axios.get('http://m.shengshixiwen.com/apis/0.1/TopList.php?type=click_month').then(res=>{
+      this.clickRank = res.data.data.bookinfo;
+    });
+  }
 };
 </script>
 

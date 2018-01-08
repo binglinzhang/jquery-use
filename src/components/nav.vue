@@ -6,7 +6,7 @@
             <div class="banner-box">
                 <swiper :options="swiperOption" ref="mySwiper">
                     <!-- slides -->
-                    <swiper-slide v-for="banner in banners"><img :src="banner" class="banner-img"/></swiper-slide>
+                    <swiper-slide v-for="item in banners"><img :src="item.cover" class="banner-img" @click="$router.push(`/book/${item.book_id}`)"/></swiper-slide>
                     <!-- Optional controls -->
                     <div class="swiper-pagination"  slot="pagination"></div>
                     <!-- <div class="swiper-button-prev" slot="button-prev"></div>
@@ -18,28 +18,28 @@
         <div class="classification">
             <ul class="ification">
                 <li>
-                    <a href="https://m.yyread.com/library" class="">
-                    <span></span>
-                    书库
-                    </a>
+                    <router-link to="/library">
+                        <span></span>
+                        书库
+                    </router-link>
                 </li>
                 <li>
-                    <a href="https://m.yyread.com/rank" class="">
-                    <span></span>
-                    排行榜
-                    </a>
+                    <router-link to="/rank">
+                        <span></span>
+                        排行榜
+                    </router-link>
                 </li>
                 <li>
-                    <a href="https://m.yyread.com/login" class="">
-                    <span></span>
-                    书架
-                    </a>
+                    <router-link to="/bookshelf">
+                        <span></span>
+                        书架
+                    </router-link>
                 </li>
                 <li>
-                    <a href="https://m.yyread.com/login" class="">
-                    <span></span>
-                    个人中心
-                    </a>
+                    <router-link to="/user">
+                        <span></span>
+                        个人中心
+                    </router-link>
                 </li>
             </ul>
         </div>
@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data(){
       return{
@@ -65,100 +66,16 @@ export default {
             }
         },
       }
+  },
+  created(){
+      axios.get('http://m.shengshixiwen.com/apis/0.1/Slide.php').then(res=>{
+          this.banners = res.data.data;
+      })
   }
 }
 </script>
 
 <style lang="less" scoped>
-@-webkit-keyframes shake {
-0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-}
-10% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-}
-35% {
-    -webkit-transform: rotate(10deg);
-            transform: rotate(10deg);
-}
-50% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-}
-65% {
-    -webkit-transform: rotate(-10deg);
-            transform: rotate(-10deg);
-}
-90% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-}
-100% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-}
-}
-@keyframes shake {
-0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-}
-10% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-}
-35% {
-    -webkit-transform: rotate(10deg);
-            transform: rotate(10deg);
-}
-50% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-}
-65% {
-    -webkit-transform: rotate(-10deg);
-            transform: rotate(-10deg);
-}
-90% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-}
-100% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-}
-}
-.user-remind {
-  margin-top: .1rem;
-  height: .4rem;
-  padding: 0 .2rem;
-  font-size: .26rem;
-}
-.user-remind .book {
-    float: left;
-    color: #999;
-}
-.user-remind .book a {
-      color: #32a1ff;
-}
-.user-remind .message {
-    float: right;
-}
-.user-remind .message a {
-      color: #f39c12;
-}
-.user-remind .message i {
-      -webkit-animation: shake ease .2s 1s 5;
-              animation: shake ease .2s 1s 5;
-      -webkit-transform-origin: center 0;
-              transform-origin: center 0;
-      color: #f39c12;
-}
-.user-remind span {
-  color: #32a1ff;
-}
 .banner-box {
   height: 2.8rem;
   overflow: hidden;
