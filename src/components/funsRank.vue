@@ -16,28 +16,18 @@
           </ul>
           <p v-if="!funs.length">暂无粉丝</p>
         </div>
-        <div class="stretch" style="" @click="maxHeightFlag=!maxHeightFlag" v-text="maxHeightFlag?'收起':'展开'"></div>
+        <div class="stretch" style="" @click="maxHeightFlag=!maxHeightFlag" v-text="maxHeightFlag?'收起':'展开'" v-show="funs.length>5"></div>
     </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name:"funsRank",
     data(){
         return {
             maxHeightFlag:false,
-            funs:[
-                {name:"hello world",label:"学神",childFuns:12345,childFunsFlag:false,timer:0},
-                {name:"hello world",label:"学神",childFuns:12345,childFunsFlag:false,timer:0},
-                {name:"hello world",label:"学神",childFuns:12345,childFunsFlag:false,timer:0},
-                {name:"hello world",label:"学神",childFuns:12345,childFunsFlag:false,timer:0},
-                {name:"hello world",label:"学神",childFuns:12345,childFunsFlag:false,timer:0},
-                {name:"hello world",label:"学神",childFuns:12345,childFunsFlag:false,timer:0},
-                {name:"hello world",label:"学神",childFuns:12345,childFunsFlag:false,timer:0},
-                {name:"hello world",label:"学神",childFuns:12345,childFunsFlag:false,timer:0},
-                {name:"hello world",label:"学神",childFuns:12345,childFunsFlag:false,timer:0},
-                {name:"hello world",label:"学神",childFuns:12345,childFunsFlag:false,timer:0}
-            ]
+            funs:[]
         }
     },
     methods:{
@@ -50,6 +40,15 @@ export default {
                 },1200)
             }
         }
+    },
+    created(){
+        axios.get('http://m.shengshixiwen.com/apis/0.1/UserLevel/BookUserLevel.php?bookId=229').then(res=>{
+            let arr = res.data.data;
+            arr.forEach(item=>{
+                Object.assign(item,{childFunsFlag:false,timer:0})
+            });
+            this.funs = arr;
+        })
     }
 }
 </script>

@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "reward_tab",
   data() {
@@ -78,6 +79,20 @@ export default {
         }
       ]
     };
+  },
+  props: {
+    bookId: {
+      type: String
+    }
+  },
+  created() {
+    axios
+      .get(
+        "http://m.shengshixiwen.com/apis/0.1/UserLevel/BonusList.php?bookId=229"
+      )
+      .then(res => {
+        console.log(res);
+      });
   }
 };
 </script>

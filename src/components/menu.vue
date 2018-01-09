@@ -11,12 +11,12 @@
             </h4>
             <ul class="container">
                 <li class="chapter-item" v-for="(item,index) in chapterList" :class='{record:readRecord==index}'>
-                    <a href="https://m.yyread.com/read/779/345396" class="">
-                        <span class="name">{{item.title}} </span>
-                        <span class="vip" v-if="item.isvip"></span>
+                    <router-link :to="{name:'chapter',query:{chapterId:item.chapter_id,bookId:229}}">
+                        <span class="name">{{item.chapter_name}} </span>
+                        <span class="vip" v-if="item.is_vip"></span>
                         <!-- <span class="first" style="display: none;">抢先</span> -->
                         <!-- <span class="read">已读</span> -->
-                    </a>
+                    </router-link>
                 </li>
             </ul>
             <div class="more" style="">加载更多</div>
@@ -30,59 +30,9 @@ export default {
   name: "book_menu",
   data() {
     return {
-      readRecord:3,
-      reverseFlag:false,
-      chapterList: [
-        {
-          id: "212",
-          title: "第一章：捣蛋鬼",
-          updatetime: "2017-12-21 20:24:17",
-          order: 1,
-          isvip: 0
-        },
-        {
-          id: "214",
-          title: "第二章：龙凤相斗",
-          updatetime: "2017-12-22 07:54:07",
-          order: 2,
-          isvip: 0
-        },
-        {
-          id: "216",
-          title: "第三章：龙凤相斗（2）",
-          updatetime: "2017-12-23 06:10:47",
-          order: 3,
-          isvip: 0
-        },
-        {
-          id: "219",
-          title: "第四章：新同桌",
-          updatetime: "2017-12-24 08:26:40",
-          order: 4,
-          isvip: 0
-        },
-        {
-          id: "221",
-          title: "第五章：礼物",
-          updatetime: "2017-12-25 06:17:21",
-          order: 5,
-          isvip: 0
-        },
-        {
-          id: "222",
-          title: "第六章：打扮风波（1）",
-          updatetime: "2017-12-25 19:53:26",
-          order: 6,
-          isvip: 0
-        },
-        {
-          id: "224",
-          title: "第七章：打扮风波（2）",
-          updatetime: "2017-12-26 20:43:28",
-          order: 7,
-          isvip: 0
-        }
-      ], 
+      readRecord: 3,
+      reverseFlag: false,
+      chapterList: []
     };
   },
   components: {
@@ -90,15 +40,18 @@ export default {
   },
   created() {
     axios
-    //   .get("http://m.shengshixiwen.com/apis/0.1/BookChapters.php?bookid=97")
-    //   .then(res => {
-    //     this.chapterList = res.data.data;
-    //   });
+      .get(
+        `http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterList.php?bookId=229`
+      )
+      .then(res => {
+        this.chapterList = res.data.data.chapterlist.slice(0, 100);
+        console.log(this.chapterList);
+      });
   },
-  watch:{
-      reverseFlag(newVal,oldVal){
-          this.chapterList.reverse()
-      }
+  watch: {
+    reverseFlag(newVal, oldVal) {
+      this.chapterList.reverse();
+    }
   }
 };
 </script>
@@ -143,8 +96,8 @@ export default {
   text-overflow: ellipsis;
   font-size: 12px;
 }
-.chapter-item.record .name{
-    color: red;
+.chapter-item.record .name {
+  color: red;
 }
 .chapter-item a {
   display: block;

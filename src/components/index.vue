@@ -10,7 +10,7 @@
             </h1>
             <div class="content">
                 <div class="img" v-for="item in hotRecommend">
-                    <router-link :to='{name:"book",params:{id:item.book_id}}'>
+                    <router-link :to='{name:"book",query:{bookId:item.book_id}}'>
                         <img v-lazy="item.cover"> {{item.short_name}}
                     </router-link>
                 </div>
@@ -26,7 +26,7 @@
                 <div class="item-list">
                     <ul>
                         <li>
-                            <router-link :to='{name:"book", params:{id:newBookRecommend[0].book_id} }'>
+                            <router-link :to='{name:"book", query:{bookId:newBookRecommend[0].book_id} }'>
                                 <div class="top-item">
                                     <div class="item-img">
                                         <img v-lazy="newBookRecommend[0].cover">
@@ -39,7 +39,7 @@
                             </router-link>
                         </li>
                         <li v-for="item in newBookRecommend.slice(1)">
-                            <router-link :to='{name:"book", params:{id:newBookRecommend[0].book_id} }'  :class="{hot:item.hot}">
+                            <router-link :to='{name:"book", query:{bookId:newBookRecommend[0].book_id} }'  :class="{hot:item.hot}">
                                 <span>[{{item.cate_name}}]</span> {{item.title||item.short_name}}
                             </router-link>
                         </li>
@@ -55,7 +55,7 @@
             </h1>
             <div class="content">
                 <div class="img" v-for="item in shortLove">
-                    <router-link :to='{name:"book", params:{id:item.book_id} }'>
+                    <router-link :to='{name:"book", query:{bookId:item.book_id} }'>
                         <img :src="item.cover"> {{item.short_name}}
                     </router-link>
                 </div>
@@ -69,7 +69,7 @@
                 <div class="item-list">
                     <ul>
                         <li>
-                            <router-link :to='{name:"book", params:{id:newBookRecommend[0].book_id} }'>
+                            <router-link :to='{name:"book", query:{bookId:newBookRecommend[0].book_id} }'>
                                 <div class="top-item">
                                     <div class="item-img">
                                         <img v-lazy="newBookRecommend[0].cover">
@@ -82,7 +82,7 @@
                             </router-link>
                         </li>
                         <li v-for="item in newBookRecommend.slice(1)">
-                            <router-link :to='{name:"book", params:{id:newBookRecommend[0].book_id} }'  :class="{hot:item.hot}">
+                            <router-link :to='{name:"book", query:{bookId:newBookRecommend[0].book_id} }'  :class="{hot:item.hot}">
                                 <span>[{{item.cate_name}}]</span> {{item.title||item.short_name}}
                             </router-link>
                         </li>
@@ -90,8 +90,9 @@
                 </div>
             </div>
         </div>
-
-        <rank-list></rank-list>
+        <lazy-component>
+            <rank-list></rank-list>
+        </lazy-component>
 
         <n-footer></n-footer>
     </div>
@@ -109,14 +110,7 @@ export default {
     return {
       hotRecommend: [],
       godBook: [],
-      shortLove: [
-        { name: "爱情不走心", img: "/static/book_id.jpg", bookId: 123 },
-        { name: "爱情不走心", img: "/static/book_id.jpg", bookId: 123 },
-        { name: "爱情不走心", img: "/static/book_id.jpg", bookId: 123 },
-        { name: "爱情不走心", img: "/static/book_id.jpg", bookId: 123 },
-        { name: "爱情不走心", img: "/static/book_id.jpg", bookId: 123 },
-        { name: "爱情不走心", img: "/static/book_id.jpg", bookId: 123 }
-      ],
+      shortLove: [],
       newBookRecommend: []
     };
   },

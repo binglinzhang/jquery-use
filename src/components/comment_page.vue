@@ -27,7 +27,7 @@
               <textarea cols="28" rows="3" :placeholder="'回复@'+reviewer.name" style="width:6.3rem"></textarea>
             </div>
             <div class="comment-btn">
-              <a>回复</a>
+              <a @click="postCommentParent">回复</a>
             </div>
           </div>
         </div>
@@ -36,14 +36,14 @@
             <span>全部回复</span>
             <a style="font-size: 0.28rem; color: rgb(153, 153, 153);">共{{reviewer.childComment.length}}条</a>
           </h1>
-          <div class="content comment-item" v-for="item in reviewer.childComment">
+          <div class="content comment-item" v-for="item in reviewer.childComment.data">
             <div class="user-head">
-              <img :src="item.avatar">
+              <img v-lazy="item.avatar">
             </div>
             <div class="comment-info">
               <h2>
                 <span>{{item.name}}</span>
-                <img :src="item.levelImg">
+                <img v-lazy="item.levelImg">
                 <i style="background-color: rgb(226, 179, 38);">{{item.label}}</i>
               </h2>
               <div class="text">回复
@@ -57,12 +57,12 @@
                   <textarea cols="28" rows="3" :placeholder="'回复@'+item.name"></textarea>
                 </div>
                 <div class="comment-btn">
-                  <a>回复</a>
+                  <a @click="postCommentChild(item)">回复</a>
                 </div>
               </div>
             </div>
           </div>
-          <div class="more" v-show="isLoadingAll">查看更多&gt;&gt;</div>
+          <div class="more" v-show="page<pageCount">查看更多&gt;&gt;</div>
         </div>
       </div>
       <n-footer></n-footer>    
@@ -72,10 +72,14 @@
 <script>
 import linkHead from "./link_header.vue";
 import nFooter from "./nfooter.vue";
+import axios from "axios";
+import qs from "qs";
 export default {
   name: "commentPage",
   data() {
     return {
+      page: 0,
+      pageCount: 0,
       reviewer: {
         name: "朕知道了",
         id: 123,
@@ -114,13 +118,65 @@ export default {
             childCommentNum: 5
           }
         ]
-      },
-      isLoadingAll: false
+      }
     };
+  },
+  methods: {
+    postCommentParent() {
+      let data = {
+        uid: this.$uId,
+        bookid: this.$route.query.bookId,
+        title: "",
+        content: reviewer.commentContent,
+        parentid: this.$route.query.cId
+      };
+      axios
+        .post(
+          "http://m.shengshixiwen.com/apis/0.1/Commit/AddCommit.php",
+          qs.stringify(data)
+        )
+        .then(res => {
+          console.log(res);
+        });
+    },
+    postCommentChild(item) {
+      let data = {
+        uid: this.$uId,
+        bookid: this.$route.query.bookId,
+        title: "",
+        content: item.commentContent,
+        parentid: item.id
+      };
+      axios
+        .post(
+          "http://m.shengshixiwen.com/apis/0.1/Commit/AddCommit.php",
+          qs.stringify(data)
+        )
+        .then(res => {
+          console.log(res);
+        });
+    }
   },
   components: {
     linkHead,
     nFooter
+  },
+  created() {
+    axios
+      .get(
+        "http://m.shengshixiwen.com/apis/0.1/Commit/Commit.php?bookId=229&cId=1821"
+      )
+      .then(res => {
+        let obj = res.data.data.reviewer;
+        Object.assign(obj, { replayFlag: false, commentContent: "" });
+        obj.childComment.data.forEach(item => {
+          Object.assign(item, { replayFlag: false, commentContent: "" });
+        });
+        this.reviewer = obj;
+        this.page = obj.childComment.page;
+        this.pageCount = obj.childComment.pageCount;
+        console.log(res);
+      });
   }
 };
 </script>

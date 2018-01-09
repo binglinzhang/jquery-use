@@ -7,24 +7,24 @@
 		<div class="comment-list" v-for="item in comment">
 			<div class="content comment-item">
 				<div class="user-head">
-					<img :src="item.avatar">
+					<img v-lazy="item.avatar">
 				</div>
 				<div class="comment-info">
 					<h2>
 						<span>{{item.name}}</span>
 						<!---->
-						<img :src="item.levelImg">
+						<img v-lazy="item.levelImg">
 						<i style="background-color: rgb(228, 128, 44);">{{item.label}}</i>
 						<b class="top" v-if="item.top==0">置顶</b>
 						<b class="best" v-if="item.import==0">精</b>
 					</h2>
 					<div class="text">
-						<a href="https://m.yyread.com/commentinfo/473" class="">{{item.content}}</a>
+						<router-link :to="{name:'comment_page',query:{cId:item.id}}">{{item.content}}</router-link>
 					</div>
 					<p>
 						{{item.time}} 
 						<!-- <a href="https://m.yyread.com/commentinfo/473" class="" ></a> -->
-						<router-link to="/comment_page" v-if="item.childCommentNum>2">· 查看{{item.childCommentNum}}条回复&gt;&gt;</router-link>
+						<router-link :to="{name:'comment_page',query:{bookId:bookId,cId:item.id}}" v-if="item.childCommentNum>2">· 查看{{item.childCommentNum}}条回复&gt;&gt;</router-link>
 						<a class="icon to-reply" @click="item.reflyFlag = !item.reflyFlag"></a>
 					</p>
 					<div class="comment-box reply-box" v-show="item.reflyFlag">
@@ -41,18 +41,22 @@
 				</div>
 			</div>
 		</div>
-		<div class="more" style="display: none;">
-		点击加载更多
+		<div class="more" v-if="page<pageCount">
+		    点击加载更多
 		</div>
 	</div>
 </template>
 
 <script>
+import axios from "axios";
+import qs from "qs";
 export default {
   name: "comment_tab",
   data() {
     return {
-	  loading: false,
+      loading: false,
+      page: 0,
+      pageCount: 0,
       comment: [
         {
           name: "朕知道了",
@@ -164,6 +168,27 @@ export default {
         }
       ]
     };
+  },
+  props: {
+    bookId: {
+      type: String
+    }
+  },
+  created() {
+    axios
+      .get(
+        "http://m.shengshixiwen.com/apis/0.1/Commit/CommitList.php?bookId=229"
+      )
+      .then(res => {
+        let arr = res.data.data.data;
+        this.page = res.data.data.page;
+        this.pageCount = res.data.data.pageCount;
+        arr.forEach(item => {
+          Object.assign(item, { reflyFlag: false });
+        });
+        this.comment = arr;
+        console.log(res);
+      });
   }
 };
 </script>

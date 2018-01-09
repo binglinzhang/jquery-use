@@ -12,10 +12,10 @@
           </div>
         </div>
 	  </link-head>
-      <div class="container">
-		  <recent-read v-show="activeFlag==0"></recent-read>
-		  <book-save v-show="activeFlag==1"></book-save>
-      </div>
+    <div class="container">
+      <recent-read v-show="activeFlag==0"></recent-read>
+      <book-save v-show="activeFlag==1"></book-save>
+    </div>
 	  <n-footer></n-footer>
     </div>  
 </template>
@@ -23,20 +23,20 @@
 <script>
 import linkHead from "./link_header.vue";
 import nFooter from "./nfooter";
-import recentRead from './recent_reading.vue'
-import bookSave from './book_save.vue'
+import recentRead from "./recent_reading.vue";
+import bookSave from "./book_save.vue";
 export default {
   name: "bookshelf",
   data() {
     return {
-		activeFlag:0
-	};
+      activeFlag: 0
+    };
   },
   components: {
-	linkHead,
-	nFooter,
-	recentRead,
-	bookSave
+    linkHead,
+    nFooter,
+    recentRead,
+    bookSave
   }
 };
 </script>

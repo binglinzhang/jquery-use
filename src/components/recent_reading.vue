@@ -35,44 +35,44 @@ export default {
   name: "recent_reading",
   data() {
     return {
-      isLoading:false,
-      manageFlag:false,
+      isLoading: false,
+      manageFlag: false,
       readList: [
         {
           name: "爱情不走心",
           img: "/static/book_id.jpg",
-          readCord:"第一章 一首简单的小情歌",
-          updateCord:"第八章",
+          readCord: "第一章 一首简单的小情歌",
+          updateCord: "第八章",
           bookId: 123
         },
         {
           name: "爱情不走心",
           img: "/static/book_id.jpg",
-          readCord:"第一章 一首简单的小情歌",
-          updateCord:"第八章",
+          readCord: "第一章 一首简单的小情歌",
+          updateCord: "第八章",
           bookId: 123
         },
         {
           name: "爱情不走心",
           img: "/static/book_id.jpg",
-          readCord:"第一章 一首简单的小情歌",
-          updateCord:"第八章",
+          readCord: "第一章 一首简单的小情歌",
+          updateCord: "第八章",
           bookId: 123
         },
         {
           name: "爱情不走心",
           img: "/static/book_id.jpg",
-          readCord:"第一章 一首简单的小情歌",
-          updateCord:"第八章",
+          readCord: "第一章 一首简单的小情歌",
+          updateCord: "第八章",
           bookId: 123
         },
         {
           name: "爱情不走心",
           img: "/static/book_id.jpg",
-          readCord:"第一章 一首简单的小情歌",
-          updateCord:"第八章",
+          readCord: "第一章 一首简单的小情歌",
+          updateCord: "第八章",
           bookId: 123
-        }        
+        }
       ]
     };
   }
@@ -80,8 +80,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.container .content{
-    position: relative;
+.container .content {
+  position: relative;
 }
 .recent-reading .toolbar {
   height: 0.44rem;

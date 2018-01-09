@@ -23,21 +23,21 @@ export default {
 </script>
 
 <style lang="less" scoped>
-header .logo{
+header .logo {
   float: left;
   width: 1.6rem;
   margin-top: 0.12rem;
   margin-left: 0.2rem;
 }
-header .logo img{
+header .logo img {
   width: 1.6rem;
 }
-header .search{
+header .search {
   float: left;
   margin-top: 0.15rem;
   margin-left: 0.3rem;
 }
-header .search .sear-btn{
+header .search .sear-btn {
   display: table-cell;
   height: 0.6rem;
   background-color: #f7f7f7;
@@ -51,13 +51,13 @@ header .search .sear-btn{
   background-size: 0.3rem;
   background-position: 0.2rem 0.15rem;
 }
-header .sign{
+header .sign {
   float: right;
   margin-right: 0.2rem;
   line-height: 0.9rem;
   font-size: 0.26rem;
 }
-header .sign .to-sign{
+header .sign .to-sign {
   color: #ff6060;
 }
 </style>

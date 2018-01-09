@@ -5,70 +5,69 @@
             </div>
 			<transition name="slideTopToBottom">
 				<div class="read-content-header" v-show="menuSetFlag">
-					<i class="iconfont icon-i-left" style="color:white;font-size:18px;" @click="$router.go(-1)"></i>
+				<i class="iconfont icon-i-left" style="color:white;font-size:18px;" @click="$router.go(-1)"></i>
 				</div>
 			</transition>
 			<transition name="slideRightToLeft">
 				<div class="read-join-shelf" v-show="menuSetFlag" @click="collectIt">
-					<span>已在书架</span>
+				<span>已在书架</span>
 				</div>
 			</transition>
-
-            <div class="read-content-content" @click="menuSetFlag=!menuSetFlag" :style="{fontSize:fontSize+'px'}">
-                <h4 class="skin-default">{{chapter.bookname}}</h4>
-                <div class="content-list">
-                    <h3>{{chapter.title}}</h3>
-                    <div v-html="chapter.cpContent">
-                    </div>
-                </div>
-                <button class="nextChapter">加载下一章</button>
-            </div>
-            <div class="read-content-set" v-show="contentSetFlag">
-                <ul class="read-set-bg-list">
-                    <li class="read-set-bg-item"><span class="skin-default" :class="{active:activeSkin=='skin-default'}" @click="activeSkin='skin-default'"><i class="iconfont icon-right" style="color:red;font-size:18px"></i></span></li>
-                    <li class="read-set-bg-item"><span class="skin-blue" :class="{active:activeSkin=='skin-blue'}" @click="activeSkin='skin-blue'"><i class="iconfont icon-right" style="color:red;font-size:18px"></i></span></li>
-                    <li class="read-set-bg-item"><span class="skin-green" :class="{active:activeSkin=='skin-green'}" @click="activeSkin='skin-green'"><i class="iconfont icon-right" style="color:red;font-size:18px"></i></span></li>
-                    <li class="read-set-bg-item"><span class="skin-pink" :class="{active:activeSkin=='skin-pink'}" @click="activeSkin='skin-pink'"><i class="iconfont icon-right" style="color:red;font-size:18px"></i></span></li>
-                    <li class="read-set-bg-item"><span class="skin-dark" :class="{active:activeSkin=='skin-dark'}" @click="activeSkin='skin-dark'"><i class="iconfont icon-right" style="color:red;font-size:18px"></i></span></li>
-                    <li class="read-set-bg-item"><span class="skin-light" :class="{active:activeSkin=='skin-light'}" @click="activeSkin='skin-light'"><i class="iconfont icon-right" style="color:red;font-size:18px"></i></span></li>
-                </ul>
-                <div class="read-set-switch">
-                    <div class="read-set-switch-item" @click="fontSize==12?'':fontSize--">
-                        <i class="iconfont icon-zitijianxiao01" style="font-size:20px"></i>
-                    </div>
-                    <div class="read-set-switch-item" @click="fontSize++">
-                    	<i class="iconfont icon-zitijiada01" style="font-size:20px"></i>
-                    </div>
-                </div>
-            </div>
+			<div class="read-content-content" @click="menuSetFlag=!menuSetFlag" :style="{fontSize:fontSize+'px'}">
+				<h4 class="skin-default">{{chapter.bookname}}</h4>
+				<div class="content-list">
+					<h3>{{chapter.chapter_name}}</h3>
+					<div v-html="chapter.content">
+					</div>
+				</div>
+				<button class="nextChapter" @click="$route.replace({name:'chapter',query:{bookId:$route.bookId,chapterId:nextChapter}})">加载下一章</button>
+			</div>
+			<div class="read-content-set" v-show="contentSetFlag">
+				<ul class="read-set-bg-list">
+					<li class="read-set-bg-item"><span class="skin-default" :class="{active:activeSkin=='skin-default'}" @click="activeSkin='skin-default'"><i class="iconfont icon-right" style="color:red;font-size:18px"></i></span></li>
+					<li class="read-set-bg-item"><span class="skin-blue" :class="{active:activeSkin=='skin-blue'}" @click="activeSkin='skin-blue'"><i class="iconfont icon-right" style="color:red;font-size:18px"></i></span></li>
+					<li class="read-set-bg-item"><span class="skin-green" :class="{active:activeSkin=='skin-green'}" @click="activeSkin='skin-green'"><i class="iconfont icon-right" style="color:red;font-size:18px"></i></span></li>
+					<li class="read-set-bg-item"><span class="skin-pink" :class="{active:activeSkin=='skin-pink'}" @click="activeSkin='skin-pink'"><i class="iconfont icon-right" style="color:red;font-size:18px"></i></span></li>
+					<li class="read-set-bg-item"><span class="skin-dark" :class="{active:activeSkin=='skin-dark'}" @click="activeSkin='skin-dark'"><i class="iconfont icon-right" style="color:red;font-size:18px"></i></span></li>
+					<li class="read-set-bg-item"><span class="skin-light" :class="{active:activeSkin=='skin-light'}" @click="activeSkin='skin-light'"><i class="iconfont icon-right" style="color:red;font-size:18px"></i></span></li>
+				</ul>
+				<div class="read-set-switch">
+					<div class="read-set-switch-item" @click="fontSize==12?'':fontSize--">
+						<i class="iconfont icon-zitijianxiao01" style="font-size:20px"></i>
+					</div>
+					<div class="read-set-switch-item" @click="fontSize++">
+						<i class="iconfont icon-zitijiada01" style="font-size:20px"></i>
+					</div>
+				</div>
+			</div>
 			<transition name="slideBottomToTop">
 				<div class="read-content-footer" v-show="menuSetFlag">
-					<ul class="footer-tab">
-						<li class="footer-tab-item" @click="$router.push('/menu')">
-							<div class="footer-tab-icon">
-								<i class="iconfont icon-Service-catalog" style="font-size:18px"></i>
-							</div>
-							<p class="footer-tab-label">
-								目录
-							</p>
-						</li>
-						<li class="footer-tab-item" @click="nightFlag=!nightFlag">
-							<div class="footer-tab-icon">
-								<i class="iconfont icon-yueliang" style="font-size:18px"></i> 
-							</div>
-							<p class="footer-tab-label">
-								夜间模式
-							</p>
-						</li>
-						<li class="footer-tab-item" @click="contentSetFlag=!contentSetFlag">
-							<div class="footer-tab-icon">
-								<i class="iconfont icon-icon-yxj-font" style="font-size:18px"></i>
-							</div>
-							<p class="footer-tab-label">
-								设置
-							</p>
-						</li>
-					</ul>
+				<ul class="footer-tab">
+					<li class="footer-tab-item" @click="$router.push('/menu')">
+					<div class="footer-tab-icon">
+						<i class="iconfont icon-Service-catalog" style="font-size:18px"></i>
+					</div>
+					<p class="footer-tab-label">
+						目录
+					</p>
+					</li>
+					<li class="footer-tab-item" @click="nightFlag=!nightFlag">
+					<div class="footer-tab-icon">
+						<i class="iconfont icon-yueliang" style="font-size:18px"></i>
+					</div>
+					<p class="footer-tab-label">
+						夜间模式
+					</p>
+					</li>
+					<li class="footer-tab-item" @click="contentSetFlag=!contentSetFlag">
+					<div class="footer-tab-icon">
+						<i class="iconfont icon-icon-yxj-font" style="font-size:18px"></i>
+					</div>
+					<p class="footer-tab-label">
+						设置
+					</p>
+					</li>
+				</ul>
 				</div>
 			</transition>
 
@@ -77,6 +76,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "chapter",
   data() {
@@ -84,9 +84,9 @@ export default {
       menuSetFlag: false,
       contentSetFlag: false,
       nightFlag: false,
-	  activeSkin: "skin-default",
-	  fontSize:14,
-	  iscollected:false,
+      activeSkin: "skin-default",
+      fontSize: 14,
+      iscollected: false,
       chapter: {
         bookname: "天字号保镖",
         id: "212",
@@ -97,20 +97,28 @@ export default {
       }
     };
   },
-  watch:{
-	  menuSetFlag(newOne,oldOne){
-		  if(!newOne){
-			  this.contentSetFlag = false
-		  }
-	  }
+  watch: {
+    menuSetFlag(newOne, oldOne) {
+      if (!newOne) {
+        this.contentSetFlag = false;
+      }
+    }
   },
-  methods:{
-	  collectIt(){
-		  if(iscollected){
-			  return
-		  }
-
-	  }
+  methods: {
+    collectIt() {
+      if (iscollected) {
+        return;
+      }
+    }
+  },
+  created() {
+    axios
+      .get(
+        `http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterInfo.php?bookId=${this.$route.query.bookId}&chapterId=${this.$route.query.chapterId}`
+      )
+      .then(res=>{
+		  this.chapter = res.data.data;
+	  });
   }
 };
 </script>
@@ -244,11 +252,11 @@ export default {
   align-items: center;
   margin: 0 auto;
 }
-.read-set-bg-item span i{
-	display: none;
+.read-set-bg-item span i {
+  display: none;
 }
-.read-set-bg-item span.active i{
-	display: inherit;
+.read-set-bg-item span.active i {
+  display: inherit;
 }
 .read-content-set .read-set-switch {
   padding: 10px;

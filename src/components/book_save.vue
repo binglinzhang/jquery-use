@@ -25,8 +25,8 @@ export default {
   name: "bookshelf",
   data() {
     return {
-      isLoading:false,
-      manageFlag:false,
+      isLoading: false,
+      manageFlag: false,
       saveList: [
         {
           name: "爱情不走心",

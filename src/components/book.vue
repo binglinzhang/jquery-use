@@ -13,7 +13,7 @@
             <h2>字数：{{book.wordNum}} 字</h2>
             <div class="read-btn">
               <div class="btn">
-                <a class="" @click="$router.push({name:'chapter',params:{id:$route.params.id}})">立即阅读</a>
+                <a class="" @click="$router.push({name:'chapter',query:{bookId:$route.query.bookId}})">立即阅读</a>
               </div>
               <div class="btn">
                 <a class="shelf">加入书架</a>
@@ -27,25 +27,25 @@
           <a @click="showAllFlag=!showAllFlag">{{showAllFlag?'收起':'展开'}}</a>
         </div>
         <div class="content new-chapter">
-          <a @click="$router.push({name:'chapter',params:{id:$route.params.id}})" class="">
+          <a @click="$router.push({name:'chapter',query:{bookId:$route.query.bookId}})" class="">
             <span>最新章节：</span>
             <span>{{book.last_chapter_name}}</span>
             <i v-if="book.isVip==0">vip</i>
           </a>
         </div>
         <div class="content catalog">
-          <a @click="$router.push({name:'menu',params:{id:$route.params.id}})">查看目录：共{{book.allChapter}}章
+          <a @click="$router.push({name:'menu',query:{bookId:$route.query.bookId}})">查看目录：共{{book.allChapter}}章
             <span>{{book.status | statusFilter}} &gt;</span>
           </a>
         </div>
     
       </div>
 
-      <funs-rank :bookId="$route.params.id"></funs-rank> 
+      <funs-rank :bookId="$route.query.bookId"></funs-rank> 
 
-      <reward :bookId="$route.params.id"></reward>
+      <reward :bookId="$route.query.bookId"></reward>
 
-      <comment :bookId="$route.params.id"></comment>
+      <comment :bookId="$route.query.bookId"></comment>
 
       <n-footer></n-footer>
       <!---->
@@ -53,26 +53,27 @@
 </template>
 
 <script>
-import linkHead from "./link_header.vue"
-import nFooter from "./nfooter.vue"
-import funsRank from './funsRank.vue'
-import reward from './reward.vue'
-import comment from './comment.vue'
-import axios from 'axios'
+import linkHead from "./link_header.vue";
+import nFooter from "./nfooter.vue";
+import funsRank from "./funsRank.vue";
+import reward from "./reward.vue";
+import comment from "./comment.vue";
+import axios from "axios";
 export default {
   name: "book",
   data() {
     return {
-      showAllFlag:false,
+      showAllFlag: false,
       book: {}
     };
   },
-  created(){
-    var id = this.$route.params.id;
-    axios.get(`http://m.shengshixiwen.com/apis/0.1/BookInfo.php?bookId=${id}`).then(res=>{
-      this.book = res.data.data;
-      
-    })
+  created() {
+    var bookId = this.$route.query.bookId;
+    axios
+      .get(`http://m.shengshixiwen.com/apis/0.1/BookInfo.php?bookId=${bookId}`)
+      .then(res => {
+        this.book = res.data.data;
+      });
   },
   components: {
     linkHead,
@@ -97,72 +98,72 @@ export default {
 .base-info .content .img img {
   width: 1.8rem;
   height: 2.4rem;
-  border-radius: .06rem;
-  -webkit-box-shadow: 0 0 .05rem #bfbfbf;
-          box-shadow: 0 0 .05rem #bfbfbf;
+  border-radius: 0.06rem;
+  -webkit-box-shadow: 0 0 0.05rem #bfbfbf;
+  box-shadow: 0 0 0.05rem #bfbfbf;
 }
 .base-info .content .info {
   float: left;
   width: 5rem;
-  margin-left: .3rem;
+  margin-left: 0.3rem;
   position: relative;
 }
 .base-info .content .info h2 {
-  height: .58rem;
-  font-size: .26rem;
+  height: 0.58rem;
+  font-size: 0.26rem;
 }
 .base-info .content .info h2 span {
   color: #32a1ff;
 }
 .base-info .content .info p {
-  height: .45rem;
-  font-size: .25rem;
+  height: 0.45rem;
+  font-size: 0.25rem;
   font-weight: bold;
   color: #999;
-  margin-top: .2rem;
+  margin-top: 0.2rem;
 }
 .base-info .content .info .buy-full-book {
   position: absolute;
   width: 1.3rem;
   height: 1.05rem;
-  padding-top: .25rem;
+  padding-top: 0.25rem;
   right: 0;
-  top: .2rem;
+  top: 0.2rem;
   background-color: #ff6060;
   color: #fff;
-  font-size: .24rem;
+  font-size: 0.24rem;
   border-radius: 1rem;
   text-align: center;
 }
 .base-info .content .info .share {
   position: absolute;
-  right: .2rem;
-  top: .2rem;
-  font-size: .3rem;
+  right: 0.2rem;
+  top: 0.2rem;
+  font-size: 0.3rem;
   color: #646464;
 }
 .base-info .content .ticket .text span {
-  font-size: .28rem;
+  font-size: 0.28rem;
   color: #999;
 }
 .base-info .read-btn {
-  margin-top: .15rem;
+  margin-top: 0.15rem;
   font-size: 0;
 }
 .base-info .read-btn .btn {
   display: inline-block;
-  margin-right: .5rem;
+  margin-right: 0.5rem;
 }
 .base-info .read-btn .btn a {
   display: table-cell;
   width: 1.8rem;
-  height: .46rem;
+  height: 0.46rem;
   text-align: center;
   vertical-align: middle;
-  font-size: .24rem;
+  font-size: 0.24rem;
   color: #fff;
   background-color: #ff6060;
-  border-radius: .07rem;
+  border-radius: 0.07rem;
   border: solid 0.02rem #ff6060;
 }
 .base-info .read-btn .btn .shelf {
@@ -170,30 +171,30 @@ export default {
   color: #ff6060;
 }
 .base-info .summary {
-  font-size: .28rem;
+  font-size: 0.28rem;
   color: #646464;
-  text-indent: .5rem;
-  line-height: .4rem;
+  text-indent: 0.5rem;
+  line-height: 0.4rem;
 }
 .base-info .summary a {
   color: #ff6060;
 }
 .base-info .new-chapter {
-  height: .38rem;
-  line-height: .38rem;
+  height: 0.38rem;
+  line-height: 0.38rem;
 }
 .base-info .new-chapter span:nth-child(1) {
   float: left;
   text-align: center;
   color: #5aacff;
-  font-size: .26rem;
+  font-size: 0.26rem;
 }
 .base-info .new-chapter span:nth-child(2) {
   float: left;
   max-width: 4.05rem;
-  font-size: .26rem;
+  font-size: 0.26rem;
   color: #5aacff;
-  margin-left: .05rem;
+  margin-left: 0.05rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -201,12 +202,12 @@ export default {
 .base-info .new-chapter span:nth-child(4) {
   float: right;
   width: 2rem;
-  font-size: .3rem;
+  font-size: 0.3rem;
   color: #999;
 }
 .base-info .new-chapter i {
   color: #dd4b39;
-  font-size: .24rem;
+  font-size: 0.24rem;
 }
 .base-info .catalog a {
   display: block;
@@ -217,7 +218,7 @@ export default {
 .base-info .show-box {
   position: fixed;
   width: 7.1rem;
-  padding: .2rem;
+  padding: 0.2rem;
   background-color: #fff;
   z-index: 100;
   -webkit-transition: bottom ease-in 200ms;
@@ -227,19 +228,19 @@ export default {
   text-align: center;
 }
 .base-info .show-box .option {
-  margin-top: .3rem;
+  margin-top: 0.3rem;
 }
 .base-info .show-box span {
   display: inline-block;
-  font-size: .28rem;
-  padding: .15rem .33rem;
+  font-size: 0.28rem;
+  padding: 0.15rem 0.33rem;
   background-color: #b3b3b3;
   color: #fff;
-  border-radius: .05rem;
-  margin: 0 .14rem;
+  border-radius: 0.05rem;
+  margin: 0 0.14rem;
 }
 .base-info .show-box p {
-  margin-top: .4rem;
+  margin-top: 0.4rem;
   color: #999;
   text-align: right;
 }
@@ -247,27 +248,27 @@ export default {
   color: #ff6060;
 }
 .base-info .show-box p a {
-  color: #58B7FF;
+  color: #58b7ff;
 }
 .base-info .show-box .btn {
   text-align: center;
-  margin-top: .3rem;
+  margin-top: 0.3rem;
 }
 .base-info .show-box .btn a {
   display: inline-block;
-  font-size: .3rem;
-  padding: .2rem 1rem;
+  font-size: 0.3rem;
+  padding: 0.2rem 1rem;
   background-color: #ff6060;
   color: #fff;
 }
 .base-info .show-box .no-ticket {
-  margin-top: .4rem;
+  margin-top: 0.4rem;
   text-align: center;
-  font-size: .4rem;
+  font-size: 0.4rem;
 }
 .base-info .share-box {
   width: 7rem;
-  left: .25rem;
+  left: 0.25rem;
   position: fixed;
   z-index: 100;
   -webkit-transition: bottom ease-in 200ms;
@@ -278,9 +279,9 @@ export default {
 }
 .base-info .share-box .icon-box {
   background-color: #fff;
-  margin-bottom: .2rem;
-  border-radius: .1rem;
-  padding: .25rem;
+  margin-bottom: 0.2rem;
+  border-radius: 0.1rem;
+  padding: 0.25rem;
 }
 .base-info .share-box .icon-box .icons {
   height: 1.4rem;
@@ -288,10 +289,8 @@ export default {
 .base-info .share-box .icon-box .icons a {
   float: left;
   width: 1rem;
-  margin: .2rem .15rem;
-  font-size: .24rem;
+  margin: 0.2rem 0.15rem;
+  font-size: 0.24rem;
   text-align: center;
 }
-
-
 </style>

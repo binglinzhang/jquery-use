@@ -5,78 +5,34 @@
         <h1>
           <span>筛选条件</span>
         </h1>
-        <div class="items" style="max-height: 7rem;">
-          <div class="item">
-            <span>分类：</span>
+        <div class="items" style="max-height: 7.4rem;">
+          <div class="item" v-for="(item,index) in configArr">
+            <span>{{item.title}}：</span>
             <p>
-              <a :class="{active:activeFlag.label==-1}" @click="activeFlag.label=-1">全部</a>
-              <a :class="{active:activeFlag.label=='热血青春'}" @click="activeFlag.label='热血青春'">热血青春</a>
-              <a :class="{active:activeFlag.label=='现代都市'}" @click="activeFlag.label='现代都市'">现代都市</a>
-              <a :class="{active:activeFlag.label=='悬疑灵异'}" @click="activeFlag.label='悬疑灵异'">悬疑灵异</a>
-              <a :class="{active:activeFlag.label=='军事历史'}" @click="activeFlag.label='军事历史'">军事历史</a>
-              <a :class="{active:activeFlag.label=='玄幻奇幻'}" @click="activeFlag.label='玄幻奇幻'">玄幻奇幻</a>
-			  <a :class="{active:activeFlag.label=='武侠仙侠'}" @click="activeFlag.label='武侠仙侠'">武侠仙侠</a>
-              <a :class="{active:activeFlag.label=='网游竞技'}" @click="activeFlag.label='网游竞技'">网游竞技</a>
-			  <a :class="{active:activeFlag.label=='热血言情'}" @click="activeFlag.label='热血言情'">热血言情</a>
-			  <a :class="{active:activeFlag.label=='古代情缘'}" @click="activeFlag.label='古代情缘'">古代情缘</a>
-			  <a :class="{active:activeFlag.label=='现代爱情'}" @click="activeFlag.label='现代爱情'">现代爱情</a>
-			  <a :class="{active:activeFlag.label=='幻想世界'}" @click="activeFlag.label='幻想世界'">幻想世界</a>
+              <a :class="{active:activeFlag[index]==_index}" @click="labelSelect(index,_index)" v-for="(_item,_index) in item.list">{{_item}}</a>
             </p>
             <!---->
-          </div>
-          <div class="item">
-            <span>出版：</span>
-            <p>
-			  <a :class="{active:activeFlag.publish==-1}" @click="activeFlag.publish=-1">不限</a>
-              <a :class="{active:activeFlag.publish==0}" @click="activeFlag.publish=0">已出版</a>
-              <a :class="{active:activeFlag.publish==1}" @click="activeFlag.publish=1">未出版</a>
-            </p>
-          </div>
-          <div class="item">
-            <span>完结：</span>
-            <p>
-              <a :class="{active:activeFlag.status==-1}" @click="activeFlag.status=-1">不限</a>
-              <a :class="{active:activeFlag.status==0}" @click="activeFlag.status=0">未完结</a>
-              <a :class="{active:activeFlag.status==1}" @click="activeFlag.status=1">已完结</a>
-            </p>
-          </div>
-          <div class="item">
-            <span>免费：</span>
-            <p>
-              <a :class="{active:activeFlag.isVip==-1}" @click="activeFlag.isVip=-1">不限</a>
-              <a :class="{active:activeFlag.isVip==1}" @click="activeFlag.isVip=1">免费作品</a>
-              <a :class="{active:activeFlag.isVip==0}" @click="activeFlag.isVip=0">收费作品</a>
-            </p>
-          </div>
-          <div class="item">
-            <span>排序时间：</span>
-            <p>
-              <a :class="{active:sort=='updateTime'}" @click="sort='updateTime'">更新时间</a>
-              <a :class="{active:sort=='clickNum'}" @click="sort='clickNum'">点击量</a>
-              <a :class="{active:sort=='orderNum'}" @click="sort='orderNum'">收藏量</a>
-			  <a :class="{active:sort=='wordNum'}" @click="sort='wordNum'">字数</a>
-            </p>
           </div>
         </div>
       </div>
       <div class="container">
-        <div class="no-notes" v-show="activeBooks.length<1">亲，没有相关书籍哦！— ^_^</div>
-        <div class="content" v-for="item in activeBooks">
-          <a href="https://m.yyread.com/book/790" class="">
+        <div class="no-notes" v-show="books.length<1">亲，没有相关书籍哦！— ^_^</div>
+        <div class="content" v-for="item in books">
+          <router-link :to="{name:'book',query:{bookId:item.bookId}}">
             <div class="img">
-              <img :src="item.img">
+              <img v-lazy="item.img">
             </div>
             <div class="info">
               <h2>{{item.name}}</h2>
               <p>{{item.author}} | {{item.label}} | {{item.status | statusFilter}}</p>
               <p>
-                <span class="span-girl">最新&nbsp;</span>{{item.newArticle}}&nbsp;
+                <span class="span-girl">最近更新&nbsp;</span>{{item.update_time}}&nbsp;
                 <i v-show="item.isVip==0"></i>
               </p>
             </div>
-          </a>
+          </router-link>
         </div>
-        <div class="more">显示更多&gt;&gt;</div>
+        <div class="more" v-show="page<pageCount">加载更多&gt;&gt;</div>
       </div>
       <n-footer></n-footer>
     </div>
@@ -85,144 +41,95 @@
 <script>
 import linkHead from "./link_header.vue";
 import nFooter from "./nfooter.vue";
+import axios from "axios";
 export default {
   data() {
     return {
-      activeFlag: {
-        label: -1,
-        publish: -1,
-        status: -1,
-        isVip: -1
-      },
-      sort: "updateTime",
-      books: [
+      configArr: [
         {
-          name: "爱情不走心1",
-          img: "/static/book_id.jpg",
-          author: "南风向晚",
-          status: 0,  //更新状态
-          label: "都市情缘",
-          wordNum: 7508326,
-          newArticle: "第639章 最美不过遇见你19",
-          isVip: 0,
-          publish: 0,   //出版状态
-          updateTime: 1515037997832,
-          clickNum: 123123,
-          orderNum: 123123,
-          wordNum: 123123,
-          bookId: 123,
-          isVip: 0
+          title: "分类",
+          list: [
+            "全部",
+            "热血青春",
+            "现代都市",
+            "悬疑灵异",
+            "军事历史",
+            "玄幻奇幻",
+            "武侠仙侠",
+            "网游竞技",
+            "热血言情",
+            "古代情缘",
+            "现代爱情",
+            "幻想世界"
+          ]
         },
         {
-          name: "爱情不走心2",
-          img: "/static/book_id.jpg",
-          author: "南风向晚",
-          status: 0,
-          label: "都市情缘",
-          wordNum: 7508326,
-          newArticle: "第639章 最美不过遇见你19",
-          isVip: 0,
-          publish: 0,
-          updateTime: 1515037997833,
-          clickNum: 123123,
-          orderNum: 123123,
-          wordNum: 123123,
-          bookId: 123,
-          isVip: 0
+          title: "完结",
+          list: ["不限", "未完结", "已完结"]
         },
         {
-          name: "爱情不走心4",
-          img: "/static/book_id.jpg",
-          author: "南风向晚",
-          status: 0,
-          label: "古代情缘",
-          wordNum: 7508326,
-          newArticle: "第639章 最美不过遇见你19",
-          isVip: 0,
-          publish: 0,
-          updateTime: 1515037997999,
-          clickNum: 123123,
-          orderNum: 123123,
-          wordNum: 123123,
-          bookId: 123,
-          isVip: 0
+          title: "免费",
+          list: ["不限", "免费作品", "收费作品"]
         },
         {
-          name: "爱情不走心6",
-          img: "/static/book_id.jpg",
-          author: "南风向晚",
-          status: 0,
-          label: "都市情缘",
-          wordNum: 7508326,
-          newArticle: "第639章 最美不过遇见你19",
-          isVip: 0,
-          publish: 0,
-          updateTime: 1515037997835,
-          clickNum: 123123,
-          orderNum: 123123,
-          wordNum: 123123,
-          bookId: 123,
-          isVip: 0
+          title: "字数",
+          list: ["不限", "30万以下", "30-50万", "50-100万", "100万以上"]
         },
         {
-          name: "爱情不走心",
-          img: "/static/book_id.jpg",
-          author: "南风向晚",
-          status: 0,
-          label: "都市情缘",
-          wordNum: 7508326,
-          newArticle: "第639章 最美不过遇见你19",
-          isVip: 0,
-          publish: 0,
-          updateTime: 1515037997836,
-          clickNum: 123123,
-          orderNum: 123123,
-          wordNum: 123123,
-          bookId: 123,
-          isVip: 0
-        },
-        {
-          name: "爱情不走心",
-          img: "/static/book_id.jpg",
-          author: "南风向晚",
-          status: 0,
-          label: "都市情缘",
-          wordNum: 7508326,
-          newArticle: "第639章 最美不过遇见你19",
-          isVip: 0,
-          publish: 0,
-          updateTime: 1515037997837,
-          clickNum: 123123,
-          orderNum: 123123,
-          wordNum: 123123,
-          bookId: 123,
-          isVip: 0
+          title: "更新",
+          list: ["不限", "三日内", "七日内", "半月内", "1一月内"]
         }
-      ]
+      ],
+      page: 0,
+      pageCount: 0,
+      activeFlag: [0, 0, 0, 0, 0, 0],
+      selectObj: {
+        label: [0, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1013, 1014, 1015],
+        status: [0, 1, 2],
+        isVip: [0, 2, 1],
+        wordNum: [0, 1, 2, 3, 4],
+        update: [0, 1, 2, 3, 4]
+      },
+      books: []
     };
   },
-  computed: {
-    activeBooks() {
-      let temp;
-      temp = this.books.filter(item => {
-        let isSuit = true;
-        for (let i in this.activeFlag) {
-          if (this.activeFlag[i] != -1 && this.activeFlag[i] != item[i]) {
-            isSuit = false;
-            break;
-          }
-        }
-        return isSuit;
+  methods: {
+    labelSelect(index, childIndex) {
+      this.activeFlag[index] = childIndex;
+      let dataObj = {
+        cate: this.selectObj.label[this.activeFlag[0]],
+        status: this.selectObj.status[this.activeFlag[1]],
+        vip: this.selectObj.isVip[this.activeFlag[2]],
+        update: this.selectObj.update[this.activeFlag[3]],
+        words: this.selectObj.wordNum[this.activeFlag[4]]
+      };
+      let urlArgArr = [];
+      Object.keys(dataObj).forEach(item => {
+        urlArgArr.push(`${item}=${dataObj[item]}`);
       });
-      temp.sort((a, b) => {
-        return a[this.sort] - b[this.sort];
-      });
-      return temp;
+      axios
+        .get(
+          `http://m.shengshixiwen.com/apis/0.1/Library.php?${urlArgArr.join(
+            "&"
+          )}`
+        )
+        .then(res => {
+          this.books = res.data.data.books;
+          this.page = res.data.data.page;
+          this.pageCount = res.data.data.pageCount;
+        });
     }
   },
   components: {
     nFooter,
     linkHead
+  },
+  created() {
+    axios.get("http://m.shengshixiwen.com/apis/0.1/Library.php").then(res => {
+      this.books = res.data.data.books;
+      this.page = res.data.data.page;
+      this.pageCount = res.data.data.pageCount;
+    });
   }
 };
 </script>

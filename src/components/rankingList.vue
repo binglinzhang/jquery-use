@@ -16,7 +16,7 @@
 		</div>
 		<div class="content">
 			<dl class="top" v-for="(item,index) in activeRank">
-				<router-link :to="{name:'book',params:{id:item.bookId}}">
+				<router-link :to="{name:'book',query:{bookId:item.bookId}}">
 					<span :class="{hot:index<3}">{{index<3?"":index+1}}</span>
 					<dt>{{item.name}}</dt>
 					<dd v-if="false">{{item.num}}</dd>
@@ -27,48 +27,15 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
   name: "rankingList",
   data() {
     return {
       activeFlag: 0,
-      recommendRank: [
-        { name: "哈哈:爱情不走心", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心", num: 98562, bookId: 123 }
-      ],
-      orderRank: [
-        { name: "哈哈:爱情不走心2", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心2", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心2", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心2", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心2", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心2", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心2", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心2", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心2", num: 98562, bookId: 123 },
-        { name: "哈哈:爱情不走心2", num: 98562, bookId: 123 }
-      ],
-      clickRank: [
-        { name: "哈哈:爱情不走心3", bookId: 123 },
-        { name: "哈哈:爱情不走心3", bookId: 123 },
-        { name: "哈哈:爱情不走心3", bookId: 123 },
-        { name: "哈哈:爱情不走心3", bookId: 123 },
-        { name: "哈哈:爱情不走心3", bookId: 123 },
-        { name: "哈哈:爱情不走心3", bookId: 123 },
-        { name: "哈哈:爱情不走心3", bookId: 123 },
-        { name: "哈哈:爱情不走心3", bookId: 123 },
-        { name: "哈哈:爱情不走心3", bookId: 123 },
-        { name: "哈哈:爱情不走心3", bookId: 123 }
-      ]
+      recommendRank: [],
+      orderRank: [],
+      clickRank: []
     };
   },
   computed: {
@@ -79,16 +46,26 @@ export default {
     }
   },
   methods() {},
-  created(){
-    axios.get('http://m.shengshixiwen.com/apis/0.1/TopList.php?type=recommend_month').then(res=>{
-      this.recommendRank = res.data.data.bookinfo;
-    });
-    axios.get('http://m.shengshixiwen.com/apis/0.1/TopList.php?type=subscribe_month').then(res=>{
-      this.orderRank = res.data.data.bookinfo;
-    });
-    axios.get('http://m.shengshixiwen.com/apis/0.1/TopList.php?type=click_month').then(res=>{
-      this.clickRank = res.data.data.bookinfo;
-    });
+  created() {
+    axios
+      .get(
+        "http://m.shengshixiwen.com/apis/0.1/TopList.php?type=recommend_month"
+      )
+      .then(res => {
+        this.recommendRank = res.data.data.bookinfo;
+      });
+    axios
+      .get(
+        "http://m.shengshixiwen.com/apis/0.1/TopList.php?type=subscribe_month"
+      )
+      .then(res => {
+        this.orderRank = res.data.data.bookinfo;
+      });
+    axios
+      .get("http://m.shengshixiwen.com/apis/0.1/TopList.php?type=click_month")
+      .then(res => {
+        this.clickRank = res.data.data.bookinfo;
+      });
   }
 };
 </script>
@@ -155,7 +132,7 @@ export default {
 }
 .ranking-list dl .hot {
   height: 0.5rem;
-  background: url('../assets/hot.png') no-repeat center center;
+  background: url("../assets/hot.png") no-repeat center center;
   background-size: 0.3rem 0.3rem;
   margin-top: -0.07rem;
 }
