@@ -8,7 +8,9 @@ import VueLazyload from 'vue-lazyload'
 import VModal from 'vue-js-modal'
 
 import './assets/rem.js'
+import '!style-loader!css-loader!less-loader!./common/app.less'
 import '!style-loader!css-loader!less-loader!./common/common.less'
+
 import './common/vue_transition.css'
 import './assets/font-awesome.min.css'
 import 'swiper/dist/css/swiper.css'

@@ -65,6 +65,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url('../common/color.less');
 .comment {
   margin-top: 0.4rem;
 }
@@ -78,6 +79,6 @@ export default {
   color: #999;
 }
 .comment h1 .active {
-  color: #ff6060;
+  color: @mainColor;
 }
 </style>
