@@ -6,11 +6,9 @@ import router from './router'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import VueLazyload from 'vue-lazyload'
 import VModal from 'vue-js-modal'
- 
-
 
 import './assets/rem.js'
-import './common/common.css'
+import '!style-loader!css-loader!less-loader!./common/common.less'
 import './common/vue_transition.css'
 import './assets/font-awesome.min.css'
 import 'swiper/dist/css/swiper.css'
@@ -38,6 +36,6 @@ Vue.prototype.console = console;
 Vue.prototype.$uId = 469277;
 
 router.beforeEach((to,from,next)=>{
-  console.log(to,from);
+//   console.log(to,from);
   next();
 })

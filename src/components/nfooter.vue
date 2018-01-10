@@ -1,23 +1,25 @@
 <template>
-    <footer>
-        <div class="nav">
-          <a href="https://m.yyread.com/" class="router-link-exact-active router-link-active">首页</a>
-          <a href="https://m.yyread.com/library" class="">书库</a>
-          <a href="https://m.yyread.com/search" class="">搜索</a>
-          <a href="https://trade.yyread.com/v1.0/index">充值</a>
-        </div>
-        <div class="context">
-          <img src="../assets/rcode.jpg">
-          <p>
-            <span class="qq">
-              <i class="fa fa-qq"></i>&nbsp;&nbsp;848696001</span>
-            <span class="tel">
-              <i class="fa fa-phone"></i>&nbsp;&nbsp;17682489611</span>
-          </p>
-          <p>京ICP备16043940号-3</p>
-          <p>北京太和凯旋信息技术有限公司</p>
-        </div>
-    </footer>
+	<lazy-component>
+		<footer>
+			<div class="nav">
+			<a href="https://m.yyread.com/" class="router-link-exact-active router-link-active">首页</a>
+			<a href="https://m.yyread.com/library" class="">书库</a>
+			<a href="https://m.yyread.com/search" class="">搜索</a>
+			<a href="https://trade.yyread.com/v1.0/index">充值</a>
+			</div>
+			<div class="context">
+			<img src="../assets/rcode.jpg">
+			<p>
+				<span class="qq">
+				<i class="fa fa-qq"></i>&nbsp;&nbsp;848696001</span>
+				<span class="tel">
+				<i class="fa fa-phone"></i>&nbsp;&nbsp;17682489611</span>
+			</p>
+			<p>京ICP备16043940号-3</p>
+			<p>北京太和凯旋信息技术有限公司</p>
+			</div>
+		</footer>
+	</lazy-component>
 </template>
 
 <script>
@@ -33,6 +35,7 @@ export default {
 
 
 <style lang="less" scoped>
+@import url('../common/color.less');
 footer {
   margin-top: .5rem;
   background-color: #1b222c;
@@ -86,7 +89,7 @@ footer .context p span {
 }
 footer .context p .qq {
         width: 2rem;
-        background-color: #ff6060;
+        background-color: @mainColor;
 }
 footer .context p .tel {
         width: 2.2rem;

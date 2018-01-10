@@ -20,7 +20,7 @@
           </div>
         </div>
         <v-dialog width="80%"/>
-      </div>  
+      </div>
 </template>
 
 <script>
@@ -87,6 +87,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url('../common/color.less');
 .reward {
   overflow: hidden;
   margin-bottom: 0.4rem;
@@ -174,7 +175,7 @@ export default {
 
 .self_up {
   width: 7.1rem;
-  color: #ff575a;
+  color: @mainColor;
   margin-left: 0.24rem;
   vertical-align: bottom;
   position: relative;
@@ -185,12 +186,12 @@ export default {
   width: 0.1rem;
   height: 0.1rem;
   border-radius: 50%;
-  background-color: #ff575a;
+  background-color: @mainColor;
 }
 
 .self_up span:nth-child(2) {
   font-size: 0.26rem;
-  color: #ff6060;
+  color: @mainColor;
 }
 
 .cnt_btn {
@@ -204,14 +205,14 @@ export default {
   border: none;
   border-radius: 0.08rem;
   font-size: 0.28rem;
-  background-color: #ff575c;
+  background-color: @mainColor;
   color: #fff;
   -webkit-box-shadow: 0 0.12rem 0.4rem rgba(255, 87, 91, 0.31);
   box-shadow: 0 0.12rem 0.4rem rgba(255, 87, 91, 0.31);
 }
 
 .container.reward .nv_span {
-  border-left: solid 0.06rem #ff6060;
-  color: #ff6060;
+  border-left: solid 0.06rem @mainColor;
+  color: @mainColor;
 }
 </style>

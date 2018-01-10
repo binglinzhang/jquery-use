@@ -80,6 +80,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url('../common/color.less');
 .container .content {
   position: relative;
 }
@@ -106,8 +107,8 @@ export default {
   text-align: center;
   vertical-align: middle;
   font-size: 0.26rem;
-  color: #ff6060;
-  border: solid 0.02rem #ff6060;
+  color: @mainColor;
+  border: solid 0.02rem @mainColor;
   border-radius: 0.05rem;
 }
 
@@ -147,7 +148,7 @@ export default {
   top: 0.4rem;
   text-align: center;
   font-size: 0.24rem;
-  color: #ff6060;
+  color: @mainColor;
 }
 
 .recent-reading .content span i {

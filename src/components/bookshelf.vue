@@ -17,7 +17,7 @@
       <book-save v-show="activeFlag==1"></book-save>
     </div>
 	  <n-footer></n-footer>
-    </div>  
+    </div>
 </template>
 
 <script>
@@ -42,5 +42,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
+@import url('../common/color.less');
 </style>

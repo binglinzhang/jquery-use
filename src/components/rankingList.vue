@@ -71,6 +71,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url('../common/color.less');
 .ranking-list .button {
   height: 0.52rem;
   border-bottom: solid 0.02rem #f1f1f1;
@@ -128,7 +129,7 @@ export default {
 }
 .ranking-list dl.top dt,
 .ranking-list dl.top dd {
-  color: #ed6460;
+  color: @mainColor;
 }
 .ranking-list dl .hot {
   height: 0.5rem;
@@ -144,7 +145,7 @@ export default {
   background-size: 0.45rem;
 }
 .container.ranking-list .nv_active {
-  color: #ff5858;
-  border-left: solid 0.06rem #ff5858;
+  color: @mainColor;
+  border-left: solid 0.06rem @mainColor;
 }
 </style>

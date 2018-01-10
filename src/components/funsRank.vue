@@ -54,6 +54,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url('../common/color.less');
 .maxHeightAuto{
     max-height:7rem!important
 }

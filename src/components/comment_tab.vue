@@ -12,18 +12,15 @@
 				<div class="comment-info">
 					<h2>
 						<span>{{item.name}}</span>
-						<!---->
-						<img v-lazy="item.levelImg">
-						<i style="background-color: rgb(228, 128, 44);">{{item.label}}</i>
-						<b class="top" v-if="item.top==0">置顶</b>
-						<b class="best" v-if="item.import==0">精</b>
+
+						<i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:item.overtime==1}"></i>
+						<!-- <i style="background-color: rgb(228, 128, 44);">{{item.label}}</i> -->
 					</h2>
 					<div class="text">
 						<router-link :to="{name:'comment_page',query:{cId:item.id}}">{{item.content}}</router-link>
 					</div>
 					<p>
-						{{item.time}} 
-						<!-- <a href="https://m.yyread.com/commentinfo/473" class="" ></a> -->
+						{{item.time}}
 						<router-link :to="{name:'comment_page',query:{bookId:bookId,cId:item.id}}" v-if="item.childCommentNum>2">· 查看{{item.childCommentNum}}条回复&gt;&gt;</router-link>
 						<a class="icon to-reply" @click="item.reflyFlag = !item.reflyFlag"></a>
 					</p>
@@ -194,6 +191,7 @@ export default {
 </script>
 
 <style scoped>
+@import url('../common/color.less');
 .comment-info p a {
   color: #f39c12;
 }

@@ -13,10 +13,10 @@
             <h2>字数：{{book.wordNum}} 字</h2>
             <div class="read-btn">
               <div class="btn">
-                <a class="" @click="$router.push({name:'chapter',query:{bookId:$route.query.bookId}})">立即阅读</a>
+                <a class="" @click="$router.push({name:'chapter',query:{bookId:$route.query.bookId,chapterId:book.read_chapter_id}})">{{book.read_status?'继续阅读':'立即阅读'}}</a>
               </div>
               <div class="btn">
-                <a class="shelf">加入书架</a>
+                <a class="shelf" @click="toggleBookSelf">{{isOnSelf?'加入书架':'移出书架'}}</a>
               </div>
             </div>
             <!---->
@@ -27,7 +27,7 @@
           <a @click="showAllFlag=!showAllFlag">{{showAllFlag?'收起':'展开'}}</a>
         </div>
         <div class="content new-chapter">
-          <a @click="$router.push({name:'chapter',query:{bookId:$route.query.bookId}})" class="">
+          <a @click="$router.push({name:'chapter',query:{bookId:$route.query.bookId,chapterId:book.last_chapter_id}})" class="">
             <span>最新章节：</span>
             <span>{{book.last_chapter_name}}</span>
             <i v-if="book.isVip==0">vip</i>
@@ -38,10 +38,10 @@
             <span>{{book.status | statusFilter}} &gt;</span>
           </a>
         </div>
-    
+
       </div>
 
-      <funs-rank :bookId="$route.query.bookId"></funs-rank> 
+      <funs-rank :bookId="$route.query.bookId"></funs-rank>
 
       <reward :bookId="$route.query.bookId"></reward>
 
@@ -49,7 +49,7 @@
 
       <n-footer></n-footer>
       <!---->
-    </div> 
+    </div>
 </template>
 
 <script>
@@ -63,7 +63,8 @@ export default {
   name: "book",
   data() {
     return {
-      showAllFlag: false,
+	  showAllFlag: false,
+	  isOnSelf:false,
       book: {}
     };
   },
@@ -72,7 +73,8 @@ export default {
     axios
       .get(`http://m.shengshixiwen.com/apis/0.1/BookInfo.php?bookId=${bookId}`)
       .then(res => {
-        this.book = res.data.data;
+		this.book = res.data.data;
+		this.isOnSelf = this.book.bookself==2;
       });
   },
   components: {
@@ -81,10 +83,16 @@ export default {
     funsRank,
     reward,
     comment
+  },
+  methods:{
+	  toggleBookSelf(){
+
+	  }
   }
 };
 </script>
 <style lang="less">
+@import url('../common/color.less');
 .base-info {
   margin-top: 0;
 }
@@ -129,7 +137,7 @@ export default {
   padding-top: 0.25rem;
   right: 0;
   top: 0.2rem;
-  background-color: #ff6060;
+  background-color: @mainColor;
   color: #fff;
   font-size: 0.24rem;
   border-radius: 1rem;
@@ -162,13 +170,13 @@ export default {
   vertical-align: middle;
   font-size: 0.24rem;
   color: #fff;
-  background-color: #ff6060;
+  background-color: @mainColor;
   border-radius: 0.07rem;
-  border: solid 0.02rem #ff6060;
+  border: solid 0.02rem @mainColor;
 }
 .base-info .read-btn .btn .shelf {
   background-color: #fff;
-  color: #ff6060;
+  color: @mainColor;
 }
 .base-info .summary {
   font-size: 0.28rem;
@@ -177,7 +185,7 @@ export default {
   line-height: 0.4rem;
 }
 .base-info .summary a {
-  color: #ff6060;
+  color: @mainColor;
 }
 .base-info .new-chapter {
   height: 0.38rem;
@@ -206,7 +214,7 @@ export default {
   color: #999;
 }
 .base-info .new-chapter i {
-  color: #dd4b39;
+  color: @mainColor;
   font-size: 0.24rem;
 }
 .base-info .catalog a {
@@ -245,7 +253,7 @@ export default {
   text-align: right;
 }
 .base-info .show-box p i {
-  color: #ff6060;
+  color: @mainColor;
 }
 .base-info .show-box p a {
   color: #58b7ff;
@@ -258,7 +266,7 @@ export default {
   display: inline-block;
   font-size: 0.3rem;
   padding: 0.2rem 1rem;
-  background-color: #ff6060;
+  background-color: @mainColor;
   color: #fff;
 }
 .base-info .show-box .no-ticket {

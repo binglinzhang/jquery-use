@@ -65,8 +65,8 @@
           <div class="more" v-show="page<pageCount">查看更多&gt;&gt;</div>
         </div>
       </div>
-      <n-footer></n-footer>    
-    </div> 
+      <n-footer></n-footer>
+    </div>
 </template>
 
 <script>
@@ -182,6 +182,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url('../common/color.less');
 .comment-info .comment {
   min-height: 8rem;
 }

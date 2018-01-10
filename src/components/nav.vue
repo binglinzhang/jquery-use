@@ -1,17 +1,10 @@
 <template>
     <div>
-    <!---->
-
         <div class="banner-box">
             <div class="banner-box">
                 <swiper :options="swiperOption" ref="mySwiper">
-                    <!-- slides -->
                     <swiper-slide v-for="item in banners"><img :src="item.cover" class="banner-img" @click="$router.push(`/book/${item.book_id}`)"/></swiper-slide>
-                    <!-- Optional controls -->
                     <div class="swiper-pagination"  slot="pagination"></div>
-                    <!-- <div class="swiper-button-prev" slot="button-prev"></div>
-                    <div class="swiper-button-next" slot="button-next"></div>
-                    <div class="swiper-scrollbar"   slot="scrollbar"></div> -->
                 </swiper>
             </div>
         </div>
@@ -82,6 +75,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url('../common/color.less');
 .banner-box {
   height: 2.8rem;
   overflow: hidden;
@@ -148,7 +142,7 @@ export default {
         margin-right: .1rem;
 }
 .banner-box .banner a .nv_content .text .active {
-        background-color: #ff5858;
+        background-color: @mainColor;
 }
 .banner-box .show {
   opacity: 1;
@@ -181,7 +175,7 @@ export default {
   width: 1.2rem;
   height: .35rem;
   line-height: .35rem;
-  background-color: #ff6b8a;
+  background-color: @mainColor;
   color: #fff;
   font-size: .28rem;
   text-align: center;

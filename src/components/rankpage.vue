@@ -33,12 +33,12 @@
               <i :class="{top:index<3}">{{index+1}}</i>
             </div>
           </router-link>
-        </div>     
+        </div>
 
       </div>
 
       <n-footer></n-footer>
-    </div>  
+    </div>
 </template>
 
 <script>
@@ -142,6 +142,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url('../common/color.less');
 .rank .tabs {
   margin-bottom: 0.2rem;
 }
@@ -193,7 +194,7 @@ export default {
 }
 
 .rank .content .info p span {
-  color: #ff6060;
+  color: @mainColor;
 }
 
 .rank .content .info p .span-girl {
@@ -226,8 +227,8 @@ export default {
 }
 
 .container h1 .girl-span {
-  color: #ff6060;
-  border-color: #ff6060;
+  color: @mainColor;
+  border-color: @mainColor;
 }
 
 .container h1 .button a {
@@ -237,7 +238,7 @@ export default {
 }
 
 .container h1 .button a.active {
-  background-color: #ff6060;
+  background-color: @mainColor;
   color: #fff;
 }
 </style>

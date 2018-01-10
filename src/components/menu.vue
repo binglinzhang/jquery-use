@@ -3,7 +3,7 @@
         <div class="book-menu catalog">
             <link-head><span>目录</span></link-head>
             <h4 class="chapter-head">
-                <span class="total">共1070章</span> 
+                <span class="total">共1070章</span>
                 <span class="sort">
                     <img src="../assets/daoxu.png" alt="">
                     <span @click="reverseFlag=!reverseFlag">{{reverseFlag?'正序':'倒序'}}</span>
@@ -57,6 +57,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url('../common/color.less');
 .chapter-head {
   display: flex;
   justify-content: space-between;
@@ -97,7 +98,7 @@ export default {
   font-size: 12px;
 }
 .chapter-item.record .name {
-  color: red;
+  color: @mainColor;
 }
 .chapter-item a {
   display: block;

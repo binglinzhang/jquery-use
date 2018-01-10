@@ -93,6 +93,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url('../common/color.less');
    .user .user-info {
       height: 3.6rem;
       background-color: #fff2f2;

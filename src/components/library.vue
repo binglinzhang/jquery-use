@@ -135,6 +135,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url('../common/color.less');
 .library .search-box {
   height: 0.64rem;
   margin-top: 0.3rem;
@@ -174,7 +175,7 @@ export default {
 }
 
 .library .search-box .btn-girl {
-  background-color: #ff6060;
+  background-color: @mainColor;
 }
 
 .library .conditions h1 {
@@ -253,7 +254,7 @@ export default {
 }
 
 .library .container .content .info p span {
-  color: #ff6060;
+  color: @mainColor;
 }
 
 .library .container .content .info p .span-girl {
@@ -306,8 +307,8 @@ export default {
 }
 
 .library .conditions .item p .active {
-  color: #ff6060;
-  border-color: #ff6060;
+  color: @mainColor;
+  border-color: @mainColor;
 }
 
 .library .conditions .item .third-category {

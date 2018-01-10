@@ -11,9 +11,8 @@
 				<div class="comment-info">
 					<h2>
 						<span>{{item.name}}</span>
-						<!---->
-						<img :src="item.levelImg">
-						<i style="background-color: rgb(228, 128, 44);">{{item.label}}</i>
+						<i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:item.overtime==1}"></i>
+						<!-- <i style="background-color: rgb(228, 128, 44);">{{item.label}}</i> -->
 					</h2>
 					<div class="text">打赏了{{item.rewordNum}}歪币！
 						<span>{{item.time}}</span>

@@ -3,12 +3,13 @@
         <div class="logo">
             <img src="../assets/logo.png">
         </div>
-        <div class="search">
+        <div class="search" @click="$router.push('/search')">
             <div class="sear-btn" style="width: 3.5rem;">输入书名/书号/作者</div>
         </div>
         <div class="sign">
-            <a href="https://m.yyread.com/login" class="to-sign">
-            <i class="fa fa-edit"></i> 签到</a>
+            <router-link class="to-sign" to="/sign">
+            	<i class="fa fa-edit"></i> 签到
+			</router-link>
         </div>
     </header>
 </template>
@@ -23,6 +24,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url('../common/color.less');
 header .logo {
   float: left;
   width: 1.6rem;
@@ -58,7 +60,7 @@ header .sign {
   font-size: 0.26rem;
 }
 header .sign .to-sign {
-  color: #ff6060;
+  color: @mainColor;
 }
 </style>
 

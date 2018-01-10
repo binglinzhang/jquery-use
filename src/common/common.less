@@ -1,3 +1,4 @@
+@import url('./color.less');
 .index .current-free h1 i {
   float: right;
   color: #999;
@@ -26,7 +27,7 @@
   height: 2.2rem;
 }
 .index .current-free .content .item span {
-  color: #ff6060;
+  color: @mainColor;
 }
 .index .current-free .content .item i {
   color: #999;
@@ -43,7 +44,7 @@
   height: 0.5rem;
 }
 .index .free-preview .content p span {
-  color: #ff6060;
+  color: @mainColor;
 }
 .index .free-preview .content p a {
   display: block;
@@ -84,7 +85,7 @@ header .sign[data-v-3b058137] {
   font-size: 0.26rem;
 }
 header .sign .to-sign[data-v-3b058137] {
-  color: #ff6060;
+  color: @mainColor;
 }
 
 @-webkit-keyframes shake-data-v-96c2c592 {
@@ -382,10 +383,10 @@ header .sign .to-sign[data-v-3b058137] {
   margin-right: 0.15rem;
 }
 .new-book-recommend .item-list ul li .hot {
-  color: #ff6060;
+  color: @mainColor;
 }
 .new-book-recommend .item-list ul li .hot span {
-  color: #ff6060;
+  color: @mainColor;
 }
 .new-book-recommend .item-list li .top-item {
   overflow: hidden;
@@ -406,7 +407,7 @@ header .sign .to-sign[data-v-3b058137] {
   width: 5rem;
   margin-left: 0.2rem;
   color: #999;
-  text-indent: 0.6rem;
+  /* text-indent: 0.6rem; */
   line-height: 0.45rem;
   margin-top: 0.1rem;
   white-space: normal;
@@ -550,7 +551,7 @@ footer .context p span[data-v-5f9d26b1] {
 }
 footer .context p .qq[data-v-5f9d26b1] {
   width: 2rem;
-  background-color: #ff6060;
+  background-color: @mainColor;
 }
 footer .context p .tel[data-v-5f9d26b1] {
   width: 2.2rem;
@@ -615,7 +616,7 @@ footer .context p .tel[data-v-5f9d26b1] {
   margin-top: 0.3rem;
 }
 .search-page .search-result .info p span[data-v-57a9bb3d] {
-  color: #ff6060;
+  color: @mainColor;
 }
 
 .search-page .search-box[data-v-57a9bb3d] {
@@ -658,7 +659,7 @@ footer .context p .tel[data-v-5f9d26b1] {
   line-height: 0.64rem;
   text-align: center;
   color: #fff;
-  background-color: #ff6060;
+  background-color: @mainColor;
   border-radius: 0.08rem;
   margin-left: 0.2rem;
   font-size: 0.28rem;
@@ -694,4 +695,12 @@ footer .context p .tel[data-v-5f9d26b1] {
 .clearfix:after, .clearfix:before {
   content: " ";
   display: table;
+}
+.icon_vip{
+	opacity: .6;
+	color: gray!important;
+}
+.icon_isVip{
+	color: @mainColor!important;
+	opacity: 1
 }

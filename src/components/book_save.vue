@@ -65,6 +65,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url('../common/color.less');
 .book-save .toolbar {
   height: 0.44rem;
   padding: 0 0.2rem;
@@ -88,8 +89,8 @@ export default {
   text-align: center;
   vertical-align: middle;
   font-size: 0.26rem;
-  color: #ff6060;
-  border: solid 0.02rem #ff6060;
+  color: @mainColor;
+  border: solid 0.02rem @mainColor;
   border-radius: 0.05rem;
 }
 
@@ -128,7 +129,7 @@ export default {
   text-align: center;
   right: -0.15rem;
   top: -0.15rem;
-  background-color: #ff6060;
+  background-color: @mainColor;
   color: #fff;
   border-radius: 0.3rem;
 }
