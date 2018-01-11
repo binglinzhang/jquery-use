@@ -12,27 +12,25 @@
 				<div class="comment-info">
 					<h2>
 						<span>{{item.name}}</span>
-
 						<i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:item.overtime==1}"></i>
-						<!-- <i style="background-color: rgb(228, 128, 44);">{{item.label}}</i> -->
 					</h2>
 					<div class="text">
 						<router-link :to="{name:'comment_page',query:{cId:item.id}}">{{item.content}}</router-link>
 					</div>
 					<p>
 						{{item.time}}
-						<router-link :to="{name:'comment_page',query:{bookId:bookId,cId:item.id}}" v-if="item.childCommentNum>2">· 查看{{item.childCommentNum}}条回复&gt;&gt;</router-link>
+						<router-link :to="{name:'comment_page',query:{bookId:bookId,cId:item.id}}" v-if="item.count>2">· 查看{{item.count}}条回复&gt;&gt;</router-link>
 						<a class="icon to-reply" @click="item.reflyFlag = !item.reflyFlag"></a>
 					</p>
 					<div class="comment-box reply-box" v-show="item.reflyFlag">
 						<div class="reply-input">
-							<textarea cols="28" rows="3" :placeholder="'回复@'+item.name"></textarea>
+							<textarea cols="28" rows="3" :placeholder="'回复@'+item.name" v-model="item.reflyContent"></textarea>
 						</div>
 						<div class="comment-btn">
-							<a>回复</a>
+							<a @click="commentReplay(item)">回复</a>
 						</div>
 					</div>
-					<div class="top-reply" v-for="x in item.childComment">
+					<div class="top-reply" v-for="x in item.childComment.slice(0,2)">
 						<p><span>{{x.name}}</span>：{{x.content}}</p>
 					</div>
 				</div>
@@ -54,144 +52,78 @@ export default {
       loading: false,
       page: 0,
       pageCount: 0,
-      comment: [
-        {
-          name: "朕知道了",
-          id: 123,
-          avatar: "/static/avatar.jpg",
-          levelImg: "/static/vip_level.png",
-          commentId: "32562",
-          top: 0,
-          import: 0,
-          label: "学渣",
-          content: "这是一首简单的小情歌，唱着我们心中的百合",
-          time: "2017-12-08 00:07:19",
-          reflyFlag: false,
-          childComment: [
-            { name: "haha", content: "hello world 123" },
-            { name: "haha", content: "hello world 123" }
-          ],
-          childCommentNum: 3
-        },
-        {
-          name: "朕知道了",
-          id: 123,
-          avatar: "/static/avatar.jpg",
-          levelImg: "/static/vip_level.png",
-          commentId: "32562",
-          top: 0,
-          import: 0,
-          label: "学渣",
-          content: "这是一首简单的小情歌，唱着我们心中的百合",
-          time: "2017-12-08 00:07:19",
-          reflyFlag: false,
-          childComment: [
-            { name: "haha", content: "hello world 123" },
-            { name: "haha", content: "hello world 123" }
-          ],
-          childCommentNum: 3
-        },
-        {
-          name: "朕知道了",
-          id: 123,
-          avatar: "/static/avatar.jpg",
-          levelImg: "/static/vip_level.png",
-          commentId: "32562",
-          top: 0,
-          import: 0,
-          label: "学渣",
-          content: "这是一首简单的小情歌，唱着我们心中的百合",
-          time: "2017-12-08 00:07:19",
-          reflyFlag: false,
-          childComment: [
-            { name: "haha", content: "hello world 123" },
-            { name: "haha", content: "hello world 123" }
-          ],
-          childCommentNum: 3
-        },
-        {
-          name: "朕知道了",
-          id: 123,
-          avatar: "/static/avatar.jpg",
-          levelImg: "/static/vip_level.png",
-          commentId: "32562",
-          top: 0,
-          import: 0,
-          label: "学渣",
-          content: "这是一首简单的小情歌，唱着我们心中的百合",
-          time: "2017-12-08 00:07:19",
-          reflyFlag: false,
-          childComment: [
-            { name: "haha", content: "hello world 123" },
-            { name: "haha", content: "hello world 123" }
-          ],
-          childCommentNum: 3
-        },
-        {
-          name: "朕知道了",
-          id: 123,
-          avatar: "/static/avatar.jpg",
-          levelImg: "/static/vip_level.png",
-          commentId: "32562",
-          top: 0,
-          import: 0,
-          label: "学渣",
-          content: "这是一首简单的小情歌，唱着我们心中的百合",
-          time: "2017-12-08 00:07:19",
-          reflyFlag: false,
-          childComment: [
-            { name: "haha", content: "hello world 123" },
-            { name: "haha", content: "hello world 123" }
-          ],
-          childCommentNum: 3
-        },
-        {
-          name: "朕知道了",
-          id: 123,
-          avatar: "/static/avatar.jpg",
-          levelImg: "/static/vip_level.png",
-          commentId: "32562",
-          top: 0,
-          import: 0,
-          label: "学渣",
-          content: "这是一首简单的小情歌，唱着我们心中的百合",
-          time: "2017-12-08 00:07:19",
-          reflyFlag: false,
-          childComment: [
-            { name: "haha", content: "hello world 123" },
-            { name: "haha", content: "hello world 123" }
-          ],
-          childCommentNum: 3
-        }
-      ]
+      comment: []
     };
   },
   props: {
     bookId: {
       type: String
-    }
+	},
+	addComment:{
+		type:Number
+	}
+  },
+  watch:{
+	  addComment(newOne,oldOne){
+		this.init()
+	  }
   },
   created() {
-    axios
-      .get(
-        "http://m.shengshixiwen.com/apis/0.1/Commit/CommitList.php?bookId=229"
-      )
-      .then(res => {
-        let arr = res.data.data.data;
-        this.page = res.data.data.page;
-        this.pageCount = res.data.data.pageCount;
-        arr.forEach(item => {
-          Object.assign(item, { reflyFlag: false });
-        });
-        this.comment = arr;
-        console.log(res);
+	  this.init();
+  },
+  methods: {
+    resDataHanddle(res) {
+      let arr = res.data.data.data;
+      this.page = res.data.data.page;
+      this.pageCount = res.data.data.pageCount;
+      arr.forEach(item => {
+        Object.assign(item, { reflyFlag: false,reflyContent:"" });
       });
+      return arr
+	},
+	init(){
+		axios
+		.get(
+			`http://m.shengshixiwen.com/apis/0.1/Commit/CommitList.php?bookId=${this.$route.query.bookId}`
+		)
+		.then(res => {
+			this.comment = this.resDataHanddle(res)
+		});
+	},
+    loadMore() {
+      axios
+        .get(
+          `http://m.shengshixiwen.com/apis/0.1/Library.php?${this.getRequestUrl()}&page=${++this.page}`
+        )
+        .then(res => {
+          this.comment.push(...this.resDataHanddle(res));
+        });
+	},
+	commentReplay(item){
+		if(!item.reflyContent){ return }
+		let data = {
+			uid:this.$uId,
+			bookid:this.$route.query.bookId,
+			title:`${this.$userName}评论了`,
+			content :item.reflyContent,
+			parentid:item.id,
+			tname:item.name
+		}
+		axios.post('http://m.shengshixiwen.com/apis/0.1/Commit/AddCommit.php',qs.stringify(data)).then(res=>{
+			if(res.data.code==200){
+				item.childComment.push({content: item.reflyContent, name: this.$userName});
+				item.count++;
+				item.reflyFlag = false;
+				item.reflyContent = "";
+			}
+		})
+	}
   }
 };
 </script>
 
 <style scoped>
-@import url('../common/color.less');
+@import url("../common/color.less");
 .comment-info p a {
   color: #f39c12;
 }

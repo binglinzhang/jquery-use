@@ -27,7 +27,7 @@ Vue.use(VueAwesomeSwiper, /* { default global options } */)
 Vue.use(VueLazyload,{
   lazyComponent: true
 });
-Vue.use(VModal, { dialog: true })
+Vue.use(VModal, { dialog: true });
 
 /* 公共模块 */
 Vue.filter('statusFilter',(val)=>{
@@ -36,6 +36,7 @@ Vue.filter('statusFilter',(val)=>{
 
 Vue.prototype.console = console;
 Vue.prototype.$uId = 469277;
+Vue.prototype.$userName = 'hahaha';
 
 router.beforeEach((to,from,next)=>{
 //   console.log(to,from);

@@ -31,7 +31,7 @@ export default {
   data() {
     return {
       activeFlag: 0,
-      reward: []
+      reward: [""]
     };
   },
   methods: {
@@ -72,16 +72,16 @@ export default {
     }
   },
   created() {
-    // axios.get(`http://m.shengshixiwen.com/apis/0.1/UserLevel/BonusLevel.php?bookId=${this.bookId}`).then(res=>{
-    //   this.reward = res.data.data.BONUS_CONF;
-    // });
-    axios
-      .get(
-        `http://m.shengshixiwen.com/apis/0.1/UserLevel/BonusLevel.php?bookId=229`
-      )
-      .then(res => {
-        this.reward = res.data.data.BONUS_CONF;
-      });
+    axios.get(`http://m.shengshixiwen.com/apis/0.1/UserLevel/BonusLevel.php?bookId=${this.bookId}`).then(res=>{
+      this.reward = res.data.data.BONUS_CONF;
+    });
+    // axios
+    //   .get(
+    //     `http://m.shengshixiwen.com/apis/0.1/UserLevel/BonusLevel.php?bookId=229`
+    //   )
+    //   .then(res => {
+    //     this.reward = res.data.data.BONUS_CONF;
+    //   });
   }
 };
 </script>
@@ -115,7 +115,7 @@ export default {
   color: #333;
   border: solid 0.05rem #fff;
   position: relative;
-  margin-bottom: 0.45rem;
+  margin: 0 0.3rem .45rem;
 }
 
 .reward .award li:nth-child(1) {
@@ -207,8 +207,7 @@ export default {
   font-size: 0.28rem;
   background-color: @mainColor;
   color: #fff;
-  -webkit-box-shadow: 0 0.12rem 0.4rem rgba(255, 87, 91, 0.31);
-  box-shadow: 0 0.12rem 0.4rem rgba(255, 87, 91, 0.31);
+  box-shadow: 0 0rem 0.4rem @mainColor;
 }
 
 .container.reward .nv_span {

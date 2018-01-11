@@ -2,10 +2,10 @@
 	<lazy-component>
 		<footer>
 			<div class="nav">
-			<a href="https://m.yyread.com/" class="router-link-exact-active router-link-active">首页</a>
-			<a href="https://m.yyread.com/library" class="">书库</a>
-			<a href="https://m.yyread.com/search" class="">搜索</a>
-			<a href="https://trade.yyread.com/v1.0/index">充值</a>
+				<router-link to="/index">首页</router-link>
+				<router-link to="/library">书库</router-link>
+				<router-link to="/search">搜索</router-link>
+				<router-link to="/recharge">充值</router-link>
 			</div>
 			<div class="context">
 			<img src="../assets/rcode.jpg">

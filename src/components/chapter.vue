@@ -20,7 +20,17 @@
 					<div v-html="chapter.content">
 					</div>
 				</div>
-				<button class="nextChapter" @click.stop="$router.replace({name:'chapter',query:{chapterId:chapter.nextChapter,bookId:$route.query.bookId}})" v-if="chapter.nextChapter">加载下一章</button>
+
+				<div class="container relative-recommend">
+					<h1><span>热门推荐</span></h1>
+					<p v-for="item in recommendList" @click="$router.push(`/book?bookId=${item.book_id}`)"><i class="iconfont icon-tuijian"></i> {{item.intro}}</p>
+				</div>
+
+				<div class="control-btns" v-if="chapter.nextChapter">
+					<div class="prev">上一章</div>
+					<div class="list">目录</div>
+					<div class="next" @click.stop="$router.replace({name:'chapter',query:{chapterId:chapter.nextChapter,bookId:$route.query.bookId}})">下一章</div>
+				</div>
 			</div>
 			<div class="read-content-set" v-show="contentSetFlag">
 				<ul class="read-set-bg-list">
@@ -53,10 +63,10 @@
 					</li>
 					<li class="footer-tab-item" @click="nightFlag=!nightFlag">
 					<div class="footer-tab-icon">
-						<i class="iconfont icon-yueliang" style="font-size:18px"></i>
+						<i class="iconfont" style="font-size:18px" :class="[nightFlag?'icon-yueliang':'icon-taiyang']"></i>
 					</div>
 					<p class="footer-tab-label">
-						夜间模式
+						{{nightFlag?'夜间模式':'日间模式'}}
 					</p>
 					</li>
 					<li class="footer-tab-item" @click="contentSetFlag=!contentSetFlag">
@@ -82,14 +92,15 @@ export default {
   name: "chapter",
   data() {
     return {
-	  isLoading:true,
+      isLoading: true,
       menuSetFlag: false,
       contentSetFlag: false,
       nightFlag: false,
       activeSkin: "skin-default",
       fontSize: 14,
       iscollected: false,
-      chapter: {}
+	  chapter: {},
+	  recommendList:[]
     };
   },
   watch: {
@@ -97,19 +108,39 @@ export default {
       if (!newOne) {
         this.contentSetFlag = false;
       }
+    },
+    fontSize(newOne, oldOne) {
+      localStorage.setItem("fontSize", newOne);
+    },
+    activeSkin(newOne, oldOne) {
+      localStorage.setItem("activeSkin", newOne);
+    },
+    nightFlag(newOne, oldOne) {
+      localStorage.setItem("nightFlag", newOne ? 1 : 0);
+      console.log(localStorage);
     }
   },
   methods: {
     init() {
       axios
         .get(
-          `http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterInfo.php?bookId=${this.$route.query.bookId}&chapterId=${this.$route.query.chapterId}`
+          `http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterInfo.php?bookId=${this
+            .$route.query.bookId}&chapterId=${this.$route.query.chapterId}`
         )
         .then(res => {
-		  this.chapter = res.data.data;
-		  this.$refs.content.scrollTop = 0;
-		  this.isLoading = false;
-        });
+          this.chapter = res.data.data;
+          this.$refs.content.scrollTop = 0;
+          this.isLoading = false;
+		});
+
+	  axios.get('http://m.shengshixiwen.com/apis/0.1/read-book-recommend.php').then(res=>{
+		  this.recommendList = res.data.data
+	  })
+    },
+    getUserConfig() {
+      this.fontSize = Number(localStorage.getItem("fontSize")) || 14;
+      this.activeSkin = localStorage.getItem("activeSkin") || "skin-default";
+      this.nightFlag = localStorage.getItem("nightFlag") == 1;
     },
     collectIt() {
       if (iscollected) {
@@ -118,17 +149,19 @@ export default {
     }
   },
   created() {
-	  this.init()
+    this.init();
+    this.getUserConfig();
   },
-  beforeRouteUpdate(to,from,next) {
-	next();
-	this.init();
+  beforeRouteUpdate(to, from, next) {
+    next();
+    this.init();
   }
 };
 </script>
 
 <style lang="less" scoped>
-@import url('../common/color.less');
+@import url("../common/color.less");
+
 .skin-default {
   background-color: #c4b395;
 }
@@ -147,17 +180,20 @@ export default {
 .skin-light {
   background-color: #f6f7f9;
 }
-.chapter{
-	height: 100vh;
-	overflow: auto;
+.relative-recommend p i{
+	color: @mainColor
 }
-.loadingIcon{
-	position: fixed;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%,-50%);
-	width: 30%;
-	display: block;
+.chapter {
+  height: 100vh;
+  overflow: auto;
+}
+.loadingIcon {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+  display: block;
 }
 .read-content {
   position: relative;
@@ -196,7 +232,7 @@ export default {
 .read-content-content {
   position: relative;
   overflow: hidden;
-  padding: 10px 15px 80px;
+  padding: 10px 15px 50px;
   font-size: 14px;
   box-sizing: border-box;
   min-height: 100vh;
@@ -345,6 +381,43 @@ export default {
   margin: 0.5em 0;
   letter-spacing: 0;
   line-height: 1.8;
+}
+.control-btns {
+  //height: .88rem;
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+.control-btns > div {
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  line-height: 36px;
+  border: none;
+  border-radius: 100px;
+  color: #fff;
+  background-color: #ed424b;
+  z-index: 9999;
+  outline: none;
+  text-align: center;
+  margin-right: 20px;
+  &:last-child {
+    margin-right: 0;
+  }
+}
+.relative-recommend {
+    width: 7rem;
+    margin-top: .5rem;
+}
+
+.relative-recommend p {
+	font-size: .3rem;
+	padding: 0.15rem 0;
+	margin: 0 0.15rem;
+	border-bottom: dashed 0.02rem #ebebeb;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
 }
 </style>
 

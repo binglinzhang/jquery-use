@@ -32,7 +32,7 @@
             </div>
           </router-link>
         </div>
-        <div class="more" v-show="page<pageCount">加载更多&gt;&gt;</div>
+        <div class="more" v-show="page<pageCount" @click="loadMore">加载更多&gt;&gt;</div>
       </div>
       <n-footer></n-footer>
     </div>
@@ -93,9 +93,9 @@ export default {
       books: []
     };
   },
+  computed: {},
   methods: {
-    labelSelect(index, childIndex) {
-      this.activeFlag[index] = childIndex;
+    getRequestUrl() {
       let dataObj = {
         cate: this.selectObj.label[this.activeFlag[0]],
         status: this.selectObj.status[this.activeFlag[1]],
@@ -107,16 +107,27 @@ export default {
       Object.keys(dataObj).forEach(item => {
         urlArgArr.push(`${item}=${dataObj[item]}`);
       });
+      return urlArgArr.join("&");
+    },
+    labelSelect(index, childIndex) {
+      this.activeFlag[index] = childIndex;
       axios
         .get(
-          `http://m.shengshixiwen.com/apis/0.1/Library.php?${urlArgArr.join(
-            "&"
-          )}`
+          `http://m.shengshixiwen.com/apis/0.1/Library.php?${this.getRequestUrl()}`
         )
         .then(res => {
           this.books = res.data.data.books;
           this.page = res.data.data.page;
           this.pageCount = res.data.data.pageCount;
+        });
+    },
+    loadMore() {
+      axios
+        .get(
+          `http://m.shengshixiwen.com/apis/0.1/Library.php?${this.getRequestUrl()}&page=${++this.page}`
+        )
+        .then(res => {
+          this.books.push(...res.data.data.books);
         });
     }
   },
@@ -135,7 +146,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('../common/color.less');
+@import url("../common/color.less");
 .library .search-box {
   height: 0.64rem;
   margin-top: 0.3rem;

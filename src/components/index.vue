@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        
+
         <div class="container picture-recommend">
             <h1>
                 <span> 短言情</span>
@@ -111,7 +111,7 @@ export default {
       hotRecommend: [],
       godBook: [],
       shortLove: [],
-      newBookRecommend: []
+      newBookRecommend: [""]
     };
   },
   components: {

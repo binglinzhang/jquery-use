@@ -11,8 +11,7 @@
           <div class="comment-info">
             <h2>
               <span>{{reviewer.name}}</span>
-              <img :src="reviewer.levelImg">
-              <i style="background-color: rgb(226, 179, 38);">{{reviewer.label}}</i>
+              <i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:reviewer.overtime==1}"></i>
             </h2>
             <div class="text">
               {{reviewer.content}}
@@ -43,11 +42,10 @@
             <div class="comment-info">
               <h2>
                 <span>{{item.name}}</span>
-                <img v-lazy="item.levelImg">
-                <i style="background-color: rgb(226, 179, 38);">{{item.label}}</i>
+                <i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:item.overtime==1}"></i>
               </h2>
               <div class="text">回复
-                <i>@{{item.to}}</i>：{{item.content}}</div>
+                <i>@{{item.to||reviewer.name}}</i>：{{item.content}}</div>
               <p>
                 {{item.time}}
                 <a class="icon to-reply" @click="item.replayFlag=!item.replayFlag"></a>
@@ -80,55 +78,36 @@ export default {
     return {
       page: 0,
       pageCount: 0,
-      reviewer: {
-        name: "朕知道了",
-        id: 123,
-        avatar: "/static/avatar.jpg",
-        levelImg: "/static/vip_level.png",
-        id: "32562",
-        label: "学渣",
-        content: "这是一首简单的小情歌，唱着我们心中的百合",
-        time: "2017-12-08 00:07:19",
-        replayFlag: false,
-        childComment: [
-          {
-            name: "朕知道了1",
-            id: 123,
-            avatar: "/static/avatar.jpg",
-            levelImg: "/static/vip_level.png",
-            id: "32562",
-            label: "学渣",
-            content: "这是一首简单的小情歌，唱着我们心中的百合",
-            time: "2017-12-08 00:07:19",
-            to: "仙气飘飘",
-            replayFlag: false,
-            childCommentNum: 5
-          },
-          {
-            name: "朕知道了2",
-            id: 123,
-            avatar: "/static/avatar.jpg",
-            levelImg: "/static/vip_level.png",
-            id: "32562",
-            label: "学渣",
-            content: "这是一首简单的小情歌，唱着我们心中的百合",
-            time: "2017-12-08 00:07:19",
-            to: "仙气飘飘",
-            replayFlag: false,
-            childCommentNum: 5
-          }
-        ]
-      }
+	  reviewer: {
+		  childComment:[]
+	  },
     };
   },
   methods: {
+	init(){
+		axios
+		.get(
+			"http://m.shengshixiwen.com/apis/0.1/Commit/Commit.php?bookId=229&cId=1821"
+		)
+		.then(res => {
+			let obj = res.data.data.reviewer;
+			Object.assign(obj, { replayFlag: false, commentContent: "" });
+			obj.childComment.data.forEach(item => {
+				Object.assign(item, { replayFlag: false, commentContent: "" });
+			});
+			this.reviewer = obj;
+			this.page = obj.childComment.page;
+			this.pageCount = obj.childComment.pageCount;
+		});
+	},
     postCommentParent() {
       let data = {
         uid: this.$uId,
         bookid: this.$route.query.bookId,
-        title: "",
-        content: reviewer.commentContent,
-        parentid: this.$route.query.cId
+        title: `${this.$userName}评论了`,
+        content: this.reviewer.commentContent,
+		parentid: this.$route.query.cId,
+		tname:this.reviewer.name
       };
       axios
         .post(
@@ -136,16 +115,19 @@ export default {
           qs.stringify(data)
         )
         .then(res => {
-          console.log(res);
+          if(res.data.code==200){
+			  this.init();
+		  }
         });
     },
     postCommentChild(item) {
       let data = {
         uid: this.$uId,
         bookid: this.$route.query.bookId,
-        title: "",
+        title: `${this.$userName}评论了`,
         content: item.commentContent,
-        parentid: item.id
+		parentid: item.id,
+		tname:item.name
       };
       axios
         .post(
@@ -153,7 +135,9 @@ export default {
           qs.stringify(data)
         )
         .then(res => {
-          console.log(res);
+          if(res.data.code==200){
+			  this.init();
+		  }
         });
     }
   },
@@ -162,21 +146,7 @@ export default {
     nFooter
   },
   created() {
-    axios
-      .get(
-        "http://m.shengshixiwen.com/apis/0.1/Commit/Commit.php?bookId=229&cId=1821"
-      )
-      .then(res => {
-        let obj = res.data.data.reviewer;
-        Object.assign(obj, { replayFlag: false, commentContent: "" });
-        obj.childComment.data.forEach(item => {
-          Object.assign(item, { replayFlag: false, commentContent: "" });
-        });
-        this.reviewer = obj;
-        this.page = obj.childComment.page;
-        this.pageCount = obj.childComment.pageCount;
-        console.log(res);
-      });
+	  this.init()
   }
 };
 </script>

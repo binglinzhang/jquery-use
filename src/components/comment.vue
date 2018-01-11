@@ -14,8 +14,8 @@
                 <a @click="postComment">评论</a>
             </div>
         </div>
-        <comment-tab v-show="tabFlag==0" :bookId="bookId"></comment-tab>
-		    <reward-tab v-if="tabFlag==1" :bookId="bookId"></reward-tab>
+        <comment-tab v-show="tabFlag==0" :bookId="bookId" :addComment="addComment"></comment-tab>
+		<reward-tab v-if="tabFlag==1" :bookId="bookId"></reward-tab>
     </div>
 </template>
 
@@ -30,7 +30,8 @@ export default {
     return {
       replayFlag: false,
       tabFlag: 0,
-      commentContent: ""
+	  commentContent: "",
+	  addComment:0
     };
   },
   props: {
@@ -41,11 +42,12 @@ export default {
   methods: {
     postComment() {
       let data = {
-        uid: 469306,
+        uid: this.$uId,
         bookid: this.bookId,
-        title: "",
+        title: `${this.$userName}评论了`,
         content: this.commentContent,
-        parentid: ""
+		parentid: "",
+		tname:""
       };
       axios
         .post(
@@ -53,7 +55,11 @@ export default {
           qs.stringify(data)
         )
         .then(res => {
-          console.log(res);
+          if(res.data.code==200){
+			  this.addComment++;
+			  this.replayFlag = false;
+			  this.commentContent = "";
+		  }
         });
     }
   },

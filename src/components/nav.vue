@@ -3,7 +3,7 @@
         <div class="banner-box">
             <div class="banner-box">
                 <swiper :options="swiperOption" ref="mySwiper">
-                    <swiper-slide v-for="item in banners"><img :src="item.cover" class="banner-img" @click="$router.push(`/book/${item.book_id}`)"/></swiper-slide>
+                    <swiper-slide v-for="item in banners"><img :src="item.image" class="banner-img" @click="$router.push(`/book/?bookId=${item.book_id}`)"/></swiper-slide>
                     <div class="swiper-pagination"  slot="pagination"></div>
                 </swiper>
             </div>
@@ -50,11 +50,7 @@ import axios from 'axios'
 export default {
   data(){
       return{
-        banners: [
-            "/static/view_module_image.jpg",
-            "/static/view_module_image.jpg",
-            "/static/view_module_image.jpg"
-        ],
+        banners: [],
         swiperOption: {
             pagination: {
                 el: ".swiper-pagination"

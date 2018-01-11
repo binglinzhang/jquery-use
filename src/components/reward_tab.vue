@@ -35,7 +35,7 @@ export default {
           name: "朕知道了",
           id: 123,
           avatar: "/static/avatar.jpg",
-          levelImg: "/static/vip_level.png",
+          overtime: 1,
           label: "学渣",
           time: "2017-12-08 00:07:19",
           rewordNum: 200
@@ -44,7 +44,7 @@ export default {
           name: "朕知道了",
           id: 123,
           avatar: "/static/avatar.jpg",
-          levelImg: "/static/vip_level.png",
+          overtime: 1,
           label: "学渣",
           time: "2017-12-08 00:07:19",
           rewordNum: 200
@@ -53,7 +53,7 @@ export default {
           name: "朕知道了",
           id: 123,
           avatar: "/static/avatar.jpg",
-          levelImg: "/static/vip_level.png",
+          overtime: 1,
           label: "学渣",
           time: "2017-12-08 00:07:19",
           rewordNum: 200
@@ -62,7 +62,7 @@ export default {
           name: "朕知道了",
           id: 123,
           avatar: "/static/avatar.jpg",
-          levelImg: "/static/vip_level.png",
+          overtime: 1,
           label: "学渣",
           time: "2017-12-08 00:07:19",
           rewordNum: 200
@@ -71,7 +71,7 @@ export default {
           name: "朕知道了",
           id: 123,
           avatar: "/static/avatar.jpg",
-          levelImg: "/static/vip_level.png",
+          overtime: 1,
           label: "学渣",
           time: "2017-12-08 00:07:19",
           rewordNum: 200
@@ -90,7 +90,7 @@ export default {
         "http://m.shengshixiwen.com/apis/0.1/UserLevel/BonusList.php?bookId=229"
       )
       .then(res => {
-        console.log(res);
+
       });
   }
 };

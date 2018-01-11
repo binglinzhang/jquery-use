@@ -65,7 +65,9 @@ export default {
     return {
 	  showAllFlag: false,
 	  isOnSelf:false,
-      book: {}
+      book: {
+		  shortIntro:""
+	  }
     };
   },
   created() {
