@@ -4,7 +4,7 @@
 
       <div class="search-box">
         <div class="search">
-          <input placeholder="请输入书名，书号或作者名">
+          <input placeholder="请输入书名，书号或作者名" autofocus>
         </div>
         <a class="a-girl">搜索</a>
       </div>

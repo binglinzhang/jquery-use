@@ -48,7 +48,21 @@ export default new Router({
 		{
 			path: "/bookshelf",
 			name: "bookshelf",
-			component: () => import("../components/bookshelf.vue")
+			component: () => import("../components/bookshelf.vue"),
+			redirect:'/recent_reading',
+			children:[
+				{
+					path: "/recent_reading",
+					name: "recent_reading",
+					component: () => import("../components/recent_reading.vue"),
+
+				},
+				{
+					path: "/book_save",
+					name: "book_save",
+					component: () => import("../components/book_save.vue")
+				},
+			]
 		},
 		{
 			path: "/search",
@@ -64,6 +78,11 @@ export default new Router({
 			path: "/help",
 			name: "help",
 			component: () => import("../components/help.vue")
+		},
+		{
+			path: "/login",
+			name: "login",
+			component: () => import("../components/login.vue")
 		}
 	]
 });

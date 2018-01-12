@@ -36,7 +36,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="more" v-if="page<pageCount">
+		<div class="more" v-if="page<pageCount" @click="loadMore">
 		    点击加载更多
 		</div>
 	</div>
@@ -93,7 +93,7 @@ export default {
     loadMore() {
       axios
         .get(
-          `http://m.shengshixiwen.com/apis/0.1/Library.php?${this.getRequestUrl()}&page=${++this.page}`
+          `http://m.shengshixiwen.com/apis/0.1/Commit/CommitList.php?bookId=${this.$route.query.bookId}&page=${++this.page}`
         )
         .then(res => {
           this.comment.push(...this.resDataHanddle(res));

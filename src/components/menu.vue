@@ -6,7 +6,7 @@
                 <span class="total">共1070章</span>
                 <span class="sort">
                     <img src="../assets/daoxu.png" alt="">
-                    <span @click="reverseFlag=!reverseFlag">{{reverseFlag?'正序':'倒序'}}</span>
+                    <span @click="reverse">{{reverseFlag?'正序':'倒序'}}</span>
                 </span>
             </h4>
             <ul class="container">
@@ -19,7 +19,7 @@
                     </router-link>
                 </li>
             </ul>
-            <div class="more" style="">加载更多</div>
+            <div class="more" v-show="page<pageCount" @click="loadMore">加载更多</div>
         </div>
     </transition>
 </template>
@@ -32,26 +32,52 @@ export default {
     return {
       readRecord: 3,
       reverseFlag: false,
-      chapterList: []
+	  chapterList: [],
+	  page:0,
+	  pageCount:0
     };
   },
   components: {
     linkHead
   },
+  methods:{
+	  reverse(){
+		this.reverseFlag = !this.reverseFlag;
+		let order = this.reverseFlag?1:0;
+
+		axios
+		.get(
+			`http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterList.php?bookId=${this.$route.query.bookId}&order=${order}`
+		)
+		.then(res => {
+			this.chapterList = res.data.data.data;
+			this.page = res.data.data.page;
+			this.pageCount = res.data.data.pageCount;
+		});
+	  },
+	  loadMore(){
+		  console.log(1);
+		axios
+		.get(
+			`http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterList.php?bookId=${this.$route.query.bookId}&page=${++this.page}`
+		)
+		.then(res => {
+			this.chapterList.push(...res.data.data.data);
+			this.page = res.data.data.page;
+			this.pageCount = res.data.data.pageCount;
+		});
+	  }
+  },
   created() {
     axios
       .get(
-        `http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterList.php?bookId=229`
+        `http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterList.php?bookId=${this.$route.query.bookId}`
       )
       .then(res => {
-        this.chapterList = res.data.data.chapterlist.slice(0, 100);
-        console.log(this.chapterList);
+		this.chapterList = res.data.data.data;
+		this.page = res.data.data.page;
+		this.pageCount = res.data.data.pageCount;
       });
-  },
-  watch: {
-    reverseFlag(newVal, oldVal) {
-      this.chapterList.reverse();
-    }
   }
 };
 </script>

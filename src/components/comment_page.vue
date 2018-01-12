@@ -101,6 +101,7 @@ export default {
 		});
 	},
     postCommentParent() {
+	  if(!this.reviewer.commentContent)  return;
       let data = {
         uid: this.$uId,
         bookid: this.$route.query.bookId,
@@ -121,6 +122,7 @@ export default {
         });
     },
     postCommentChild(item) {
+	  if(!item.commentContent)  return;
       let data = {
         uid: this.$uId,
         bookid: this.$route.query.bookId,

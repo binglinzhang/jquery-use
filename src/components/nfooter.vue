@@ -2,7 +2,7 @@
 	<lazy-component>
 		<footer>
 			<div class="nav">
-				<router-link to="/index">首页</router-link>
+				<router-link to="/">首页</router-link>
 				<router-link to="/library">书库</router-link>
 				<router-link to="/search">搜索</router-link>
 				<router-link to="/recharge">充值</router-link>

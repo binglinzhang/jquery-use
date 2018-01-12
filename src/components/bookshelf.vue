@@ -3,18 +3,22 @@
 	  <link-head>
 	    <div class="center">
           <div class="switch-tab">
-            <a :class="{active:activeFlag==0}" @click="activeFlag=0">
+            <router-link to="/recent_reading" active-class="active">
               <span>最近阅读</span>
-            </a>
-            <a :class="{active:activeFlag==1}" @click="activeFlag=1">
+            </router-link>
+            <router-link to="/book_save" active-class="active">
               <span>我的书架</span>
-            </a>
+            </router-link>
           </div>
         </div>
 	  </link-head>
     <div class="container">
-      <recent-read v-show="activeFlag==0"></recent-read>
-      <book-save v-show="activeFlag==1"></book-save>
+      <!-- <recent-read v-show="activeFlag==0"></recent-read>
+      <book-save v-show="activeFlag==1"></book-save> -->
+	  <keep-alive>
+		<router-view></router-view>
+	  </keep-alive>
+
     </div>
 	  <n-footer></n-footer>
     </div>

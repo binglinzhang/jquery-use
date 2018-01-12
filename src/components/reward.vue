@@ -119,46 +119,35 @@ export default {
 }
 
 .reward .award li:nth-child(1) {
-  background: url(../assets/1.3b19225.png) no-repeat center bottom 0.1rem #fff;
+  background:  no-repeat center bottom 0.2rem #fff;
   background-size: 1.2rem;
 }
 
 .reward .award li:nth-child(2) {
-  background: url(../assets/cafei.png) no-repeat center bottom 0.1rem #fff;
+  background:  no-repeat center bottom 0.2rem #fff;
   background-size: 1.2rem;
 }
 
 .reward .award li:nth-child(3) {
-  background: url(../assets/10.5982841.png) no-repeat center bottom 0.1rem #fff;
+  background:  no-repeat center bottom 0.2rem #fff;
   background-size: 1.2rem;
 }
 
 .reward .award li:nth-child(4) {
-  background: url(../assets/50.dcc00ae.png) no-repeat center bottom 0.1rem #fff;
+  background:  no-repeat center bottom 0.2rem #fff;
   background-size: 1.2rem;
 }
 
 .reward .award li:nth-child(5) {
-  background: url(../assets/100.d824d60.png) no-repeat center bottom 0.1rem #fff;
+  background:  no-repeat center bottom 0.2rem #fff;
   background-size: 1.2rem;
 }
 
 .reward .award li:nth-child(6) {
-  background: url(../assets/500.91ff9bd.png) no-repeat center bottom 0.1rem #fff;
+  background:  no-repeat center bottom 0.2rem #fff;
   background-size: 1.2rem;
 }
 
-.reward .award li:nth-child(7) {
-  background: url(../assets/1000.b3a01b8.png) no-repeat center bottom 0.1rem
-    #fff;
-  background-size: 1.2rem;
-}
-
-.reward .award li:nth-child(8) {
-  background: url(../assets/10000.89e1471.png) no-repeat center bottom 0.1rem
-    #fff;
-  background-size: 1.2rem;
-}
 
 .reward .award li.active {
   background-color: #e4f2ff;

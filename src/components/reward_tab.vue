@@ -6,21 +6,20 @@
         <div class="comment-list">
 			<div class="content comment-item" v-for="item in rewardList">
 				<div class="user-head">
-					<img :src="item.avatar">
+					<img v-lazy="item.avatar">
 				</div>
 				<div class="comment-info">
 					<h2>
-						<span>{{item.name}}</span>
+						<span>{{item.username}}</span>
 						<i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:item.overtime==1}"></i>
-						<!-- <i style="background-color: rgb(228, 128, 44);">{{item.label}}</i> -->
 					</h2>
-					<div class="text">打赏了{{item.rewordNum}}歪币！
+					<div class="text">打赏了{{item.num}} 个 {{username}}！
 						<span>{{item.time}}</span>
 					</div>
 				</div>
 			</div>
         </div>
-        <div class="more">显示更多&gt;&gt;</div>
+        <div class="more" v-show="page<pageCount" @click="loadMore">显示更多&gt;&gt;</div>
     </div>
 </template>
 
@@ -30,53 +29,9 @@ export default {
   name: "reward_tab",
   data() {
     return {
-      rewardList: [
-        {
-          name: "朕知道了",
-          id: 123,
-          avatar: "/static/avatar.jpg",
-          overtime: 1,
-          label: "学渣",
-          time: "2017-12-08 00:07:19",
-          rewordNum: 200
-        },
-        {
-          name: "朕知道了",
-          id: 123,
-          avatar: "/static/avatar.jpg",
-          overtime: 1,
-          label: "学渣",
-          time: "2017-12-08 00:07:19",
-          rewordNum: 200
-        },
-        {
-          name: "朕知道了",
-          id: 123,
-          avatar: "/static/avatar.jpg",
-          overtime: 1,
-          label: "学渣",
-          time: "2017-12-08 00:07:19",
-          rewordNum: 200
-        },
-        {
-          name: "朕知道了",
-          id: 123,
-          avatar: "/static/avatar.jpg",
-          overtime: 1,
-          label: "学渣",
-          time: "2017-12-08 00:07:19",
-          rewordNum: 200
-        },
-        {
-          name: "朕知道了",
-          id: 123,
-          avatar: "/static/avatar.jpg",
-          overtime: 1,
-          label: "学渣",
-          time: "2017-12-08 00:07:19",
-          rewordNum: 200
-        }
-      ]
+	  page:0,
+	  pageCount:0,
+      rewardList: []
     };
   },
   props: {
@@ -84,13 +39,28 @@ export default {
       type: String
     }
   },
+  methods:{
+	loadMore(){
+		axios
+		.get(
+			`http://m.shengshixiwen.com/apis/0.1/UserLevel/BonusList.php?bookId=${this.bookId}&page=${++page}`
+		)
+		.then(res => {
+			this.rewardList = res.data.data.bonuslist;
+			this.page = res.data.data.page;
+			this.pageCount = res.data.data.pageCount;
+		});
+	}
+  },
   created() {
     axios
       .get(
-        "http://m.shengshixiwen.com/apis/0.1/UserLevel/BonusList.php?bookId=229"
+        `http://m.shengshixiwen.com/apis/0.1/UserLevel/BonusList.php?bookId=${this.bookId}`
       )
       .then(res => {
-
+		  this.rewardList = res.data.data.bonuslist;
+		  this.page = res.data.data.page;
+		  this.pageCount = res.data.data.pageCount;
       });
   }
 };

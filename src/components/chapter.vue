@@ -27,8 +27,8 @@
 				</div>
 
 				<div class="control-btns" v-if="chapter.nextChapter">
-					<div class="prev">上一章</div>
-					<div class="list">目录</div>
+					<div class="prev" >上一章</div>
+					<div class="list"  @click="$router.push(`/menu?bookId=${$route.query.bookId}`)">目录</div>
 					<div class="next" @click.stop="$router.replace({name:'chapter',query:{chapterId:chapter.nextChapter,bookId:$route.query.bookId}})">下一章</div>
 				</div>
 			</div>
@@ -53,7 +53,7 @@
 			<transition name="slideBottomToTop">
 				<div class="read-content-footer" v-show="menuSetFlag">
 				<ul class="footer-tab">
-					<li class="footer-tab-item" @click="$router.push('/menu')">
+					<li class="footer-tab-item" @click="$router.push(`/menu?bookId=${$route.query.bookId}`)">
 					<div class="footer-tab-icon">
 						<i class="iconfont icon-Service-catalog" style="font-size:18px"></i>
 					</div>
@@ -117,7 +117,6 @@ export default {
     },
     nightFlag(newOne, oldOne) {
       localStorage.setItem("nightFlag", newOne ? 1 : 0);
-      console.log(localStorage);
     }
   },
   methods: {
