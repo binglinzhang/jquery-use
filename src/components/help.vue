@@ -10,20 +10,20 @@
 			<div class="common-question" v-show="activeTabFlag==0">
 				<ul>
 					<li class="content">
-					<div class="cq-title">
-						<span>1、阅路小说网手机站账号可以通用吗？</span>
-					</div>
-					<div class="cq-content">
-						可以。阅路小说网主站和手机站已经实现了账户互通。如果您已在主站注册账号，则无需在手机站再次注册，充值、订阅、收藏完完本?
-					</div>
+						<div class="cq-title">
+							<span>1、阅路小说网手机站账号可以通用吗？</span>
+						</div>
+						<div class="cq-content">
+							可以。阅路小说网主站和手机站已经实现了账户互通。如果您已在主站注册账号，则无需在手机站再次注册，充值、订阅、收藏完完本?
+						</div>
 					</li>
 					<li class="content">
-					<div class="cq-title">
-						<span>2、忘记密码怎么办？</span>
-					</div>
-					<div class="cq-content">
-						在登录界面点击【忘记密码？】，之后将跳转至找回密码页面。目前提供通过注册邮箱找回密码的服务。
-					</div>
+						<div class="cq-title">
+							<span>2、忘记密码怎么办？</span>
+						</div>
+						<div class="cq-content">
+							在登录界面点击【忘记密码？】，之后将跳转至找回密码页面。目前提供通过注册邮箱找回密码的服务。
+						</div>
 					</li>
 					<li class="content">
 					<div class="cq-title">
@@ -312,7 +312,15 @@ export default {
 	name:'help',
 	data(){
 		return{
-			activeTabFlag:0
+			activeTabFlag:0,
+			problemsList:[
+				{title:'阅路小说网手机站账号可以通用吗？',content:'可以。阅路小说网主站和手机站已经实现了账户互通。如果您已在主站注册账号，则无需在手机站再次注册，充值、订阅、收藏完完本'},
+				{title:'忘记密码怎么办？',content:'在登录界面点击【忘记密码？】，之后将跳转至找回密码页面。目前提供通过注册邮箱找回密码的服务。'},
+				{title:'阅路小说网手机站账号可以通用吗？',content:'可以。阅路小说网主站和手机站已经实现了账户互通。如果您已在主站注册账号，则无需在手机站再次注册，充值、订阅、收藏完完本'},
+				{title:'阅路小说网手机站账号可以通用吗？',content:'可以。阅路小说网主站和手机站已经实现了账户互通。如果您已在主站注册账号，则无需在手机站再次注册，充值、订阅、收藏完完本'},
+				{title:'阅路小说网手机站账号可以通用吗？',content:'可以。阅路小说网主站和手机站已经实现了账户互通。如果您已在主站注册账号，则无需在手机站再次注册，充值、订阅、收藏完完本'},
+				{title:'阅路小说网手机站账号可以通用吗？',content:'可以。阅路小说网主站和手机站已经实现了账户互通。如果您已在主站注册账号，则无需在手机站再次注册，充值、订阅、收藏完完本'}
+			]
 		}
 	},
 	components:{

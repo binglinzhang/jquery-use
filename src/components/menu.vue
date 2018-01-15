@@ -10,8 +10,8 @@
                 </span>
             </h4>
             <ul class="container">
-                <li class="chapter-item" v-for="(item,index) in chapterList" :class='{record:readRecord==index}'>
-                    <router-link :to="{name:'chapter',query:{chapterId:item.chapter_id,bookId:229}}">
+                <li class="chapter-item" v-for="(item,index) in chapterList" :class='{record:readRecordChapterId==item.chapter_id}'>
+                    <router-link :to="{name:'chapter',query:{chapterId:item.chapter_id,bookId:item.book_id}}">
                         <span class="name">{{item.chapter_name}} </span>
                         <span class="vip" v-if="item.is_vip"></span>
                         <!-- <span class="first" style="display: none;">抢先</span> -->
@@ -30,7 +30,7 @@ export default {
   name: "book_menu",
   data() {
     return {
-      readRecord: 3,
+      readRecordChapterId: null,
       reverseFlag: false,
 	  chapterList: [],
 	  page:0,
@@ -43,11 +43,10 @@ export default {
   methods:{
 	  reverse(){
 		this.reverseFlag = !this.reverseFlag;
-		let order = this.reverseFlag?1:0;
 
 		axios
 		.get(
-			`http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterList.php?bookId=${this.$route.query.bookId}&order=${order}`
+			`http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterList.php?bookId=${this.$route.query.bookId}&order=${this.reverseFlag?1:0}`
 		)
 		.then(res => {
 			this.chapterList = res.data.data.data;
@@ -56,16 +55,18 @@ export default {
 		});
 	  },
 	  loadMore(){
-		  console.log(1);
 		axios
 		.get(
-			`http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterList.php?bookId=${this.$route.query.bookId}&page=${++this.page}`
+			`http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterList.php?bookId=${this.$route.query.bookId}&order=${this.reverseFlag?1:0}&page=${++this.page}`
 		)
 		.then(res => {
 			this.chapterList.push(...res.data.data.data);
 			this.page = res.data.data.page;
 			this.pageCount = res.data.data.pageCount;
 		});
+	  },
+	  getReadCordFromLocal(){
+		  this.readRecordChapterId = localStorage.getItem(`book${this.$route.query.bookId}ReadCord`);
 	  }
   },
   created() {
@@ -78,6 +79,7 @@ export default {
 		this.page = res.data.data.page;
 		this.pageCount = res.data.data.pageCount;
       });
+	this.getReadCordFromLocal();
   }
 };
 </script>

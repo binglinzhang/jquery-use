@@ -130,6 +130,7 @@ export default {
           this.chapter = res.data.data;
           this.$refs.content.scrollTop = 0;
           this.isLoading = false;
+		  this.setReadCord();
 		});
 
 	  axios.get('http://m.shengshixiwen.com/apis/0.1/read-book-recommend.php').then(res=>{
@@ -145,7 +146,10 @@ export default {
       if (iscollected) {
         return;
       }
-    }
+    },
+	setReadCord(){
+		localStorage.setItem(`book${this.$route.query.bookId}ReadCord`,this.$route.query.chapterId);
+	}
   },
   created() {
     this.init();
