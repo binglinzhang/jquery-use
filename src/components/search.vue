@@ -94,7 +94,7 @@ export default {
   },
   methods:{
 	  search(){
-		  axios.get(`http://m.shengshixiwen.com/apis/0.1/Search.php?keyword=${this.inputWords}`).then(res=>{
+		  axios.get(`/apis/0.1/Search.php?keyword=${this.inputWords}`).then(res=>{
 			  this.searchResult = res.data.data.books;
 		  })
 	  }

@@ -71,9 +71,10 @@ export default {
     };
   },
   created() {
+	//this.clearScrollTop();
     var bookId = this.$route.query.bookId;
     axios
-      .get(`http://m.shengshixiwen.com/apis/0.1/BookInfo.php?bookId=${bookId}`)
+      .get(`/apis/0.1/BookInfo.php?bookId=${bookId}`)
       .then(res => {
 		this.book = res.data.data;
 		this.isOnSelf = this.book.bookself==2;
@@ -89,6 +90,11 @@ export default {
   methods:{
 	  toggleBookSelf(){
 
+	  },
+	  clearScrollTop(){
+		  this.$navigation.on('forward', (to, from) => {
+			  document.querySelector('body').scrollTop = 0;
+		  })
 	  }
   }
 };

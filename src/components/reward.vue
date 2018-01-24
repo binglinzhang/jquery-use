@@ -51,7 +51,7 @@ export default {
               };
               axios
                 .post(
-                  "http://m.shengshixiwen.com/apis/0.1/UserLevel/AddBonus.php",
+                  "/apis/0.1/UserLevel/AddBonus.php",
                   qs.stringify(data)
                 )
                 .then(res => {
@@ -72,12 +72,12 @@ export default {
     }
   },
   created() {
-    axios.get(`http://m.shengshixiwen.com/apis/0.1/UserLevel/BonusLevel.php?bookId=${this.bookId}`).then(res=>{
+    axios.get(`/apis/0.1/UserLevel/BonusLevel.php?bookId=${this.bookId}`).then(res=>{
       this.reward = res.data.data.BONUS_CONF;
     });
     // axios
     //   .get(
-    //     `http://m.shengshixiwen.com/apis/0.1/UserLevel/BonusLevel.php?bookId=229`
+    //     `/apis/0.1/UserLevel/BonusLevel.php?bookId=229`
     //   )
     //   .then(res => {
     //     this.reward = res.data.data.BONUS_CONF;

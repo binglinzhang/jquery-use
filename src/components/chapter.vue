@@ -97,7 +97,7 @@ export default {
       contentSetFlag: false,
       nightFlag: false,
       activeSkin: "skin-default",
-      fontSize: 14,
+      fontSize: 16,
       iscollected: false,
 	  chapter: {},
 	  recommendList:[]
@@ -123,7 +123,7 @@ export default {
     init() {
       axios
         .get(
-          `http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterInfo.php?bookId=${this
+          `/apis/0.1/Chapter/ChapterInfo.php?bookId=${this
             .$route.query.bookId}&chapterId=${this.$route.query.chapterId}`
         )
         .then(res => {
@@ -133,12 +133,12 @@ export default {
 		  this.setReadCord();
 		});
 
-	  axios.get('http://m.shengshixiwen.com/apis/0.1/read-book-recommend.php').then(res=>{
+	  axios.get('/apis/0.1/read-book-recommend.php').then(res=>{
 		  this.recommendList = res.data.data
 	  })
     },
     getUserConfig() {
-      this.fontSize = Number(localStorage.getItem("fontSize")) || 14;
+      this.fontSize = Number(localStorage.getItem("fontSize")) || 16;
       this.activeSkin = localStorage.getItem("activeSkin") || "skin-default";
       this.nightFlag = localStorage.getItem("nightFlag") == 1;
     },

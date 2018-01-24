@@ -10,14 +10,14 @@
           </div>
           <div class="user-name">
             <p>{{userInfo.name}}
-              <img :src="userInfo.levelImg">
+              <i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:userInfo.overtime==1}" style="font-size:14px"></i>
             </p>
             <p>ID 32981</p>
           </div>
         </div>
         <div class="user-money">
-            <div class="left"><span>书币:</span><span class="num">1234</span></div>
-            <div class="right"><span>书券:</span><span class="num">1234</span></div>
+            <div class="left"><span>书币:</span><span class="num">{{userInfo.book_coin}}</span></div>
+            <div class="right"><span>书券:</span><span class="num">{{userInfo.book_vouchers}}</span></div>
         </div>
       </div>
       <div class="container">
@@ -34,17 +34,17 @@
             <i class="fa fa-angle-right"></i>
           </a>
         </div>
-        <div class="content">
-          <a href="https://m.yyread.com/bookshelf" class="">
+        <div class="content" to="/recent_reading">
+          <router-link to="/bookshelf">
             <span class="fa fa-file-text-o"></span> 阅读记录
             <i class="fa fa-angle-right"></i>
-          </a>
+          </router-link>
         </div>
         <div class="content">
-          <a href="https://m.yyread.com/bookshelf" class="">
+          <router-link to="/bookshelf">
             <span class="fa fa-bar-chart"></span> 书架
             <i class="fa fa-angle-right"></i>
-          </a>
+          </router-link>
         </div>
         <div class="content">
           <a href="https://m.yyread.com/account" class="">
@@ -60,13 +60,13 @@
         </div>
 
         <div class="content">
-          <a href="https://m.yyread.com/helpcenter" class="">
+          <router-link to="/help">
             <span class="fa fa-info-circle"></span> 帮助
             <i class="fa fa-angle-right"></i>
-          </a>
+          </router-link>
         </div>
         <div class="btn">
-          <a>退出登录</a>
+          <a @click="loginOut">退出登录</a>
         </div>
       </div>
     </div>
@@ -74,6 +74,7 @@
 
 <script>
 import linkHead from './link_header.vue'
+import axios from 'axios'
 export default {
   name: "user",
   data() {
@@ -81,13 +82,30 @@ export default {
         userInfo:{
             name:"朕知道了",
             avatar:"/static/avatar.jpg",
-            levelImg:"/static/vip_level.png",
-            id:"32562",
-        }
+            overtime:0,
+			userid:"32562",
+			book_coin:1234,
+			book_vouchers:1234
+		},
+		backurl:(function(){
+			return escape('//'+window.location.host)
+		})()
     }
   },
   components:{
       linkHead
+  },
+  methods:{
+	  loginOut(){
+		  axios.get('/apis/0.1/User/Logout.php').then(res=>{
+
+		  })
+	  }
+  },
+  created(){
+	  axios.get('/apis/0.1/User/UserInfo.php').then(res=>{
+
+	  })
   }
 }
 </script>
@@ -96,7 +114,8 @@ export default {
 @import url('../common/color.less');
    .user .user-info {
       height: 3.6rem;
-      background-color: #fff2f2;
+	  background-color: lighten(@mainColor,30%);
+	//   border-bottom: 10px solid #f5f5f5;
     }
 
     .user .user-info .user-detail {

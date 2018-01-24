@@ -46,7 +46,7 @@ export default {
 
 		axios
 		.get(
-			`http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterList.php?bookId=${this.$route.query.bookId}&order=${this.reverseFlag?1:0}`
+			`/apis/0.1/Chapter/ChapterList.php?bookId=${this.$route.query.bookId}&order=${this.reverseFlag?1:0}`
 		)
 		.then(res => {
 			this.chapterList = res.data.data.data;
@@ -57,7 +57,7 @@ export default {
 	  loadMore(){
 		axios
 		.get(
-			`http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterList.php?bookId=${this.$route.query.bookId}&order=${this.reverseFlag?1:0}&page=${++this.page}`
+			`/apis/0.1/Chapter/ChapterList.php?bookId=${this.$route.query.bookId}&order=${this.reverseFlag?1:0}&page=${++this.page}`
 		)
 		.then(res => {
 			this.chapterList.push(...res.data.data.data);
@@ -72,13 +72,16 @@ export default {
   created() {
     axios
       .get(
-        `http://m.shengshixiwen.com/apis/0.1/Chapter/ChapterList.php?bookId=${this.$route.query.bookId}`
+        `/apis/0.1/Chapter/ChapterList.php?bookId=${this.$route.query.bookId}`
       )
       .then(res => {
 		this.chapterList = res.data.data.data;
 		this.page = res.data.data.page;
 		this.pageCount = res.data.data.pageCount;
       });
+	this.getReadCordFromLocal();
+  },
+  activated(){
 	this.getReadCordFromLocal();
   }
 };

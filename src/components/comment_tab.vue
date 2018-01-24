@@ -84,7 +84,7 @@ export default {
 	init(){
 		axios
 		.get(
-			`http://m.shengshixiwen.com/apis/0.1/Commit/CommitList.php?bookId=${this.$route.query.bookId}`
+			`/apis/0.1/Commit/CommitList.php?bookId=${this.$route.query.bookId}`
 		)
 		.then(res => {
 			this.comment = this.resDataHanddle(res)
@@ -93,7 +93,7 @@ export default {
     loadMore() {
       axios
         .get(
-          `http://m.shengshixiwen.com/apis/0.1/Commit/CommitList.php?bookId=${this.$route.query.bookId}&page=${++this.page}`
+          `/apis/0.1/Commit/CommitList.php?bookId=${this.$route.query.bookId}&page=${++this.page}`
         )
         .then(res => {
           this.comment.push(...this.resDataHanddle(res));
@@ -109,7 +109,7 @@ export default {
 			parentid:item.id,
 			tname:item.name
 		}
-		axios.post('http://m.shengshixiwen.com/apis/0.1/Commit/AddCommit.php',qs.stringify(data)).then(res=>{
+		axios.post('/apis/0.1/Commit/AddCommit.php',qs.stringify(data)).then(res=>{
 			if(res.data.code==200){
 				item.childComment.push({content: item.reflyContent, name: this.$userName});
 				item.count++;

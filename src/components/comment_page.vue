@@ -52,7 +52,7 @@
               </p>
               <div class="comment-box reply-box" v-show="item.replayFlag">
                 <div class="reply-input">
-                  <textarea cols="28" rows="3" :placeholder="'回复@'+item.name"></textarea>
+                  <textarea cols="28" rows="3" :placeholder="'回复@'+item.name" v-model="item.commentContent"></textarea>
                 </div>
                 <div class="comment-btn">
                   <a @click="postCommentChild(item)">回复</a>
@@ -87,7 +87,7 @@ export default {
 	init(){
 		axios
 		.get(
-			"http://m.shengshixiwen.com/apis/0.1/Commit/Commit.php?bookId=229&cId=1821"
+			"/apis/0.1/Commit/Commit.php?bookId=229&cId=1821"
 		)
 		.then(res => {
 			let obj = res.data.data.reviewer;
@@ -112,7 +112,7 @@ export default {
       };
       axios
         .post(
-          "http://m.shengshixiwen.com/apis/0.1/Commit/AddCommit.php",
+          "/apis/0.1/Commit/AddCommit.php",
           qs.stringify(data)
         )
         .then(res => {
@@ -130,10 +130,11 @@ export default {
         content: item.commentContent,
 		parentid: item.id,
 		tname:item.name
-      };
+	  };
+
       axios
         .post(
-          "http://m.shengshixiwen.com/apis/0.1/Commit/AddCommit.php",
+          "/apis/0.1/Commit/AddCommit.php",
           qs.stringify(data)
         )
         .then(res => {

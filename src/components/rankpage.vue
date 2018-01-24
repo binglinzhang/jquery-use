@@ -86,54 +86,54 @@ export default {
   created() {
     axios
       .get(
-        "http://m.shengshixiwen.com/apis/0.1/TopList.php?type=recommend_month"
+        "/apis/0.1/TopList.php?type=recommend_month"
       )
       .then(res => {
         this.recommendRank.month = res.data.data.bookinfo;
       });
     axios
       .get(
-        "http://m.shengshixiwen.com/apis/0.1/TopList.php?type=recommend_week"
+        "/apis/0.1/TopList.php?type=recommend_week"
       )
       .then(res => {
         this.recommendRank.week = res.data.data.bookinfo;
       });
     axios
-      .get("http://m.shengshixiwen.com/apis/0.1/TopList.php?type=recommend_day")
+      .get("/apis/0.1/TopList.php?type=recommend_day")
       .then(res => {
         this.recommendRank.day = res.data.data.bookinfo;
       });
     axios
       .get(
-        "http://m.shengshixiwen.com/apis/0.1/TopList.php?type=subscribe_month"
+        "/apis/0.1/TopList.php?type=subscribe_month"
       )
       .then(res => {
         this.orderRank.month = res.data.data.bookinfo;
       });
     axios
       .get(
-        "http://m.shengshixiwen.com/apis/0.1/TopList.php?type=subscribe_week"
+        "/apis/0.1/TopList.php?type=subscribe_week"
       )
       .then(res => {
         this.orderRank.week = res.data.data.bookinfo;
       });
     axios
-      .get("http://m.shengshixiwen.com/apis/0.1/TopList.php?type=subscribe_day")
+      .get("/apis/0.1/TopList.php?type=subscribe_day")
       .then(res => {
         this.orderRank.day = res.data.data.bookinfo;
       });
     axios
-      .get("http://m.shengshixiwen.com/apis/0.1/TopList.php?type=click_month")
+      .get("/apis/0.1/TopList.php?type=click_month")
       .then(res => {
         this.clickRank.month = res.data.data.bookinfo;
       });
     axios
-      .get("http://m.shengshixiwen.com/apis/0.1/TopList.php?type=click_week")
+      .get("/apis/0.1/TopList.php?type=click_week")
       .then(res => {
         this.clickRank.week = res.data.data.bookinfo;
       });
     axios
-      .get("http://m.shengshixiwen.com/apis/0.1/TopList.php?type=click_day")
+      .get("/apis/0.1/TopList.php?type=click_day")
       .then(res => {
         this.clickRank.day = res.data.data.bookinfo;
       });

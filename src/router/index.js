@@ -18,6 +18,7 @@ export default new Router({
 		{
 			path: "/user",
 			name: "user",
+			meta:{requireLogin:true},
 			component: () => import("../components/user.vue")
 		},
 		{
@@ -72,6 +73,7 @@ export default new Router({
 		{
 			path: "/sign",
 			name: "sign",
+			meta:{requireLogin:true},
 			component: () => import("../components/sign.vue")
 		},
 		{
@@ -83,6 +85,11 @@ export default new Router({
 			path: "/login",
 			name: "login",
 			component: () => import("../components/login.vue")
+		},
+		{
+			path: "/sign_up",
+			name: "sign_up",
+			component: () => import("../components/sign_up.vue")
 		}
 	]
 });

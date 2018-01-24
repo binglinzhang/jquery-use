@@ -42,7 +42,7 @@ export default {
         }
     },
     created(){
-        axios.get('http://m.shengshixiwen.com/apis/0.1/UserLevel/BookUserLevel.php?bookId=229').then(res=>{
+        axios.get(`/apis/0.1/UserLevel/BookUserLevel.php?bookId=${this.$route.query.bookId}`).then(res=>{
             let arr = res.data.data;
             arr.forEach(item=>{
                 Object.assign(item,{childFunsFlag:false,timer:0})

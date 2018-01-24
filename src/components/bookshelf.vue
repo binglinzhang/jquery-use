@@ -13,8 +13,6 @@
         </div>
 	  </link-head>
     <div class="container">
-      <!-- <recent-read v-show="activeFlag==0"></recent-read>
-      <book-save v-show="activeFlag==1"></book-save> -->
 	  <keep-alive>
 		<router-view></router-view>
 	  </keep-alive>

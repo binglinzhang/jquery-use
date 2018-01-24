@@ -113,7 +113,7 @@ export default {
       this.activeFlag[index] = childIndex;
       axios
         .get(
-          `http://m.shengshixiwen.com/apis/0.1/Library.php?${this.getRequestUrl()}`
+          `/apis/0.1/Library.php?${this.getRequestUrl()}`
         )
         .then(res => {
           this.books = res.data.data.books;
@@ -124,7 +124,7 @@ export default {
     loadMore() {
       axios
         .get(
-          `http://m.shengshixiwen.com/apis/0.1/Library.php?${this.getRequestUrl()}&page=${++this.page}`
+          `/apis/0.1/Library.php?${this.getRequestUrl()}&page=${++this.page}`
         )
         .then(res => {
           this.books.push(...res.data.data.books);
@@ -136,7 +136,7 @@ export default {
     linkHead
   },
   created() {
-    axios.get("http://m.shengshixiwen.com/apis/0.1/Library.php").then(res => {
+    axios.get("/apis/0.1/Library.php").then(res => {
       this.books = res.data.data.books;
       this.page = res.data.data.page;
       this.pageCount = res.data.data.pageCount;

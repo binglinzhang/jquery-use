@@ -51,7 +51,7 @@ export default {
       };
       axios
         .post(
-          "http://m.shengshixiwen.com/apis/0.1/Commit/AddCommit.php",
+          "/apis/0.1/Commit/AddCommit.php",
           qs.stringify(data)
         )
         .then(res => {

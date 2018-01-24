@@ -49,20 +49,20 @@ export default {
   created() {
     axios
       .get(
-        "http://m.shengshixiwen.com/apis/0.1/TopList.php?type=recommend_month"
+        "/apis/0.1/TopList.php?type=recommend_month"
       )
       .then(res => {
         this.recommendRank = res.data.data.bookinfo;
       });
     axios
       .get(
-        "http://m.shengshixiwen.com/apis/0.1/TopList.php?type=subscribe_month"
+        "/apis/0.1/TopList.php?type=subscribe_month"
       )
       .then(res => {
         this.orderRank = res.data.data.bookinfo;
       });
     axios
-      .get("http://m.shengshixiwen.com/apis/0.1/TopList.php?type=click_month")
+      .get("/apis/0.1/TopList.php?type=click_month")
       .then(res => {
         this.clickRank = res.data.data.bookinfo;
       });

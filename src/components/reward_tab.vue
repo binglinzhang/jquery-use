@@ -13,7 +13,7 @@
 						<span>{{item.username}}</span>
 						<i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:item.overtime==1}"></i>
 					</h2>
-					<div class="text">打赏了{{item.num}} 个 {{username}}！
+					<div class="text">打赏了{{item.num}} 个 {{item.name}}！
 						<span>{{item.time}}</span>
 					</div>
 				</div>
@@ -41,12 +41,13 @@ export default {
   },
   methods:{
 	loadMore(){
+		console.log(1);
 		axios
 		.get(
-			`http://m.shengshixiwen.com/apis/0.1/UserLevel/BonusList.php?bookId=${this.bookId}&page=${++page}`
+			`/apis/0.1/UserLevel/BonusList.php?bookId=${this.bookId}&page=${++this.page}`
 		)
 		.then(res => {
-			this.rewardList = res.data.data.bonuslist;
+			this.rewardList.push(...res.data.data.bonuslist);
 			this.page = res.data.data.page;
 			this.pageCount = res.data.data.pageCount;
 		});
@@ -55,7 +56,7 @@ export default {
   created() {
     axios
       .get(
-        `http://m.shengshixiwen.com/apis/0.1/UserLevel/BonusList.php?bookId=${this.bookId}`
+        `/apis/0.1/UserLevel/BonusList.php?bookId=${this.bookId}`
       )
       .then(res => {
 		  this.rewardList = res.data.data.bonuslist;

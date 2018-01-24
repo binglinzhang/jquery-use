@@ -121,16 +121,16 @@ export default {
     nFooter
   },
   created(){
-      axios.get('http://m.shengshixiwen.com/apis/0.1/hotRecommend.php').then(res=>{
+      axios.get('/apis/0.1/hotRecommend.php').then(res=>{
           this.hotRecommend = res.data.data;
       });
-      axios.get('http://m.shengshixiwen.com/apis/0.1/new-book-recommend.php').then(res=>{
+      axios.get('/apis/0.1/new-book-recommend.php').then(res=>{
           this.godBook = res.data.data;
       });
-      axios.get('http://m.shengshixiwen.com/apis/0.1/picture-recommend.php').then(res=>{
+      axios.get('/apis/0.1/picture-recommend.php').then(res=>{
           this.shortLove = res.data.data;
       });
-      axios.get('http://m.shengshixiwen.com/apis/0.1/updata-recommend.php').then(res=>{
+      axios.get('/apis/0.1/updata-recommend.php').then(res=>{
           this.newBookRecommend = res.data.data;
       });
   }

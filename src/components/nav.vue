@@ -63,7 +63,7 @@ export default {
       }
   },
   created(){
-      axios.get('http://m.shengshixiwen.com/apis/0.1/Slide.php').then(res=>{
+      axios.get('/apis/0.1/Slide.php').then(res=>{
           this.banners = res.data.data;
       })
   }
