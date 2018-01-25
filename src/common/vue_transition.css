@@ -5,12 +5,14 @@
   transition: opacity 0.4s;
 }
 
+
 .fadeTab-enter,.fadeTab-leave-to {
   opacity: 0;
 }
 .fadeTab-enter-active {
   transition: opacity 0.4s;
 }
+
 
 .slideTopToBottom-enter,.slideTopToBottom-leave-to{
     transform: translateY(-100%);
@@ -19,6 +21,7 @@
     transition: transform .4s;
 }
 
+
 .slideBottomToTop-enter,.slideBottomToTop-leave-to{
     transform: translateY(100%);
 }
@@ -26,12 +29,14 @@
     transition: transform .4s;
 }
 
+
 .slideRightToLeft-enter,.slideRightToLeft-leave-to{
     transform: translateX(100%);
 }
 .slideRightToLeft-enter-active,.slideRightToLeft-leave-active{
     transition: transform .4s;
 }
+
 
 .slideLeftToRight-enter,.slideLeftToRight-leave-to{
     transform: translateX(-100%);

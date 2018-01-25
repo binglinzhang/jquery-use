@@ -6,18 +6,18 @@
       <div class="user-info">
         <div class="user-detail">
           <div class="user-head">
-            <img :src="userInfo.avatar">
+            <img :src="userInfo.im">
           </div>
           <div class="user-name">
-            <p>{{userInfo.name}}
+            <p>{{userInfo.username}}
               <i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:userInfo.overtime==1}" style="font-size:14px"></i>
             </p>
-            <p>ID 32981</p>
+            <p>ID {{userInfo.uid}}</p>
           </div>
         </div>
         <div class="user-money">
-            <div class="left"><span>书币:</span><span class="num">{{userInfo.book_coin}}</span></div>
-            <div class="right"><span>书券:</span><span class="num">{{userInfo.book_vouchers}}</span></div>
+            <div class="left"><span>书币:</span><span class="num">{{userInfo.amount}}</span></div>
+            <div class="right"><span>书券:</span><span class="num">{{userInfo.coin}}</span></div>
         </div>
       </div>
       <div class="container">
@@ -25,44 +25,50 @@
           <a href="https://trade.yyread.com/v1.0/index">
             <span class="fa fa-credit-card"></span> 快速充值
             <b></b>
-            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-right  arrow"></i>
           </a>
         </div>
         <div class="content">
           <a href="https://m.yyread.com/level" class="">
             <span class="fa fa-vimeo"></span> 会员
-            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-right  arrow"></i>
           </a>
         </div>
         <div class="content" to="/recent_reading">
           <router-link to="/bookshelf">
+            <i class="iconfont icon-linedesign-19 preIcon"></i> 我的书券
+            <i class="fa fa-angle-right arrow"></i>
+          </router-link>
+        </div>
+        <div class="content" to="/recent_reading">
+          <router-link to="/bookshelf">
             <span class="fa fa-file-text-o"></span> 阅读记录
-            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-right  arrow"></i>
           </router-link>
         </div>
         <div class="content">
           <router-link to="/bookshelf">
             <span class="fa fa-bar-chart"></span> 书架
-            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-right  arrow"></i>
           </router-link>
         </div>
         <div class="content">
-          <a href="https://m.yyread.com/account" class="">
-            <span class="fa fa-file-text-o"></span> 充值记录
-            <i class="fa fa-angle-right"></i>
-          </a>
+          <router-link to="/money_record">
+            <i class="iconfont icon-consumption preIcon"></i> 充值记录
+            <i class="fa fa-angle-right  arrow"></i>
+          </router-link>
         </div>
         <div class="content">
-          <a href="https://m.yyread.com/account" class="">
-            <span class="fa fa-file-text-o"></span> 消费记录
-            <i class="fa fa-angle-right"></i>
-          </a>
+          <router-link to="/money_record">
+            <i class="iconfont icon-xiaofei01 preIcon"></i> 消费记录
+            <i class="fa fa-angle-right arrow"></i>
+          </router-link>
         </div>
 
         <div class="content">
           <router-link to="/help">
             <span class="fa fa-info-circle"></span> 帮助
-            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-right  arrow"></i>
           </router-link>
         </div>
         <div class="btn">
@@ -75,17 +81,18 @@
 <script>
 import linkHead from './link_header.vue'
 import axios from 'axios'
+import {isWeiXin,setCookie} from '../common/common_fn'
 export default {
   name: "user",
   data() {
     return {
         userInfo:{
-            name:"朕知道了",
-            avatar:"/static/avatar.jpg",
-            overtime:0,
-			userid:"32562",
-			book_coin:1234,
-			book_vouchers:1234
+            username:null,
+            im:null,
+            overtime:null,
+			uid:null,
+			amount:null,
+			coin:null
 		},
 		backurl:(function(){
 			return escape('//'+window.location.host)
@@ -98,13 +105,19 @@ export default {
   methods:{
 	  loginOut(){
 		  axios.get('/apis/0.1/User/Logout.php').then(res=>{
-
-		  })
+			  if(res.data.code==200){
+				  this.$userInfo.isLogin = false;
+				  this.$router.push('/')
+			  }
+		  });
+		  if(isWeiXin()){
+			  setCookie('wxAutoLogin','no')
+		  }
 	  }
   },
   created(){
 	  axios.get('/apis/0.1/User/UserInfo.php').then(res=>{
-
+		  this.userInfo = res.data.data;
 	  })
   }
 }
@@ -233,14 +246,14 @@ export default {
       background-size: .4rem;
     }
 
-    .user .content:nth-child(3) a,
-    .user .content:nth-child(4) a {
+    .user .content:nth-child(2) a,
+    .user .content:nth-child(3) a {
       color: #32a1ff;
     }
 
     .user .content:nth-child(1) i,
-    .user .content:nth-child(3) i,
-    .user .content:nth-child(4) i {
+    .user .content:nth-child(2) i,
+    .user .content:nth-child(3) i {
       color: #32a1ff;
     }
 
@@ -249,13 +262,13 @@ export default {
       color: #32a1ff;
     }
 
-    .user .content:nth-child(3) span {
+    .user .content:nth-child(2) span {
       font-size: .28rem;
       margin-top: .03rem;
       color: #32a1ff;
     }
 
-    .user .content:nth-child(4) span {
+    .user .content:nth-child(3) span {
       font-size: .32rem;
       margin-top: .03rem;
       color: #32a1ff;
@@ -266,13 +279,19 @@ export default {
       margin-top: .03rem;
     }
 
-    .user .content i {
+    .user .content i.arrow {
       float: right;
       font-size: .3rem;
       color: #666;
       margin-top: .03rem;
       margin-right: .1rem;
-    }
+	}
+
+    .user .content i.preIcon {
+	  float: left;
+      font-size: .34rem;
+      margin-right: .16rem;
+	}
 
     .user .btn a {
       display: block;

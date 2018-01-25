@@ -9,33 +9,21 @@ function isWeiXin() {
 		return false;
 	}
 }
-function setCookie(name,value,days){
+function setCookie(name, value, days) {
 	let time = new Date();
-	time.setDate(time.getDate()+days);
-	document.cookie = `${name}=${value}`+(days==null ? "" : ";expires="+time.toGMTString());
+	time.setDate(time.getDate() + days);
+	document.cookie =
+		`${name}=${value}` +
+		(days == null ? "" : ";expires=" + time.toGMTString());
 }
-function getCookie(name){
-	let cookie = document.cookie , ns , start , end;
-	if(!cookie.length<0){
-		return false;
-	}
-	ns = cookie.indexOf(`${name}=`);
-	if(ns!=-1){
-		start = ns+name.length+1;
-		end = cookie.indexOf(";",start)
-		if(end==-1){
-			end = cookie.length
-		}
-		return cookie.slice(start,end)
-	}
+function getCookie(name) {
+	var arr,
+		reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+	if ((arr = document.cookie.match(reg))) return unescape(arr[2]);
+	else return null;
 }
-function delCookie(name){
-	myUntils.setCookie(name,"",-1);
+function delCookie(name) {
+	setCookie(name, "", -1);
 }
 
-export {
-	isWeiXin,
-	setCookie,
-	getCookie,
-	delCookie
-}
+export { isWeiXin, setCookie, getCookie, delCookie };

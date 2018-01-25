@@ -9,25 +9,22 @@
           <p>{{sign.thisMonth}} | 累计签到
             <span>{{sign.hasSigned.length}}</span>天</p>
           <div class="sign-date">
-            <a class="prev">
+            <a class="prev" @click="turnToMonth(sign.pre_month)" v-if="sign.pre_month">
               <i class="fa fa-angle-left"></i>
             </a>
             <div class="date">
-              <span :class="{signed:sign.hasSigned.includes(item)}" v-for="item in 31">{{item}}</span>
+              <span :class="{signed:sign.hasSigned.includes(item)}" v-for="item in Number(sign.dayNum)">{{item}}</span>
             </div>
-            <a class="next">
-              <i class="fa fa-angle-right" style="display: none;"></i>
+            <a class="next" @click="turnToMonth(sign.next_month)" v-if="sign.next_month">
+              <i class="fa fa-angle-right"></i>
             </a>
           </div>
         </div>
         <div class="strategy">
           <fieldset>
             <legend>签到攻略</legend>
-            <p>1. 签到一天获得五个歪果实, 一个歪果实=1个歪币</p>
-            <p>2. 每月累计签到10天，即可获得一张月票，全勤三张
-              <a href="https://m.yyread.com/level" class="">《月票使用细则》</a>
-            </p>
-            <p>3. 签到当月有效，次月清零，签到次数越多，奖励越丰厚</p>
+            <p>1. 签到一天获得5书券,书券可代替书币使用,书券有效期为30天。</p>
+            <p>2. 签到当月有效，次月清零，签到次数越多，奖励越丰厚。</p>
           </fieldset>
         </div>
       </div>
@@ -36,7 +33,7 @@
 		<div class="sign-hint" v-show="signDialogFlag">
 			<h1>恭喜你，签到成功！</h1>
 			<h2>获得
-				<b>5</b>个歪果实
+				<b>{{sign.egold}}</b>个{{sign.egoldname}}
 			</h2>
 			<p>
 				<a @click="signDialogFlag=false">我知道啦</a>
@@ -48,16 +45,21 @@
 
 <script>
 import linkHead from "./link_header.vue";
+import axios from 'axios'
 export default {
   name: "sign",
   data() {
     return {
 	  signDialogFlag:false,
       sign: {
-        dayNum: 31,
-		isSigned: 1,  //已签1，未签0
-		hasSigned:[2,6,28],
-		thisMonth:'2018-01',
+		dayNum: null,
+		egold:null,
+		egoldname:null,
+		isSigned: null,  //已签1，未签0
+		hasSigned:[],
+		thisMonth:null,
+		next_month:null,
+		pre_month:null
       }
     };
   },
@@ -66,11 +68,27 @@ export default {
   },
   methods:{
 	  signIn(){
-		  if(this.isSigned){
+		  if(this.sign.isSigned){
 			  return
 		  }
-		  this.signDialogFlag = true
+		  axios.get('/apis/0.1/User/Qiandao.php').then(res=>{
+			if(res.data.data.status==1){
+				let todady = new Date().getDate();
+				this.signDialogFlag = true;
+				this.sign.hasSigned.push(todady)
+			}
+		  })
+	  },
+	  turnToMonth(month){
+		axios.get(`/apis/0.1/User/sign_record.php?date=${month}`).then(res=>{
+			this.sign = res.data.data;
+	    })
 	  }
+  },
+  created(){
+	  axios.get('/apis/0.1/User/sign_record.php').then(res=>{
+		  this.sign = res.data.data;
+	  })
   }
 };
 </script>

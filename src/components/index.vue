@@ -111,7 +111,7 @@ export default {
       hotRecommend: [],
       godBook: [],
       shortLove: [],
-      newBookRecommend: [""]
+	  newBookRecommend: [""],
     };
   },
   components: {
@@ -132,7 +132,7 @@ export default {
       });
       axios.get('/apis/0.1/updata-recommend.php').then(res=>{
           this.newBookRecommend = res.data.data;
-      });
+	  });
   }
 };
 </script>

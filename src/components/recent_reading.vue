@@ -3,155 +3,70 @@
         <div class="loading" v-show="isLoading">正在加载，请稍等...</div>
         <div class="toolbar" style="">
             <div class="left">共{{readList.length}}本</div>
-            <div class="right" @click="manageFlag=!manageFlag">
-                <a>{{manageFlag?'完成':'管理'}}</a>
+            <div class="right" @click="manageFlag=!manageFlag" v-if="readList.length">
+                <a>{{manageFlag?'删除':'管理'}}</a>
             </div>
         </div>
         <div class="no-notes" v-if="!readList.length">亲，你还没有阅读记录哦！— ^_^</div>
-        <div class="content" v-for="item in readList">
-            <router-link to="/chapter" class="clearfix">
+        <div class="content" v-for="item in readList" v-if="readList.length">
+            <router-link :to="{name:'chapter',query:{chapterId:item.last_chapter_id}}" class="clearfix">
                 <div class="img">
-                    <img :src="item.img">
+                    <img v-lazy="item.cover">
                 </div>
                 <div class="info">
-                    <h2>{{item.name}}</h2>
-                    <p>更新至 {{item.updateCord}}</p>
+                    <h2>{{item.bookname}} <i class="iconfont icon-xin mainColor" style="font-size:16px" v-if="item.hasnew"></i></h2>
+                    <p>{{item.intro}}...</p>
                     <p>
-                        已阅读至 {{item.readCord}}
+                        <span class="mainColor">{{item.text}}</span> 读过
                     </p>
                 </div>
             </router-link>
-            <span v-show="manageFlag">
-                <i class="fa fa-trash-o"></i>
-                <br>删除
+            <span v-show="manageFlag" class="deleteBox">
+				<el-checkbox v-model="item.selectFlag"></el-checkbox>
             </span>
         </div>
-        <div class="more">点击加载更多</div>
+        <div class="more" v-show="page<pageCount" @click="loadMore">点击加载更多</div>
     </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  name: "recent_reading",
-  data() {
-    return {
-      isLoading: false,
-      manageFlag: false,
-      readList: [
-        {
-          name: "爱情不走心",
-          img: "/static/book_id.jpg",
-          readCord: "第一章 一首简单的小情歌",
-          updateCord: "第八章",
-          bookId: 123
-        },
-        {
-          name: "爱情不走心",
-          img: "/static/book_id.jpg",
-          readCord: "第一章 一首简单的小情歌",
-          updateCord: "第八章",
-          bookId: 123
-        },
-        {
-          name: "爱情不走心",
-          img: "/static/book_id.jpg",
-          readCord: "第一章 一首简单的小情歌",
-          updateCord: "第八章",
-          bookId: 123
-        },
-        {
-          name: "爱情不走心",
-          img: "/static/book_id.jpg",
-          readCord: "第一章 一首简单的小情歌",
-          updateCord: "第八章",
-          bookId: 123
-        },
-        {
-          name: "爱情不走心",
-          img: "/static/book_id.jpg",
-          readCord: "第一章 一首简单的小情歌",
-          updateCord: "第八章",
-          bookId: 123
-        }
-      ]
-    };
-  }
+	name: "recent_reading",
+	data() {
+		return {
+			isLoading: false,
+			manageFlag: false,
+			page: 0,
+			pageCount: 0,
+			readList: []
+		};
+	},
+	methods: {
+		init() {
+			axios.get("/apis/0.1/User/UserRead.php").then(res => {
+				this.readList = res.data.data.data.map(item => {
+					return Object.assign({}, item, { selectFlag: false });
+				});
+				this.page = res.data.data.page;
+				this.pageCount = res.data.data.pageCount;
+			});
+		},
+		loadMore() {
+			axios
+				.get(`/apis/0.1/User/UserRead.php?page=${++this.page}`)
+				.then(res => {
+					this.readList = res.data.data.data.map(item => {
+						return Object.assign({}, item, { selectFlag: false });
+					});
+				});
+		}
+	},
+	created() {
+		this.init();
+	}
 };
 </script>
-
 <style lang="less" scoped>
-@import url('../common/color.less');
-.container .content {
-  position: relative;
-}
-.recent-reading .toolbar {
-  height: 0.44rem;
-  padding: 0 0.2rem;
-  margin-top: 0.2rem;
-}
-
-.recent-reading .toolbar .left {
-  float: left;
-  width: 2rem;
-  line-height: 0.44rem;
-}
-
-.recent-reading .toolbar .right {
-  float: right;
-}
-
-.recent-reading .toolbar .right a {
-  display: table-cell;
-  width: 0.8rem;
-  height: 0.4rem;
-  text-align: center;
-  vertical-align: middle;
-  font-size: 0.26rem;
-  color: @mainColor;
-  border: solid 0.02rem @mainColor;
-  border-radius: 0.05rem;
-}
-
-.recent-reading .content a {
-  display: block;
-}
-
-.recent-reading .content .img {
-  float: left;
-  width: 1.2rem;
-}
-
-.recent-reading .content .img img {
-  width: 1.2rem;
-  height: 1.6rem;
-}
-
-.recent-reading .content .info {
-  float: left;
-  width: 5.7rem;
-  margin-left: 0.2rem;
-}
-
-.recent-reading .content .info h2 {
-  font-size: 0.3rem;
-}
-
-.recent-reading .content .info p {
-  margin-top: 0.2rem;
-  color: #999;
-}
-
-.recent-reading .content span {
-  position: absolute;
-  width: 0.8rem;
-  right: 0.2rem;
-  top: 0.4rem;
-  text-align: center;
-  font-size: 0.24rem;
-  color: @mainColor;
-}
-
-.recent-reading .content span i {
-  font-size: 0.32rem;
-}
+@import url("../common/color.less");
 </style>

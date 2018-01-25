@@ -36,6 +36,10 @@ export default {
   },
   methods: {
     rewardAuthor() {
+	  if(!this.$userInfo.isLogin){
+		  this.$turnToLogin('请先登录','book');
+		  return
+	  }
       this.$modal.show("dialog", {
         text: `确定打赏 ${this.reward[this.activeFlag].price} 币吗`,
         buttons: [
@@ -75,13 +79,6 @@ export default {
     axios.get(`/apis/0.1/UserLevel/BonusLevel.php?bookId=${this.bookId}`).then(res=>{
       this.reward = res.data.data.BONUS_CONF;
     });
-    // axios
-    //   .get(
-    //     `/apis/0.1/UserLevel/BonusLevel.php?bookId=229`
-    //   )
-    //   .then(res => {
-    //     this.reward = res.data.data.BONUS_CONF;
-    //   });
   }
 };
 </script>

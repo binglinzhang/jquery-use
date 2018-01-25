@@ -29,16 +29,23 @@
           </span>
         </div>
 		<div class="goSignUp">还没有账号?现在去 <router-link to="/sign_up" class="btn">注册</router-link></div>
-		<div class="login-form-group">
-			<el-input placeholder="请输入用户名/手机号" v-model="user.name" clearable>
-				<i slot="prefix" class="el-input__icon iconfont icon-user" style="font-size:20px;margin-left:10px;"></i>
-  			</el-input>
-			<el-input placeholder="请输入密码" v-model="user.pwd" clearable>
-				<i slot="prefix" class="el-input__icon iconfont icon-password" style="font-size:20px;margin-left:10px;"></i>
-  			</el-input>
-			<el-button type="danger" round style="width:100%;margin-top:20px">登录</el-button>
-		</div>
+		<el-form ref="form" :model="form" :rules="rules" label-width="0" class="login-form-group">
+			<el-form-item prop="username" auto-complete="on">
+				<el-input placeholder="请输入用户名/手机号" v-model="form.username" clearable>
+					<i slot="prefix" class="el-input__icon iconfont icon-user" style="font-size:20px;margin-left:10px;"></i>
+				</el-input>
+			</el-form-item>
+			<el-form-item prop="password" auto-complete="on">
+				<el-input placeholder="请输入密码" v-model="form.password" clearable type="password">
+					<i slot="prefix" class="el-input__icon iconfont icon-password" style="font-size:20px;margin-left:10px;"></i>
+				</el-input>
+			</el-form-item>
+			<el-button type="danger" round style="width:100%;margin-top:20px" @click="checkForm('form')">登录</el-button>
+		</el-form>
       </div>
+
+	  <v-dialog width="80%"/>
+
 	  <n-footer></n-footer>
     </div>
 </template>
@@ -47,15 +54,33 @@
 import linkHead from './link_header.vue'
 import nFooter from './nfooter.vue'
 import {isWeiXin} from '../common/common_fn.js'
+import axios from 'axios'
+import qs from 'qs'
 export default {
 	name:'login',
 	data(){
 		return{
-			user:{
-				name:'zzz',
-				pwd:123
+			form:{
+				username:null,
+				password:null
 			},
-			isInWeiXin:false
+			isInWeiXin:false,
+			rules:{
+				username:[
+					{
+						required:true,
+						message:'请输入账号',
+						trigger:'blur'
+					}
+				],
+				password:[
+					{
+						required:true,
+						message:'请输入密码',
+						trigger:'blur'
+					}
+				]
+			}
 		}
 	},
 	components:{
@@ -68,7 +93,51 @@ export default {
 	methods:{
 		myEscape(url){
 			return escape(url)
-		}
+		},
+		login(){
+			axios.post('/apis/0.1/User/Login.php',qs.stringify(this.form)).then(res=>{
+				if(res.data.code==200){
+					this.$userInfo.isLogin = true;
+					let pathName = this.$route.query.backurl.split('/').slice(-1)[0];
+					this.$modal.show("dialog", {
+						text: "登录成功，3s后自动跳转",
+						buttons: [
+							{
+								title: "立即跳转",
+								default: true,
+								handler: () => {
+									this.$router.push({name:pathName})
+								}
+							}
+						]
+					});
+					setTimeout(()=>{this.$router.push({name:pathName})},3000)
+				}else{
+					this.$modal.show("dialog", {
+						text: `登录失败,${res.data.msg}`,
+						buttons: [
+							{
+								title: "我知道了",
+								default: true,
+								handler: () => {
+									this.$modal.hide("dialog");
+								}
+							}
+						]
+					});
+				}
+			})
+		},
+		checkForm(formName) {
+			this.$refs[formName].validate(valid => {
+				if (valid) {
+					this.login();
+				} else {
+					console.log("error submit!!", valid);
+					return false
+				}
+			});
+		},
 	}
 }
 </script>
@@ -130,20 +199,20 @@ export default {
 	  display: block;
     }
 
-    .login-container .login-box a:nth-child(1) i {
+    .login-container .login-box a.weixin i {
       background-color: #09a456;
     }
 
-    .login-container .login-box a:nth-child(2) i {
+    .login-container .login-box a.qq i {
       background-color: #f39c12;
     }
 
-    .login-container .login-box a:nth-child(3) i {
+    .login-container .login-box a.weibo i {
       background-color: #ff6060;
       font-size: .58rem;
 	}
 
-    .login-container .login-box a:nth-child(4) i {
+    .login-container .login-box a.baidu i {
       background-color: #409EFF;
       font-size: .58rem;
 	}
@@ -159,13 +228,6 @@ export default {
 	}
 	.login-count{
 		width: 6.6rem;
-		margin: 0 auto;
+		margin: 30px auto 0;
 	}
-</style>
-<style lang="less">
-.login-form-group{
-	.el-input__inner{
-		padding-left:45px;
-	}
-}
 </style>

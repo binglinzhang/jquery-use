@@ -1,136 +1,73 @@
 <template>
-    <div class="book-save">
-        <div class="loading" style="display: none;">正在加载，请稍等...</div>
+    <div class="recent-reading">
+        <div class="loading" v-show="isLoading">正在加载，请稍等...</div>
         <div class="toolbar" style="">
-            <div class="left">共{{saveList.length}}本</div>
-            <div class="right" @click="manageFlag=!manageFlag">
-                <a>{{manageFlag?'完成':'管理'}}</a>
+            <div class="left">共{{readList.length}}本</div>
+            <div class="right" @click="manageFlag=!manageFlag" v-if="readList.length">
+                <a>{{manageFlag?'删除':'管理'}}</a>
             </div>
         </div>
-        <div class="no-notes" v-if="!saveList.length">亲，你还没有收藏记录哦！— ^_^</div>
-        <div class="book-box">
-            <div class="img" v-for="item in saveList">
-                <router-link to="/book">
-                    <img :src="item.img">
-                    <span>{{item.name}}</span>
-                </router-link>
-                <i class="fa fa-trash-o" v-show="manageFlag"></i>
-            </div>
+        <div class="no-notes" v-if="!readList.length">亲，你还没有阅读记录哦！— ^_^</div>
+        <div class="content" v-for="item in readList" v-if="readList.length">
+            <router-link :to="{name:'book',query:{bookId:item.bookid}}" class="clearfix">
+                <div class="img">
+                    <img v-lazy="item.cover">
+                </div>
+                <div class="info">
+                    <h2>{{item.bookname}} <i class="iconfont icon-xin mainColor" style="font-size:16px" v-if="item.hasnew"></i></h2>
+                    <p>{{item.intro}}...</p>
+                    <p>
+                        <span class="mainColor">{{item.text}}</span> 读过
+                    </p>
+                </div>
+            </router-link>
+            <span v-show="manageFlag" class="deleteBox">
+				<el-checkbox v-model="item.selectFlag"></el-checkbox>
+            </span>
         </div>
+        <div class="more" v-show="page<pageCount" @click="loadMore">点击加载更多</div>
     </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  name: "bookshelf",
-  data() {
-    return {
-      isLoading: false,
-      manageFlag: false,
-      saveList: [
-        {
-          name: "爱情不走心",
-          img: "/static/book_id.jpg",
-          bookId: 123
-        },
-        {
-          name: "爱情不走心",
-          img: "/static/book_id.jpg",
-          bookId: 123
-        },
-        {
-          name: "爱情不走心",
-          img: "/static/book_id.jpg",
-          bookId: 123
-        },
-        {
-          name: "爱情不走心",
-          img: "/static/book_id.jpg",
-          bookId: 123
-        },
-        {
-          name: "爱情不走心",
-          img: "/static/book_id.jpg",
-          bookId: 123
-        },
-        {
-          name: "爱情不走心",
-          img: "/static/book_id.jpg",
-          bookId: 123
-        }
-      ]
-    };
-  }
+	name: "recent_reading",
+	data() {
+		return {
+			isLoading: false,
+			manageFlag: false,
+			page: 0,
+			pageCount: 0,
+			readList: []
+		};
+	},
+	methods: {
+		init() {
+			axios.get("/apis/0.1/User/UserSelf.php").then(res => {
+				this.readList = res.data.data.data.map(item => {
+					return Object.assign({}, item, { selectFlag: false });
+				});
+				this.page = res.data.data.page;
+				this.pageCount = res.data.data.pageCount;
+			});
+		},
+		loadMore() {
+			axios
+				.get(`/apis/0.1/User/UserSelf.php?page=${++this.page}`)
+				.then(res => {
+					this.readList = res.data.data.data.map(item => {
+						return Object.assign({}, item, { selectFlag: false });
+					});
+				});
+		}
+	},
+	created() {
+		this.init();
+	}
 };
 </script>
 
 <style lang="less" scoped>
-@import url('../common/color.less');
-.book-save .toolbar {
-  height: 0.44rem;
-  padding: 0 0.2rem;
-  margin-top: 0.2rem;
-}
-
-.book-save .toolbar .left {
-  float: left;
-  width: 2rem;
-  line-height: 0.44rem;
-}
-
-.book-save .toolbar .right {
-  float: right;
-}
-
-.book-save .toolbar .right a {
-  display: table-cell;
-  width: 0.8rem;
-  height: 0.4rem;
-  text-align: center;
-  vertical-align: middle;
-  font-size: 0.26rem;
-  color: @mainColor;
-  border: solid 0.02rem @mainColor;
-  border-radius: 0.05rem;
-}
-
-.book-save .book-box {
-  overflow: hidden;
-  margin-top: 0.2rem;
-}
-
-.book-save .book-box .img {
-  float: left;
-  width: 2rem;
-  margin: 0 0.25rem;
-  margin-top: 0.2rem;
-  text-align: center;
-  position: relative;
-}
-
-.book-save .book-box .img img {
-  width: 2rem;
-  height: 2.67rem;
-}
-
-.book-save .book-box .img span {
-  display: block;
-  margin-top: 0.1rem;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.book-save .book-box .img i {
-  position: absolute;
-  width: 0.45rem;
-  height: 0.45rem;
-  line-height: 0.45rem;
-  text-align: center;
-  right: -0.15rem;
-  top: -0.15rem;
-  background-color: @mainColor;
-  color: #fff;
-  border-radius: 0.3rem;
-}
+@import url("../common/color.less");
 </style>

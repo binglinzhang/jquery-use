@@ -8,17 +8,25 @@
         </div>
         <div class="sign">
             <router-link class="to-sign" to="/sign">
-            	<i class="fa fa-edit"></i> 签到
+            	<i class="fa fa-edit"></i> {{sign.isSigned==0?'签到':'已签'}}
 			</router-link>
         </div>
     </header>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: "nheader",
   data() {
-    return {};
+    return {
+		sign:{}
+	};
+  },
+  created(){
+	  axios.get('/apis/0.1/User/sign_record.php').then(res=>{
+		  this.sign = res.data.data;
+	  })
   }
 };
 </script>
