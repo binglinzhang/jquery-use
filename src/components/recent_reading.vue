@@ -56,9 +56,10 @@ export default {
 			axios
 				.get(`/apis/0.1/User/UserRead.php?page=${++this.page}`)
 				.then(res => {
-					this.readList = res.data.data.data.map(item => {
+					let list = res.data.data.data.map(item => {
 						return Object.assign({}, item, { selectFlag: false });
 					});
+					this.readList.push(...list)
 				});
 		}
 	},

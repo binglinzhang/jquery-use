@@ -33,7 +33,7 @@ Vue.prototype.$turnToLogin = function(alertText,backPathName){
 						window.location.host +
 						"/#/" +backPathName
 				);
-					this.$router.push({name:'login',query:{backurl}})
+				this.$router.push({name:'login',query:{backurl}})
 				}
 			}
 		]

@@ -25,7 +25,7 @@ export default {
   },
   created(){
 	  axios.get('/apis/0.1/User/sign_record.php').then(res=>{
-		  this.sign = res.data.data;
+		  this.sign = res.data.data || {};
 	  })
   }
 };

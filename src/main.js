@@ -44,7 +44,7 @@ Vue.use(VModal, { dialog: true });
 router.beforeEach((to, from, next) => {
 	if (to.meta.requireLogin) {
 		if (!Vue.prototype.$userInfo.isLogin) {
-			let backurl = escape(
+			let backurl = encodeURIComponent(
 				window.location.protocol +
 					"//" +
 					window.location.host +

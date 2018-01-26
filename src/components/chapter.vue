@@ -9,8 +9,8 @@
 				</div>
 			</transition>
 			<transition name="slideRightToLeft">
-				<div class="read-join-shelf" v-show="menuSetFlag" @click="collectIt">
-				<span>已在书架</span>
+				<div class="read-join-shelf" v-show="menuSetFlag" @click="joinBookself">
+				<span>{{iscollected==2?'已在书架':'加入书架'}}</span>
 				</div>
 			</transition>
 			<div class="read-content-content" @click="menuSetFlag=!menuSetFlag" :style="{fontSize:fontSize+'px'}">
@@ -27,7 +27,7 @@
 				</div>
 
 				<div class="control-btns" v-if="chapter.nextChapter">
-					<div class="prev" >上一章</div>
+					<div class="prev" @click.stop="$router.replace({name:'chapter',query:{chapterId:chapter.prevChapter,bookId:$route.query.bookId}})">上一章</div>
 					<div class="list"  @click="$router.push(`/menu?bookId=${$route.query.bookId}`)">目录</div>
 					<div class="next" @click.stop="$router.replace({name:'chapter',query:{chapterId:chapter.nextChapter,bookId:$route.query.bookId}})">下一章</div>
 				</div>
@@ -63,10 +63,10 @@
 					</li>
 					<li class="footer-tab-item" @click="nightFlag=!nightFlag">
 					<div class="footer-tab-icon">
-						<i class="iconfont" style="font-size:18px" :class="[nightFlag?'icon-yueliang':'icon-taiyang']"></i>
+						<i class="iconfont" style="font-size:18px" :class="[nightFlag?'icon-taiyang':'icon-yueliang']"></i>
 					</div>
 					<p class="footer-tab-label">
-						{{nightFlag?'夜间模式':'日间模式'}}
+						{{nightFlag?'日间模式':'夜间模式'}}
 					</p>
 					</li>
 					<li class="footer-tab-item" @click="contentSetFlag=!contentSetFlag">
@@ -81,6 +81,7 @@
 				</div>
 			</transition>
 
+			<v-dialog width="80%"></v-dialog>
         </section>
 		<img src="../assets/page_loading.gif" alt=""  class="loadingIcon" v-show="isLoading">
     </div>
@@ -142,7 +143,7 @@ export default {
 					`/apis/0.1/User/Usercheck.php?bookId=${this.$route.query.bookId}`
 				)
 				.then(res => {
-
+					this.iscollected = res.data.data.bookself;
 				});
 		},
 		getUserConfig() {
@@ -151,16 +152,24 @@ export default {
 				localStorage.getItem("activeSkin") || "skin-default";
 			this.nightFlag = localStorage.getItem("nightFlag") == 1;
 		},
-		collectIt() {
-			if (iscollected) {
-				return;
-			}
-		},
 		setReadCord() {
 			localStorage.setItem(
 				`book${this.$route.query.bookId}ReadCord`,
 				this.$route.query.chapterId
 			);
+		},
+		joinBookself(){
+			if(!this.$userInfo.isLogin){
+				this.$turnToLogin('请先登录',`chapter?bookId=${this.$route.query.bookId}&chapterId=${this.$route.query.chapterId}`);
+				console.log(`chapter?bookId=${this.$route.query.bookId}&chapterId=${this.$route.query.chapterId}`);
+				return
+			}
+			if(this.iscollected!=1) return
+			axios.get(`/apis/0.1/Bookself.php?book_id=${this.$route.query.bookId}&auto=2`).then(res=>{
+				if(res.data.status==0){
+					this.iscollected = 2;
+				}
+			})
 		}
 	},
 	created() {

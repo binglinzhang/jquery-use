@@ -8,16 +8,16 @@
           </span>
         </div>
         <div class="login-box">
-          <a class="weixin" v-if="isInWeiXin" :href="'http://m.shengshixiwen.com/apis/0.1/User/wxLogin.php?backurl='+myEscape($route.query.backurl)">
+          <a class="weixin" v-if="isInWeiXin" :href="'http://m.shengshixiwen.com/apis/0.1/User/wxLogin.php?backurl='+$route.query.backurl">
             <i class="fa fa-wechat"></i>
 		  </a>
-          <a class="qq" :href="'http://m.shengshixiwen.com/apis/0.1/User/qqLogin.php?backurl='+myEscape($route.query.backurl)">
+          <a class="qq" :href="'http://m.shengshixiwen.com/apis/0.1/User/qqLogin.php?backurl='+$route.query.backurl">
             <i class="fa fa-qq"></i>
 		  </a>
-          <a class="weibo" :href="'http://m.shengshixiwen.com/apis/0.1/User/wbLogin.php?backurl='+myEscape($route.query.backurl)">
+          <a class="weibo" :href="'http://m.shengshixiwen.com/apis/0.1/User/wbLogin.php?backurl='+$route.query.backurl">
             <i class="fa fa-weibo"></i>
 		  </a>
-          <a class="baidu" :href="'http://m.shengshixiwen.com/apis/0.1/User/bdLogin.php?backurl='+myEscape($route.query.backurl)">
+          <a class="baidu" :href="'http://m.shengshixiwen.com/apis/0.1/User/bdLogin.php?backurl='+$route.query.backurl">
             <i class="iconfont icon-baidu"></i>
 		  </a>
         </div>
@@ -91,14 +91,11 @@ export default {
 		this.isInWeiXin = isWeiXin();
 	},
 	methods:{
-		myEscape(url){
-			return escape(url)
-		},
 		login(){
 			axios.post('/apis/0.1/User/Login.php',qs.stringify(this.form)).then(res=>{
 				if(res.data.code==200){
 					this.$userInfo.isLogin = true;
-					let pathName = this.$route.query.backurl.split('/').slice(-1)[0];
+					let pathName = decodeURIComponent(this.$route.query.backurl).split('/').slice(-1)[0];
 					this.$modal.show("dialog", {
 						text: "登录成功，3s后自动跳转",
 						buttons: [
@@ -106,12 +103,12 @@ export default {
 								title: "立即跳转",
 								default: true,
 								handler: () => {
-									this.$router.push({name:pathName})
+									this.$router.push('/'+pathName)
 								}
 							}
 						]
 					});
-					setTimeout(()=>{this.$router.push({name:pathName})},3000)
+					setTimeout(()=>{this.$router.push('/'+pathName)},3000)
 				}else{
 					this.$modal.show("dialog", {
 						text: `登录失败,${res.data.msg}`,

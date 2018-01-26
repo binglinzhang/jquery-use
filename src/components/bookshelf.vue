@@ -18,7 +18,7 @@
 	  </keep-alive>
 
     </div>
-	  <n-footer></n-footer>
+
     </div>
 </template>
 

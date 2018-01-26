@@ -95,6 +95,11 @@ export default new Router({
 			path: "/money_record",
 			name: "money_record",
 			component: () => import("../components/money_record.vue")
+		},
+		{
+			path: "/book_ticket",
+			name: "book_ticket",
+			component: () => import("../components/book_ticket.vue")
 		}
 	]
 });

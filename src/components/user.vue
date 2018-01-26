@@ -29,25 +29,19 @@
           </a>
         </div>
         <div class="content">
-          <a href="https://m.yyread.com/level" class="">
-            <span class="fa fa-vimeo"></span> 会员
-            <i class="fa fa-angle-right  arrow"></i>
-          </a>
-        </div>
-        <div class="content" to="/recent_reading">
-          <router-link to="/bookshelf">
+          <router-link to="/book_ticket">
             <i class="iconfont icon-linedesign-19 preIcon"></i> 我的书券
             <i class="fa fa-angle-right arrow"></i>
           </router-link>
         </div>
-        <div class="content" to="/recent_reading">
-          <router-link to="/bookshelf">
+        <div class="content">
+          <router-link to="/recent_reading">
             <span class="fa fa-file-text-o"></span> 阅读记录
             <i class="fa fa-angle-right  arrow"></i>
           </router-link>
         </div>
         <div class="content">
-          <router-link to="/bookshelf">
+          <router-link to="/book_save">
             <span class="fa fa-bar-chart"></span> 书架
             <i class="fa fa-angle-right  arrow"></i>
           </router-link>
