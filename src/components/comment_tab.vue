@@ -15,7 +15,7 @@
 						<i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:item.overtime==1}"></i>
 					</h2>
 					<div class="text">
-						<router-link :to="{name:'comment_page',query:{cId:item.id}}">{{item.content}}</router-link>
+						<router-link :to="{name:'comment_page',query:{bookId:bookId,cId:item.id}}">{{item.content}}</router-link>
 					</div>
 					<p>
 						{{item.time}}
@@ -70,6 +70,7 @@ export default {
   },
   created() {
 	  this.init();
+		console.log(this.bookId)
   },
   methods: {
     resDataHanddle(res) {

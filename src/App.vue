@@ -23,7 +23,6 @@ export default {
 	  checkLogin(){
 		  const uidCookieName = 'uid';
 		  const uid = getCookie(uidCookieName);
-		  console.log('uid',uid);
 		  if(uid){
 			  this.$userInfo.isLogin = true;
 			  this.$userInfo.userId = uid;

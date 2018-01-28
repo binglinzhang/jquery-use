@@ -4,7 +4,7 @@
         <div class="toolbar" style="">
             <div class="left">共{{readList.length}}本</div>
             <div class="right" @click="manageFlag=!manageFlag" v-if="readList.length">
-                <a>{{manageFlag?'删除':'管理'}}</a>
+                <a @click="deleteBooks">{{manageFlag?'删除':'管理'}}</a>
             </div>
         </div>
         <div class="no-notes" v-if="!readList.length">亲，你还没有阅读记录哦！— ^_^</div>
@@ -31,6 +31,7 @@
 
 <script>
 import axios from "axios";
+import qs from 'qs'
 export default {
 	name: "recent_reading",
 	data() {
@@ -61,6 +62,24 @@ export default {
 					});
 					this.readList.push(...list)
 				});
+		},
+		deleteBooks(){
+			if(!this.manageFlag) return false;
+			let deleteBookIdList  = [];
+			let newReadList = this.readList.filter(item=>{
+				if(item.selectFlag){
+					deleteBookIdList.push(item.bookid);
+					return false
+				}
+				return true
+			});
+			if(!deleteBookIdList.length) return false;
+			const data = {
+				bookIds:deleteBookIdList.join(',')
+			}
+			axios.post('/apis/0.1/User/DelSelf.php',qs.stringify(data)).then(res=>{
+				this.readList = newReadList
+			})
 		}
 	},
 	created() {

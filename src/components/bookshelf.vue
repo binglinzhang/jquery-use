@@ -13,10 +13,9 @@
         </div>
 	  </link-head>
     <div class="container">
-	  <keep-alive>
-		<router-view></router-view>
-	  </keep-alive>
-
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </div>
 
     </div>
@@ -47,6 +46,8 @@ export default {
 @import url('../common/color.less');
 .container .content {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 .recent-reading .toolbar {
   height: 0.44rem;
@@ -78,6 +79,9 @@ export default {
 
 .recent-reading .content a {
   display: block;
+  width: 6.4rem;
+  flex-shrink: 0;
+  overflow-x: hidden
 }
 
 .recent-reading .content .img {
@@ -92,7 +96,7 @@ export default {
 
 .recent-reading .content .info {
   float: left;
-  width: 5.7rem;
+  width: 5.0rem;
   margin-left: 0.2rem;
 }
 
@@ -106,13 +110,9 @@ export default {
 }
 
 .recent-reading .content span.deleteBox {
-    position: absolute;
     width: 0.8rem;
-    right: 0.2rem;
-    top: 50%;
     text-align: center;
     font-size: 0.24rem;
-    transform: translateY(-50%);
     color: @mainColor;
 }
 
