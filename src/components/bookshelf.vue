@@ -44,28 +44,28 @@ export default {
 
 <style lang="less">
 @import url('../common/color.less');
-.container .content {
+.bookshelf .container .content {
   position: relative;
   display: flex;
   align-items: center;
 }
-.recent-reading .toolbar {
+.bookshelf .toolbar {
   height: 0.44rem;
   padding: 0 0.2rem;
   margin-top: 0.2rem;
 }
 
-.recent-reading .toolbar .left {
+.bookshelf .toolbar .left {
   float: left;
   width: 2rem;
   line-height: 0.44rem;
 }
 
-.recent-reading .toolbar .right {
+.bookshelf .toolbar .right {
   float: right;
 }
 
-.recent-reading .toolbar .right a {
+.bookshelf .toolbar .right a {
   display: table-cell;
   width: 0.8rem;
   height: 0.4rem;
@@ -77,46 +77,46 @@ export default {
   border-radius: 0.05rem;
 }
 
-.recent-reading .content a {
+.bookshelf .content a {
   display: block;
   width: 6.4rem;
   flex-shrink: 0;
   overflow-x: hidden
 }
 
-.recent-reading .content .img {
+.bookshelf .content .img {
   float: left;
   width: 1.2rem;
 }
 
-.recent-reading .content .img img {
+.bookshelf .content .img img {
   width: 1.2rem;
   height: 1.6rem;
 }
 
-.recent-reading .content .info {
+.bookshelf .content .info {
   float: left;
   width: 5.0rem;
   margin-left: 0.2rem;
 }
 
-.recent-reading .content .info h2 {
+.bookshelf .content .info h2 {
   font-size: 0.3rem;
 }
 
-.recent-reading .content .info p {
+.bookshelf .content .info p {
   margin-top: 0.2rem;
   color: #999;
 }
 
-.recent-reading .content span.deleteBox {
+.bookshelf .content span.deleteBox {
     width: 0.8rem;
     text-align: center;
     font-size: 0.24rem;
     color: @mainColor;
 }
 
-.recent-reading .content span i {
+.bookshelf .content span i {
   font-size: 0.32rem;
 }
 </style>

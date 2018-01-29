@@ -137,19 +137,13 @@ export default {
 				.then(res => {
 					if (res.data.code == 200) {
 						this.$modal.show("dialog", {
-							text: "注册成功",
+							text: "注册成功，已自动登录",
 							buttons: [
 								{
-									title: "关闭",
-									handler: () => {
-										this.$modal.hide("dialog");
-									}
-								},
-								{
-									title: "去登录",
+									title: "确定",
 									default: true,
 									handler: () => {
-										this.$router.push({name:'login'})
+										this.$router.push({name:'/'})
 									}
 								}
 							]

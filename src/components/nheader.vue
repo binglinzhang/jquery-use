@@ -4,11 +4,11 @@
             <img src="../assets/logo.png">
         </div>
         <div class="search" @click="$router.push('/search')">
-            <div class="sear-btn" style="width: 3.5rem;">输入书名/书号/作者</div>
+            <div class="sear-btn" style="width: 3.5rem;">输入书名</div>
         </div>
         <div class="sign">
             <router-link class="to-sign" to="/sign">
-            	<i class="fa fa-edit"></i> {{sign.isSigned==0?'签到':'已签'}}
+            	<i class="fa fa-edit"></i> {{sign.isSigned==1?'已签':'签到'}}
 			</router-link>
         </div>
     </header>

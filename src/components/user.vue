@@ -22,7 +22,7 @@
       </div>
       <div class="container">
         <div class="content">
-          <a href="https://trade.yyread.com/v1.0/index">
+          <a href="/recharge.html">
             <span class="fa fa-credit-card"></span> 快速充值
             <b></b>
             <i class="fa fa-angle-right  arrow"></i>

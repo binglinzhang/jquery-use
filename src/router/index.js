@@ -94,16 +94,24 @@ export default new Router({
 			component: () => import("../components/sign_up.vue")
 		},
 		{
-			path: "/recharge_record",
+			path: "/money_record",
 			name: "money_record",
 			component: () => import("../components/money_record.vue"),
-			meta:{requireLogin:true,aimTab:'recharge'}
-		},
-		{
-			path: "/pay_record",
-			name: "money_record",
-			component: () => import("../components/money_record.vue"),
-			meta:{requireLogin:true,aimTab:'pay'}
+			redirect:'/recharge_record',
+			children:[
+				{
+					path:'/recharge_record',
+					name:'recharge_record',
+					component:()=>import('../components/recharge_record.vue'),
+					meta:{requireLogin:true},
+				},
+				{
+					path:'/pay_record',
+					name:'pay_record',
+					component:()=>import('../components/pay_record.vue'),
+					meta:{requireLogin:true},
+				},
+			]
 		},
 		{
 			path: "/book_ticket",

@@ -9,7 +9,7 @@ import VModal from "vue-js-modal";
 import { Button, Input, Container,Form,FormItem,Checkbox} from "element-ui";
 import Navigation from "vue-navigation";
 
-
+import './common/setChannel.js'  //判断注册来源，写到cookie
 import "./assets/rem.js";
 import "./common/vue_common.js";
 import "!style-loader!css-loader!less-loader!./common/common.less";
@@ -17,6 +17,7 @@ import "./common/vue_transition.css";
 import "./assets/font-awesome.min.css";
 import "swiper/dist/css/swiper.css";
 
+Vue.config.productionTip = false;
 
 Vue.use(Button);
 Vue.use(Input);
@@ -24,17 +25,7 @@ Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Container);
 Vue.use(Checkbox);
-
-new Vue({
-	el: "#app",
-	router,
-	template: "<App/>",
-	components: { App }
-});
-
 Vue.use(Navigation, { router });
-
-Vue.config.productionTip = false;
 Vue.use(VueAwesomeSwiper /* { default global options } */);
 Vue.use(VueLazyload, {
 	lazyComponent: true
@@ -51,8 +42,17 @@ router.beforeEach((to, from, next) => {
 					"/#" +
 					to.path
 			);
+			console.log('路由首位');
 			next({name:'login',query:{backurl}});
 		}
 	}
 	next();
+});
+
+
+new Vue({
+	el: "#app",
+	router,
+	template: "<App/>",
+	components: { App }
 });

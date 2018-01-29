@@ -27,6 +27,7 @@ export default {
 			  this.$userInfo.isLogin = true;
 			  this.$userInfo.userId = uid;
 		  }
+		  console.log('登录检验')
 	  },
 	  //如果是在微信环境，则会自动登录，如果用户退出登录，从此不在微信内自动登录
 	  weixinAutoLogin(){
