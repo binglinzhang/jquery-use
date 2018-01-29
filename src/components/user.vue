@@ -9,7 +9,7 @@
             <img :src="userInfo.im">
           </div>
           <div class="user-name">
-            <p>{{userInfo.username}}
+            <p>{{userInfo.nicker}}
               <i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:userInfo.overtime==1}" style="font-size:14px"></i>
             </p>
             <p>ID {{userInfo.uid}}</p>
@@ -47,13 +47,13 @@
           </router-link>
         </div>
         <div class="content">
-          <router-link to="/money_record">
+          <router-link to="/recharge_record">
             <i class="iconfont icon-consumption preIcon"></i> 充值记录
             <i class="fa fa-angle-right  arrow"></i>
           </router-link>
         </div>
         <div class="content">
-          <router-link to="/money_record">
+          <router-link to="/pay_record">
             <i class="iconfont icon-xiaofei01 preIcon"></i> 消费记录
             <i class="fa fa-angle-right arrow"></i>
           </router-link>

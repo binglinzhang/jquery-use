@@ -75,14 +75,15 @@ export default {
 			if(res.data.data.status==1){
 				let todady = new Date().getDate();
 				this.signDialogFlag = true;
-				this.sign.hasSigned.push(todady)
+        this.sign.hasSigned.push(todady);
+        this.sign.isSigned = true
 			}
 		  })
 	  },
 	  turnToMonth(month){
-		axios.get(`/apis/0.1/User/sign_record.php?date=${month}`).then(res=>{
-			this.sign = res.data.data;
-	    })
+      axios.get(`/apis/0.1/User/sign_record.php?date=${month}`).then(res=>{
+        this.sign = res.data.data;
+      })
 	  }
   },
   created(){

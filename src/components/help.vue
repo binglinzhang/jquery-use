@@ -9,7 +9,7 @@
 		<transition name="fadeTab">
 			<div class="common-question" v-show="activeTabFlag==0">
 				<ul>
-					<li class="content" v-for="(item,index) in problemsList">
+					<li class="content" v-for="(item,index) in problemsList" :class="{active:problemActiveIndex==index}" @click="problemActiveIndex=index">
 						<div class="cq-title">
 							<span>{{index+1 +'. '+item.title}}</span>
 						</div>
@@ -21,46 +21,15 @@
 			</div>
 		</transition>
 		<transition name="fadeTab">
-			<div class="reader-help" v-show="activeTabFlag==1">
+			<div class="common-question reader-help " v-show="activeTabFlag==1">
 				<ul>
-					<li>
-						<a>充值:</a>
-						<ul>
-							<li class="content" v-for="(item,index) in helpList">
-								<div class="rh-title">
-									<span>{{index+1 +'. '+item.title}}</span>
-								</div>
-								<div class="rh-content">
-									{{item.content}}
-								</div>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<a>订阅:</a>
-						<ul>
-							<li class="content">
-							<div class="rh-title">
-								<span>1.为什么我无法阅读VIP章节？</span>
-							</div>
-							<div class="rh-content">
-								VIP章节需要订阅后才能阅读。充值后，选择您要看的VIP章节并按提示支付阅路小说网币，随后即可阅读。
-							</div>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<a>书券:</a>
-						<ul>
-							<li class="content">
-								<div class="rh-title">
-									<span>1、什么是书券？</span>
-								</div>
-								<div class="rh-content">
-									答：书券是阅路小说网网新增的一种虚拟币，与阅路小说网币等值，可用于VIP章节订阅。
-								</div>
-							</li>
-						</ul>
+					<li class="content" v-for="(item,index) in helpList" :class="{active:helpActiveIndex==index}" @click="helpActiveIndex=index">
+						<div class="cq-title">
+							<span>{{index+1 +'. '+item.title}}</span>
+						</div>
+						<div class="cq-content">
+							{{item.content}}
+						</div>
 					</li>
 				</ul>
 			</div>
@@ -75,6 +44,8 @@ export default {
 	name:'help',
 	data(){
 		return{
+			problemActiveIndex:0,
+			helpActiveIndex:0,
 			activeTabFlag:0,
 			problemsList:[
 				{title:'阅路小说网手机站账号可以通用吗？',content:'可以。阅路小说网主站和手机站已经实现了账户互通。如果您已在主站注册账号，则无需在手机站再次注册，充值、订阅、收藏完完本'},
@@ -96,6 +67,9 @@ export default {
 	},
 	components:{
 		linkHead
+	},
+	methods:{
+
 	}
 }
 </script>
@@ -119,10 +93,11 @@ export default {
 }
 .common-question .content .cq-content{
   -webkit-transition: max-height 300ms ease;
-  transition: max-height 300ms ease;
+  transition: max-height 400ms ease;
 }
 .common-question .active .cq-content{
-  max-height: 3rem;
+	max-height: 3rem;
+	transition: max-height .2;
 }
 
 .reader-help a {

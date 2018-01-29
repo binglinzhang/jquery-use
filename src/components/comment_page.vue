@@ -87,7 +87,7 @@ export default {
 	init(){
 		axios
 		.get(
-			"/apis/0.1/Commit/Commit.php?bookId=229&cId=1821"
+			`/apis/0.1/Commit/Commit.php?bookId=${this.$route.query.bookId}&cId=${this.$route.query.cId}`
 		)
 		.then(res => {
 			let obj = res.data.data.reviewer;

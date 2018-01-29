@@ -51,17 +51,19 @@ export default new Router({
 			name: "bookshelf",
 			component: () => import("../components/bookshelf.vue"),
 			redirect:'/recent_reading',
+			meta:{requireLogin:true},
 			children:[
 				{
 					path: "/recent_reading",
 					name: "recent_reading",
 					component: () => import("../components/recent_reading.vue"),
-
+					meta:{requireLogin:true},
 				},
 				{
 					path: "/book_save",
 					name: "book_save",
-					component: () => import("../components/book_save.vue")
+					component: () => import("../components/book_save.vue"),
+					meta:{requireLogin:true},
 				},
 			]
 		},
@@ -92,9 +94,16 @@ export default new Router({
 			component: () => import("../components/sign_up.vue")
 		},
 		{
-			path: "/money_record",
+			path: "/recharge_record",
 			name: "money_record",
-			component: () => import("../components/money_record.vue")
+			component: () => import("../components/money_record.vue"),
+			meta:{requireLogin:true,aimTab:'recharge'}
+		},
+		{
+			path: "/pay_record",
+			name: "money_record",
+			component: () => import("../components/money_record.vue"),
+			meta:{requireLogin:true,aimTab:'pay'}
 		},
 		{
 			path: "/book_ticket",
