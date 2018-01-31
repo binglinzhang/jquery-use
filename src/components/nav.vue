@@ -29,10 +29,10 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link to="/">
+                    <a href="/recharge.html#/r_common">
                         <span></span>
                         充值
-                    </router-link>
+                    </a>
                 </li>
                 <li>
                     <router-link to="/user">

@@ -43,13 +43,17 @@ export default {
 	};
   },
   methods:{
-
+	  init(){
+		let queryObj = parseUrlQuery(window.location.hash);
+		this.price = Number(queryObj.price)/100;
+		this.bookname = queryObj.bookname;
+		axios.get('/apis/0.1/User/UserInfo.php').then(res=>{
+			this.nickname = res.data.data.nicker;
+		})
+	  }
   },
   created(){
-	  let queryObj = parseUrlQuery(window.location.hash);
-	  this.price = queryObj.price;
-	  this.bookname = queryObj.bookname;
-	  this.nickname = queryObj.nickname;
+	  this.init()
   }
 };
 </script>
@@ -62,4 +66,3 @@ export default {
 	}
 }
 </style>
-

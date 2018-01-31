@@ -114,7 +114,9 @@ export default {
       return urlArgArr.join("&");
     },
     labelSelect(index, childIndex) {
-      this.activeFlag[index] = childIndex;
+	  if(this.activeFlag[index] == childIndex) return
+	  this.activeFlag[index] = childIndex;
+	  this.books = [];
       axios
         .get(
           `/apis/0.1/Library.php?${this.getRequestUrl()}`

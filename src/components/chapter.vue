@@ -176,11 +176,11 @@ export default {
 			);
 		},
 		buyChapter() {
-			if(!this.collectedStatusChangeisMoneyEnough){
+			if(!this.isMoneyEnough){
 				if(this.charge_mode==2){
-					window.location.href = `/recharge.html#/r_book?price=${this.chapter.price}&bookname=${this.bookname}&nickname=${this.nickname}`
+					window.location.href = `/recharge.html#/r_book?price=${this.chapter.price}&bookname=${this.bookname}`
 				}else if(this.charge_mode==3){
-					window.location.href = `/recharge.html#/r_common?lesscoin=${this.lessBookCoin}&nickname=${this.nickname}`
+					window.location.href = `/recharge.html#/r_common`
 				}
 				return
 			}

@@ -4,7 +4,9 @@
 			<div class="content">
 				<p>充值账号：{{nickname}}</p>
 				<p>账户余额：
-					<span>{{lessCoin}}</span> {{$config.coinName}}</p>
+					<span>{{lessCoin}}</span> {{$config.coinName}}
+					<span style="margin-left:20px">{{lessCoin}}</span> 书券
+				</p>
 			</div>
 		</div>
 		<div class="container online-pay">
@@ -13,10 +15,17 @@
 					<span>（1元=100{{$config.coinName}}）</span>
 				</h2>
 				<div class="money">
-					<label v-for="(item,index) in payChoose" :class="{active:index==activeIndex}" @click="activeIndex=index">
-						<input name="money" hidden="hidden" value="50">
-						<span>{{item.spend}}元</span>
-						<br> {{item.get}}{{$config.coinName}}
+					<label v-for="(item,index) in payChoose.egold" :class="{active:activeIndex==index}" @click="activeIndex=index">
+						<p>{{item.cost}}元</p>
+						<p class="get">{{item.egold}}<span>+{{item.coin}}</span></p>
+						<p>{{$config.coinName}}</p>
+					</label>
+					<label
+						v-for="(item,index) in payChoose.month"
+						:class="{active:activeIndex==index+payChoose.egold.length}"
+						@click="activeIndex=index+payChoose.egold.length">
+						<p>{{item.cost}}元</p>
+						<p>包月：{{item.month}}个月</p>
 					</label>
 				</div>
 				<h2>选择支付方式</h2>
@@ -46,23 +55,25 @@ export default {
   data() {
     return {
 		payType:'zfb',
-		payChoose:[
-			{spend:30,get:30},
-			{spend:50,get:50},
-			{spend:60,get:60},
-			{spend:80,get:80},
-			{spend:100,get:100}
-		],
+		payChoose:{
+			egold:[],
+			month:[]
+		},
 		activeIndex:0,
 		lessCoin:null,
-		nickname:null
+		nickname:null,
+		lessTicket:null
 	};
   },
-
   created(){
-	  let queryObj = parseUrlQuery(window.location.hash);
-	  this.nickname = queryObj.nickname;
-	  this.lessCoin = queryObj.lesscoin;
+	  axios.get('/apis/0.1/User/UserInfo.php').then(res=>{
+		  this.nickname = res.data.data.nicker;
+		  this.lessCoin = res.data.data.amount;
+		  this.lessTicket = res.data.data.coin;
+	  });
+	  axios.get('/apis/0.1/Pay/PayConfigs.php').then(res=>{
+		  this.payChoose = res.data.data;
+	  })
   }
 };
 </script>

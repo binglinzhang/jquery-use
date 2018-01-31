@@ -44,7 +44,7 @@ export default {
 	},
 	methods:{
 		loadMore(){
-			axios.get(`/apis/0.1/User/Usercoin.php${++page}`).then(res=>{
+			axios.get(`/apis/0.1/User/Usercoin.php?page=${++this.page}`).then(res=>{
 				this.ticketList.push(...res.data.data.data);
 				this.page = res.data.data.page;
 				this.pageCount = res.data.data.pageCount;
