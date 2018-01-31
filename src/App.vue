@@ -8,7 +8,7 @@
 
 <script>
 import Vue from 'vue'
-import {isWeiXin,getCookie,setCookie} from './common/common_fn'
+import {isWeiXin,getCookie,setCookie} from './common/function'
 import axios from 'axios'
 import wx from 'weixin-js-sdk'
 export default {
@@ -27,7 +27,6 @@ export default {
 			  this.$userInfo.isLogin = true;
 			  this.$userInfo.userId = uid;
 		  }
-		  console.log('登录检验')
 	  },
 	  //如果是在微信环境，则会自动登录，如果用户退出登录，从此不在微信内自动登录
 	  weixinAutoLogin(){

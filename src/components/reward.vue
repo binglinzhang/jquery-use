@@ -16,7 +16,7 @@
           <span class="round"></span>
           <span>{{reward[activeFlag].label}}</span>
           <div class="cnt_btn">
-            <button class="btn" @click="rewardCheck">打赏作者：{{reward[activeFlag].price}}书币</button>
+            <button class="btn" @click="rewardCheck">打赏作者：{{reward[activeFlag].price+$config.coinName}}</button>
           </div>
         </div>
         <v-dialog width="80%"/>

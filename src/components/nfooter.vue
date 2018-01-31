@@ -5,15 +5,15 @@
 				<router-link to="/">首页</router-link>
 				<router-link to="/library">书库</router-link>
 				<router-link to="/search">搜索</router-link>
-				<router-link to="/recharge">充值</router-link>
+				<a href="recharge.html#/r_common">充值</a>
 			</div>
 			<div class="context">
 			<img src="../assets/rcode.jpg">
 			<p>
 				<span class="qq">
-				<i class="fa fa-qq"></i>&nbsp;&nbsp;848696001</span>
+				<i class="fa fa-qq"></i>&nbsp;&nbsp;{{$config.qq}}</span>
 				<span class="tel">
-				<i class="fa fa-phone"></i>&nbsp;&nbsp;17682489611</span>
+				<i class="fa fa-phone"></i>&nbsp;&nbsp;{{$config.telephone}}</span>
 			</p>
 			<p>京ICP备16043940号-3</p>
 			<p>北京太和凯旋信息技术有限公司</p>

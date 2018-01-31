@@ -1,5 +1,3 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from "vue";
 import App from "./App";
 import router from "./router";
@@ -8,6 +6,7 @@ import VueLazyload from "vue-lazyload";
 import VModal from "vue-js-modal";
 import { Button, Input, Container,Form,FormItem,Checkbox} from "element-ui";
 import Navigation from "vue-navigation";
+import {getCookie} from './common/function'
 
 import './common/setChannel.js'  //判断注册来源，写到cookie
 import "./assets/rem.js";
@@ -16,6 +15,7 @@ import "!style-loader!css-loader!less-loader!./common/common.less";
 import "./common/vue_transition.css";
 import "./assets/font-awesome.min.css";
 import "swiper/dist/css/swiper.css";
+
 
 Vue.config.productionTip = false;
 
@@ -31,6 +31,17 @@ Vue.use(VueLazyload, {
 	lazyComponent: true
 });
 Vue.use(VModal, { dialog: true });
+
+
+checkLogin();
+function checkLogin(){
+	const uidCookieName = 'uid';
+	const uid = getCookie(uidCookieName);
+	if(uid){
+		Vue.prototype.$userInfo.isLogin = true;
+		Vue.prototype.$userInfo.userId = uid;
+	}
+}
 
 router.beforeEach((to, from, next) => {
 	if (to.meta.requireLogin) {

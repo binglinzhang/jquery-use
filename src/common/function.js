@@ -26,4 +26,18 @@ function delCookie(name) {
 	setCookie(name, "", -1);
 }
 
-export { isWeiXin, setCookie, getCookie, delCookie };
+function parseUrlQuery(hash) {
+	let queryArr = hash
+		.match(/\?.+=.+/)[0]
+		.slice(1)
+		.split("&");
+	let parseResult = {};
+	queryArr.forEach(item => {
+		let arr = item.split("=");
+		parseResult[arr[0]] = arr[1];
+	});
+	console.log(parseResult);
+	return parseResult;
+}
+
+export { isWeiXin, setCookie, getCookie, delCookie , parseUrlQuery };

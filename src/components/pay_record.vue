@@ -2,9 +2,9 @@
 	<div class="recharge">
 		<div class="no-notes" v-if="!recordList.length">暂无充值记录</div>
 		<div class="content" v-for="item in recordList">
-		<span class="mainColor">{{item.price+item.coin_type}}</span>
-		<span>{{item.type}}</span>
-		<span class="time">{{item.create_time}}</span>
+			<span class="mainColor">{{item.price+item.coin_type}}</span>
+			<span>{{item.type}}</span>
+			<span class="time">{{item.create_time}}</span>
 		</div>
 		<div class="more" v-if='page<pageCount' @click="loadMore">加载更多</div>
 	</div>
@@ -19,13 +19,7 @@ export default {
 	data() {
 		return {
 			recordList: [
-				{
-					// id: 172546,
-					// type: '章节购买',
-					// price: 11,
-					// create_time: '2018-12-02 01:22:22',
-					// coin_type: '书币'
-				}
+
 			],
 			page: 0,
 			pageCount: 0,

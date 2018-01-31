@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import config from './config'
 /* 公共模块 */
 Vue.filter('statusFilter',(val)=>{
 	return val==0?'已完结':'连载中'
@@ -11,6 +12,13 @@ Vue.prototype.$userInfo = {
 	userName:'',
 	userId:"",
 	isWeiXinFun:false,
+}
+
+Vue.prototype.$config = {
+	coinName:config.coinName,
+	webName:config.webName,
+	telephone:config.telephone,
+	qq:config.qq
 }
 
 Vue.prototype.$turnToLogin = function(alertText,backPathName){

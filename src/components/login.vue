@@ -53,7 +53,7 @@
 <script>
 import linkHead from './link_header.vue'
 import nFooter from './nfooter.vue'
-import {isWeiXin} from '../common/common_fn.js'
+import {isWeiXin} from '../common/function.js'
 import axios from 'axios'
 import qs from 'qs'
 export default {

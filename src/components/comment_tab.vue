@@ -70,7 +70,6 @@ export default {
   },
   created() {
 	  this.init();
-		console.log(this.bookId)
   },
   methods: {
     resDataHanddle(res) {

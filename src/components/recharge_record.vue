@@ -2,7 +2,7 @@
 	<div class="recharge">
 		<div class="no-notes" v-if="!recordList.length">暂无充值记录</div>
 		<div class="content" v-for="item in recordList">
-		<span>{{item.amount}}书币</span>
+		<span>{{item.amount+$config.coinName}}</span>
 		<span>{{item.description}}</span>
 		<span style="color: rgb(221, 75, 57);">{{item.notify}}</span>
 		<span class="time">{{item.createtime}}</span>
@@ -19,7 +19,7 @@ export default {
 	name: "money_record",
 	data() {
 		return {
-			recordList: [{}],
+			recordList: [],
 			page: 0,
 			pageCount: 0,
 			requestUrl: null

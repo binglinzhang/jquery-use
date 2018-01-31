@@ -16,13 +16,13 @@
           </div>
         </div>
         <div class="user-money">
-            <div class="left"><span>书币:</span><span class="num">{{userInfo.amount}}</span></div>
+            <div class="left"><span>{{$config.coinName}}:</span><span class="num">{{userInfo.amount}}</span></div>
             <div class="right"><span>书券:</span><span class="num">{{userInfo.coin}}</span></div>
         </div>
       </div>
       <div class="container">
         <div class="content">
-          <a href="/recharge.html">
+          <a href="/recharge.html#/r_common">
             <span class="fa fa-credit-card"></span> 快速充值
             <b></b>
             <i class="fa fa-angle-right  arrow"></i>
@@ -75,7 +75,7 @@
 <script>
 import linkHead from './link_header.vue'
 import axios from 'axios'
-import {isWeiXin,setCookie} from '../common/common_fn'
+import {isWeiXin,setCookie} from '../common/function'
 export default {
   name: "user",
   data() {
@@ -122,7 +122,6 @@ export default {
    .user .user-info {
       height: 3.6rem;
 	  background-color: lighten(@mainColor,30%);
-	//   border-bottom: 10px solid #f5f5f5;
     }
 
     .user .user-info .user-detail {
