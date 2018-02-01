@@ -168,7 +168,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url("../common/color.less");
+@import url("../common/mixin.less");
 .login-container {
 	background-color: #f7f7f7;
 }

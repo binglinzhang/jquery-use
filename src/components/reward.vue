@@ -117,7 +117,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("../common/color.less");
+@import url("../common/mixin.less");
 .reward {
 	overflow: hidden;
 	margin-bottom: 0.4rem;

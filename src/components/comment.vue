@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('../common/color.less');
+@import url('../common/mixin.less');
 .comment {
   margin-top: 0.4rem;
 }

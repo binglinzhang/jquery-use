@@ -62,7 +62,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("../common/color.less");
+@import url("../common/mixin.less");
 @grayColor:#a5a5a5;
 .bookTicketContainer{
 	.more{

@@ -26,7 +26,7 @@
 						</div> <!---->
 					</div>
 
-					<el-button type="primary" style="width:80%;margin:0 auto;display:block" @click.stop.native="buyChapter">
+					<el-button type="primary" plain style="width:80%;margin:0 auto;display:block" @click.stop.native="buyChapter">
 						{{isMoneyEnough?'立刻购买':'立即充值'}}
 					</el-button>
 				</div>
@@ -223,7 +223,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("../common/color.less");
+@import url("../common/mixin.less");
 .relative-recommend p i {
 	color: lighten(@mainColor, 6%);
 }

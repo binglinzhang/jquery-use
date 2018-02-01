@@ -88,5 +88,5 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url("../common/color.less");
+@import url("../common/mixin.less");
 </style>

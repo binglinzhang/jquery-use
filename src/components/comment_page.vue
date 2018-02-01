@@ -155,7 +155,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('../common/color.less');
+@import url('../common/mixin.less');
 .comment-info .comment {
   min-height: 8rem;
 }

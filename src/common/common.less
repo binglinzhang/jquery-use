@@ -1,4 +1,4 @@
-@import url('../common/color.less');
+@import url('../common/mixin.less');
 body,
 dd,
 dl,
@@ -153,7 +153,7 @@ a {
 }
 .comment .comment-box {
   padding: 0.3rem;
-  background-color: #fff2f2;
+  background-color: lighten(@mainColor,30%);
   border-radius: 0.1rem;
 }
 .comment .comment-box .comment-input {
@@ -305,7 +305,7 @@ a {
 }
 header {
   width: 7.5rem;
-  height: 0.9rem;
+  height: @headerHeight;
   border-bottom: 0.03rem solid #ebebeb;
 }
 header .left {
@@ -316,7 +316,7 @@ header .center,
 header .left {
   float: left;
   text-align: center;
-  line-height: 0.9rem;
+  line-height: @headerHeight;
 }
 header .center {
   width: 5.7rem;
@@ -326,7 +326,7 @@ header .right {
   width: 0.9rem;
   text-align: center;
   font-size: 0.4rem;
-  line-height: 0.9rem;
+  line-height: @headerHeight;
 }
 header .center .switch-tab {
   width: 3.24rem;

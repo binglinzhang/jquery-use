@@ -17,15 +17,16 @@
 				<div class="money">
 					<label v-for="(item,index) in payChoose.egold" :class="{active:activeIndex==index}" @click="activeIndex=index">
 						<p>{{item.cost}}元</p>
-						<p class="get">{{item.egold}}<span>+{{item.coin}}</span></p>
-						<p>{{$config.coinName}}</p>
+						<p>{{item.egold+$config.coinName}}</p>
+						<p v-if="Number(item.coin)"><span>赠送{{item.coin}}</span>书券</p>
 					</label>
 					<label
 						v-for="(item,index) in payChoose.month"
 						:class="{active:activeIndex==index+payChoose.egold.length}"
 						@click="activeIndex=index+payChoose.egold.length">
+						<p>畅读会员</p>
 						<p>{{item.cost}}元</p>
-						<p>包月：{{item.month}}个月</p>
+						<p>{{item.month}}个月</p>
 					</label>
 				</div>
 				<h2>选择支付方式</h2>
@@ -79,7 +80,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('../common/color.less');
+@import url('../common/mixin.less');
 .submitBtn{
 	a{
 		background-color: @mainColor;

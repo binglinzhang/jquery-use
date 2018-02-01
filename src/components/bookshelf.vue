@@ -43,7 +43,7 @@ export default {
 </script>
 
 <style lang="less">
-@import url('../common/color.less');
+@import url('../common/mixin.less');
 .bookshelf .container .content {
   position: relative;
   display: flex;

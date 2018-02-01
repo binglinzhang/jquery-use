@@ -174,7 +174,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("../common/color.less");
+@import url("../common/mixin.less");
 .help-center .tabs a {
 	margin: 0 0.5rem;
 }

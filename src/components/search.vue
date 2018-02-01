@@ -75,7 +75,7 @@ export default {
 </script>
 
 <style lang="less">
-@import url("../common/color.less");
+@import url("../common/mixin.less");
 .search-page .search-box {
 	height: 0.6rem;
 	margin-top: 0.3rem;

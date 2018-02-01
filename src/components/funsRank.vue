@@ -1,7 +1,7 @@
 <template>
     <div class="container fans-ranking">
         <h1>
-          <span style="color: rgb(255, 96, 96);">粉丝榜</span>
+          <span class="mainColor">粉丝榜</span>
         </h1>
         <div class="content" style="max-height: 3.28rem;" :class="{maxHeightAuto:maxHeightFlag}">
           <ul>
@@ -54,7 +54,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('../common/color.less');
+@import url('../common/mixin.less');
 .maxHeightAuto{
     max-height:7rem!important
 }

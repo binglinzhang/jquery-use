@@ -18,8 +18,8 @@
       <div class="contractBar" @click="showToggle">
         <i class="iconfont" :class="[isShowAll?'icon-xiangshangjiantou':'icon-xiangxiajiantou']"></i>
       </div>
-      <div class="container">
-        <div class="no-notes" v-show="books.length<1">亲，没有相关书籍哦！— ^_^</div>
+      <div class="container" v-loading='loading'>
+        <div class="no-notes" v-show="books.length<1&&!loading">亲，没有相关书籍哦！— ^_^</div>
         <div class="content" v-for="item in books">
           <router-link :to="{name:'book',query:{bookId:item.bookId}}">
             <div class="img">
@@ -35,7 +35,7 @@
             </div>
           </router-link>
         </div>
-        <div class="more" v-show="page<pageCount" @click="loadMore">加载更多&gt;&gt;</div>
+        <div class="more" v-show="page<pageCount&&!loadMoreLoading" @click="loadMore" v-loading='loadMoreLoading'>加载更多&gt;&gt;</div>
       </div>
       <n-footer></n-footer>
     </div>
@@ -48,7 +48,9 @@ import axios from "axios";
 export default {
   data() {
     return {
-      isShowAll:false,
+	  isShowAll:false,
+	  loading:false,
+	  loadMoreLoading:false,
       configArr: [
         {
           title: "分类",
@@ -115,6 +117,7 @@ export default {
     },
     labelSelect(index, childIndex) {
 	  if(this.activeFlag[index] == childIndex) return
+	  this.loading = true;
 	  this.activeFlag[index] = childIndex;
 	  this.books = [];
       axios
@@ -124,19 +127,22 @@ export default {
         .then(res => {
           this.books = res.data.data.books;
           this.page = res.data.data.page;
-          this.pageCount = res.data.data.pageCount;
+		  this.pageCount = res.data.data.pageCount;
+		  this.loading = false
         });
     },
     showToggle(){
       this.isShowAll = !this.isShowAll
     },
     loadMore() {
+	  this.loadMoreLoading = true;
       axios
         .get(
           `/apis/0.1/Library.php?${this.getRequestUrl()}&page=${++this.page}`
         )
         .then(res => {
-          this.books.push(...res.data.data.books);
+		  this.books.push(...res.data.data.books);
+		  //this.loadMoreLoading = false
         });
     }
   },
@@ -155,7 +161,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("../common/color.less");
+@import url("../common/mixin.less");
 .library .search-box {
   height: 0.64rem;
   margin-top: 0.3rem;
@@ -227,6 +233,7 @@ export default {
 
 .library .container {
   margin-top: 0.2rem;
+  min-height: 3rem;
 }
 
 .library .container .content {

@@ -10,7 +10,7 @@
           </div>
           <div class="user-name">
             <p>{{userInfo.nicker}}
-              <i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:userInfo.overtime==1}" style="font-size:14px"></i>
+              <i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:userInfo.overtime==1}" style="font-size:14px;margin-left:6px"></i>
             </p>
             <p>ID {{userInfo.uid}}</p>
           </div>
@@ -87,10 +87,7 @@ export default {
 			uid:null,
 			amount:null,
 			coin:null
-		},
-		backurl:(function(){
-			return escape('//'+window.location.host)
-		})()
+		}
     }
   },
   components:{
@@ -118,7 +115,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('../common/color.less');
+@import url('../common/mixin.less');
    .user .user-info {
       height: 3.6rem;
 	  background-color: lighten(@mainColor,30%);

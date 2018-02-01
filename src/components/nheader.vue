@@ -32,7 +32,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('../common/color.less');
+@import url('../common/mixin.less');
 header .logo {
   float: left;
   width: 1.6rem;

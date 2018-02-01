@@ -123,7 +123,7 @@ export default {
 </script>
 
 <style scoped>
-@import url("../common/color.less");
+@import url("../common/mixin.less");
 .comment-info p a {
   color: #f39c12;
 }

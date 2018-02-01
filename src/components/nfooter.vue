@@ -35,7 +35,7 @@ export default {
 
 
 <style lang="less" scoped>
-@import url('../common/color.less');
+@import url('../common/mixin.less');
 footer {
   margin-top: .5rem;
   background-color: #1b222c;

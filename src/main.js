@@ -4,7 +4,7 @@ import router from "./router";
 import VueAwesomeSwiper from "vue-awesome-swiper";
 import VueLazyload from "vue-lazyload";
 import VModal from "vue-js-modal";
-import { Button, Input, Container,Form,FormItem,Checkbox} from "element-ui";
+import { Button, Input, Container,Form,FormItem,Checkbox,Loading} from "element-ui";
 import Navigation from "vue-navigation";
 import {getCookie} from './common/function'
 
@@ -25,6 +25,7 @@ Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Container);
 Vue.use(Checkbox);
+Vue.use(Loading);
 Vue.use(Navigation, { router });
 Vue.use(VueAwesomeSwiper /* { default global options } */);
 Vue.use(VueLazyload, {

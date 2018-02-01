@@ -95,7 +95,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('../common/color.less');
+@import url('../common/mixin.less');
 .sign-page .sign-container {
   padding: 0.2rem;
 }

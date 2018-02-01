@@ -142,7 +142,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('../common/color.less');
+@import url('../common/mixin.less');
+.rank .container{
+	min-height: 7rem;
+}
 .rank .tabs {
   margin-bottom: 0.2rem;
 }

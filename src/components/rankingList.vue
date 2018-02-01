@@ -15,7 +15,7 @@
 			</a>
 		</div>
 		<div class="content">
-			<dl class="top" v-for="(item,index) in activeRank">
+			<dl v-for="(item,index) in activeRank" :class="{top:index<3}">
 				<router-link :to="{name:'book',query:{bookId:item.bookId}}">
 					<span :class="{hot:index<3}">{{index<3?"":index+1}}</span>
 					<dt>{{item.name}}</dt>
@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('../common/color.less');
+@import url('../common/mixin.less');
 .ranking-list .button {
   height: 0.52rem;
   border-bottom: solid 0.02rem #f1f1f1;

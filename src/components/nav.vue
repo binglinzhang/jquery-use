@@ -23,7 +23,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link to="/bookshelf">
+                    <router-link to="/book_save">
                         <span></span>
                         书架
                     </router-link>
@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('../common/color.less');
+@import url('../common/mixin.less');
 .banner-box {
   height: 2.8rem;
   overflow: hidden;
