@@ -49,6 +49,7 @@
 			:activeSkin='activeSkin'
 			:iscollected='iscollected'
 			:fontSize='fontSize'
+			:isLoading = 'isLoading'
 			@collectedStatusChange='collectedStatusChange'
 			@fontSizeChange='fontSizeChange'
 			@nightFlagToggle='nightFlag=!nightFlag'

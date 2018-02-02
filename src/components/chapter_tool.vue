@@ -3,9 +3,16 @@
 		<transition name="slideTopToBottom">
 			<div class="read-content-header" v-show="menuSetFlag">
 				<i class="iconfont icon-i-left" style="color:white;font-size:18px;" @click="$router.go(-1)"></i>
-				<i class="fa fa-home" style="color:white;font-size:20px;margin-right:0.12rem" @click="$router.push('/')"></i>
+				<i class="iconfont icon-moreif" style="color:white;font-size:20px;margin-right:0.12rem" @click="otherListFlag=!otherListFlag"></i>
 			</div>
-			</transition>
+		</transition>
+		<div class="other-list" v-show="otherListFlag">
+			<ul>
+				<router-link tag="li" :to="{name:'book',query:{bookId:$route.query.bookId}}"><i class="iconfont icon-shuben"></i>书籍详情</router-link>
+				<router-link tag="li" to="/book_save"><i class="iconfont icon-books"></i>返回书架</router-link>
+				<router-link tag="li" to="/"><i class="iconfont icon-shouye"></i>返回首页</router-link>
+			</ul>
+		</div>
 		<transition name="slideRightToLeft">
 			<div class="read-join-shelf" v-show="menuSetFlag" @click="joinBookself">
 				<span>{{iscollected==2?'已在书架':'加入书架'}}</span>
@@ -83,36 +90,48 @@
 				</div>
 			</div>
 		</div>
+		<transition name="fade">
+			<div v-show="guildImgFlag&&!isLoading" @click="guildImgFlag=false"  class="guildImg">
+				<img src="../assets/updown.png" alt="" >
+			</div>
+		</transition>
+
+
 	</div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
-	name:'chapter_tool',
-	data(){
-		return{
+	name: "chapter_tool",
+	data() {
+		return {
 			contentSetFlag: false,
+			otherListFlag: false,
+			guildImgFlag: false
+		};
+	},
+	props: {
+		menuSetFlag: {
+			type: Boolean
+		},
+		nightFlag: {
+			type: Boolean
+		},
+		activeSkin: {
+			type: String
+		},
+		iscollected: {
+			type: Number
+		},
+		fontSize: {
+			type: Number
+		},
+		isLoading: {
+			type: Boolean
 		}
 	},
-	props:{
-		menuSetFlag:{
-			type:Boolean,
-		},
-		nightFlag:{
-			type:Boolean,
-		},
-		activeSkin:{
-			type:String,
-		},
-		iscollected:{
-			type:Number
-		},
-		fontSize:{
-			type:Number
-		}
-	},
-	methods:{
+	methods: {
 		joinBookself() {
 			if (!this.$userInfo.isLogin) {
 				this.$turnToLogin(
@@ -132,15 +151,23 @@ export default {
 				)
 				.then(res => {
 					if (res.data.status == 0) {
-						this.$emit('collectedStatusChange',2)
+						this.$emit("collectedStatusChange", 2);
 					}
 				});
 		},
+		showGuidPicture() {
+			if (localStorage.getItem("isFirstEnter") != "no") {
+				this.guildImgFlag = true;
+				localStorage.setItem("isFirstEnter", "no");
+				//setTimeout(()=>{ this.guildImgFlag = false; },2000)
+			}
+		}
 	},
 	watch: {
 		menuSetFlag(newOne, oldOne) {
 			if (!newOne) {
 				this.contentSetFlag = false;
+				this.otherListFlag = false;
 			}
 		},
 		fontSize(newOne, oldOne) {
@@ -153,10 +180,10 @@ export default {
 			localStorage.setItem("nightFlag", newOne ? 1 : 0);
 		}
 	},
-	created(){
-
+	created() {
+		this.showGuidPicture();
 	}
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -186,7 +213,7 @@ export default {
 	z-index: 99;
 	display: flex;
 	align-items: center;
-	padding:0 10px;
+	padding: 0 10px;
 	justify-content: space-between;
 }
 .read-content-set {
@@ -287,5 +314,41 @@ export default {
 	flex: 1;
 	text-align: center;
 }
+.guildImg {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 9999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0, 0, 0, 0.9);
+	img {
+		max-width: 100%;
+	}
+}
+.other-list {
+	position: fixed;
+	top: 40px;
+	background: #1e2027;
+	color: white;
+	right: 0;
+	z-index:9999;
+	padding: 5px 8px;
+	width: 200px;
+	li {
+		border-bottom: 1px solid #949598;
+		padding: 14px;
+		color: #c3c3c3;
+		&:last-child{
+			border-bottom:none
+		}
+		i{
+			font-size: 16px;
+			margin-right: 10px;
+		}
+	}
+}
 </style>
-
