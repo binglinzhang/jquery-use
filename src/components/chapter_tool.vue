@@ -2,7 +2,8 @@
 	<div>
 		<transition name="slideTopToBottom">
 			<div class="read-content-header" v-show="menuSetFlag">
-					<i class="iconfont icon-i-left" style="color:white;font-size:18px;" @click="$router.go(-1)"></i>
+				<i class="iconfont icon-i-left" style="color:white;font-size:18px;" @click="$router.go(-1)"></i>
+				<i class="fa fa-home" style="color:white;font-size:20px;margin-right:0.12rem" @click="$router.push('/')"></i>
 			</div>
 			</transition>
 		<transition name="slideRightToLeft">
@@ -161,7 +162,7 @@ export default {
 <style lang="less" scoped>
 .read-join-shelf {
 	position: fixed;
-	top: 50px;
+	top: 80px;
 	right: 0;
 	height: 30px;
 	width: 70px;
@@ -185,7 +186,8 @@ export default {
 	z-index: 99;
 	display: flex;
 	align-items: center;
-	padding-left: 10px;
+	padding:0 10px;
+	justify-content: space-between;
 }
 .read-content-set {
 	position: fixed;

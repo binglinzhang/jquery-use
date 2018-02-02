@@ -1,5 +1,5 @@
 <template>
-    <div class="chapter"  ref="content">
+    <div class="chapter"  ref="content" v-loading.fullscreen="isLoading">
         <section class="read-content" :class="[{onNight:nightFlag},activeSkin]">
             <div class="read-action-mid">
             </div>
@@ -54,7 +54,6 @@
 			@nightFlagToggle='nightFlag=!nightFlag'
 			@skinChange='skinChange'>
 		</tool-bar>
-		<img src="../assets/page_loading.gif" alt=""  class="loadingIcon" v-show="isLoading">
 
 		<v-dialog width="80%"></v-dialog>
     </div>
@@ -80,14 +79,17 @@ export default {
 			lessBookCoin: null,
 			lessBookTicket: null,
 			isAutoBuy: true,
-			charge_mode:null,
-			bookname:null,
-			nickname:null,
+			charge_mode: null,
+			bookname: null,
+			nickname: null
 		};
 	},
-	computed:{
-		isMoneyEnough(){
-			return this.lessBookCoin>this.chapter.price || this.lessBookTicket>this.chapter.price
+	computed: {
+		isMoneyEnough() {
+			return (
+				this.lessBookCoin > this.chapter.price ||
+				this.lessBookTicket > this.chapter.price
+			);
 		}
 	},
 	components: {
@@ -152,10 +154,14 @@ export default {
 				this.lessBookTicket = res.data.data.coin;
 				this.nickname = res.data.data.nicker;
 			});
-			axios.get(`/apis/0.1/BookInfo.php?bookId=${this.$route.query.bookId}`).then(res => {
-				this.charge_mode = res.data.data.charge_mode;
-				this.bookname = res.data.data.name;
-			});
+			axios
+				.get(
+					`/apis/0.1/BookInfo.php?bookId=${this.$route.query.bookId}`
+				)
+				.then(res => {
+					this.charge_mode = res.data.data.charge_mode;
+					this.bookname = res.data.data.name;
+				});
 		},
 		scrollInit() {
 			let scroll = new BScroll(this.$refs.content, {
@@ -176,13 +182,15 @@ export default {
 			);
 		},
 		buyChapter() {
-			if(!this.isMoneyEnough){
-				if(this.charge_mode==2){
-					window.location.href = `/recharge.html#/r_book?price=${this.chapter.price}&bookname=${this.bookname}`
-				}else if(this.charge_mode==3){
-					window.location.href = `/recharge.html#/r_common`
+			if (!this.isMoneyEnough) {
+				if (this.charge_mode == 2) {
+					window.location.href = `/recharge.html#/r_book?price=${
+						this.chapter.price
+					}&bookname=${this.bookname}`;
+				} else if (this.charge_mode == 3) {
+					window.location.href = `/recharge.html#/r_common`;
 				}
-				return
+				return;
 			}
 			let data = {
 				bookId: this.$route.query.bookId,
@@ -193,8 +201,8 @@ export default {
 			axios
 				.post("/apis/0.1/Chapter/BuyRead.php", qs.stringify(data))
 				.then(res => {
-					if(res.data.code==200){
-						this.$router.replace()
+					if (res.data.code == 200) {
+						this.$router.replace();
 					}
 				});
 		},
@@ -218,6 +226,19 @@ export default {
 	mounted() {
 		this.init();
 		this.scrollInit();
+	},
+	beforeRouteLeave (to, from, next) {
+		localStorage.setItem(
+			"readRecord",
+			JSON.stringify({
+				//储存阅读记录
+				chapterName: this.chapter.chapter_name,
+				bookName: this.bookname,
+				chapterId: this.$route.query.chapterId,
+				bookId: this.$route.query.bookId
+			})
+		);
+		next();
 	}
 };
 </script>
@@ -352,6 +373,8 @@ export default {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	box-sizing:border-box;
+	max-width: 100%;
 }
 .skin-default {
 	background-color: #c4b395;

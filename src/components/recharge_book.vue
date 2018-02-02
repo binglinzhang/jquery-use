@@ -30,38 +30,38 @@
 </template>
 
 <script>
-import axios from 'axios'
-import {parseUrlQuery} from '../common/function'
+import axios from "axios";
+import { parseUrlQuery } from "../common/function";
 export default {
-  name: "app",
-  data() {
-    return {
-		payType:'zfb',
-		price:null,
-		bookname:null,
-		nickname:null
-	};
-  },
-  methods:{
-	  init(){
-		let queryObj = parseUrlQuery(window.location.hash);
-		this.price = Number(queryObj.price)/100;
-		this.bookname = queryObj.bookname;
-		axios.get('/apis/0.1/User/UserInfo.php').then(res=>{
-			this.nickname = res.data.data.nicker;
-		})
-	  }
-  },
-  created(){
-	  this.init()
-  }
+	name: "app",
+	data() {
+		return {
+			payType: "zfb",
+			price: null,
+			bookname: null,
+			nickname: null
+		};
+	},
+	methods: {
+		init() {
+			let queryObj = parseUrlQuery(window.location.hash);
+			this.price = Number(queryObj.price) / 100;
+			this.bookname = queryObj.bookname;
+			axios.get("/apis/0.1/User/UserInfo.php").then(res => {
+				this.nickname = res.data.data.nicker;
+			});
+		}
+	},
+	created() {
+		this.init();
+	}
 };
 </script>
 
 <style lang="less" scoped>
-@import url('../common/mixin.less');
-.submitBtn{
-	a{
+@import url("../common/mixin.less");
+.submitBtn {
+	a {
 		background-color: @mainColor;
 	}
 }
