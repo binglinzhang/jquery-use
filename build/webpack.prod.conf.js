@@ -48,7 +48,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       filename: utils.assetsPath('css/[name].[contenthash].css'),
       // Setting the following option to `false` will not extract CSS from codesplit chunks.
       // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
-      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`,
+      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`, 
       // increasing file size: https://github.com/vuejs-templates/webpack/issues/1110
       allChunks: true,
     }),
@@ -76,26 +76,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-	  chunksSortMode: 'dependency',
-	  chunks:['manifest', 'vendor','app']
-	}),
-    new HtmlWebpackPlugin({
-		filename: process.env.NODE_ENV === 'testing'
-		  ? 'recharge.html'
-		  : config.build.recharge,
-		template: 'recharge.html',
-		inject: true,
-		minify: {
-		  removeComments: true,
-		  collapseWhitespace: true,
-		  removeAttributeQuotes: true
-		  // more options:
-		  // https://github.com/kangax/html-minifier#options-quick-reference
-		},
-		// necessary to consistently work with multiple chunks via CommonsChunkPlugin
-		chunksSortMode: 'dependency',
-		chunks:['manifest', 'vendor','app2']
-	  }),
+      chunksSortMode: 'dependency'
+    }),
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // enable scope hoisting
@@ -129,6 +111,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       children: true,
       minChunks: 3
     }),
+
     // copy custom static assets
     new CopyWebpackPlugin([
       {

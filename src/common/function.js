@@ -1,8 +1,7 @@
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
 	if (
-		ua.match(/MicroMessenger/i) == "micromessenger" ||
-		ua.match(/_SQ_/i) == "_sq_"
+		ua.match(/MicroMessenger/i) == "micromessenger"
 	) {
 		return true;
 	} else {
@@ -36,8 +35,7 @@ function parseUrlQuery(hash) {
 		let arr = item.split("=");
 		parseResult[arr[0]] = arr[1];
 	});
-	console.log(parseResult);
 	return parseResult;
 }
 
-export { isWeiXin, setCookie, getCookie, delCookie , parseUrlQuery };
+export { isWeiXin, setCookie, getCookie, delCookie, parseUrlQuery };

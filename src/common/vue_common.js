@@ -14,6 +14,7 @@ Vue.prototype.$userInfo = {
 	isWeiXinFun:false,
 }
 
+// 项目配置设置
 Vue.prototype.$config = {
 	coinName:config.coinName,
 	webName:config.webName,
@@ -35,7 +36,7 @@ Vue.prototype.$turnToLogin = function(alertText,backPathName){
 				title: "去登录",
 				default: true,
 				handler: () => {
-				let backurl = escape(
+				let backurl = encodeURIComponent(
 					window.location.protocol +
 						"//" +
 						window.location.host +
