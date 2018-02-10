@@ -53,7 +53,7 @@
 <script>
 import linkHead from './link_header.vue'
 import nFooter from './nfooter.vue'
-import {isWeiXin} from '../common/function.js'
+import {isWeiXin,getCookie} from '../common/function.js'
 import axios from 'axios'
 import qs from 'qs'
 export default {
@@ -64,7 +64,7 @@ export default {
 				username:null,
 				password:null
 			},
-			isInWeiXin:false,
+			isInWeiXin:this.$userInfo.isWeiXin,
 			rules:{
 				username:[
 					{
@@ -88,7 +88,7 @@ export default {
 		nFooter
 	},
 	created(){
-		this.isInWeiXin = isWeiXin();
+
 	},
 	methods:{
 		login(){
@@ -103,6 +103,7 @@ export default {
 								title: "立即跳转",
 								default: true,
 								handler: () => {
+									this.$userInfo.userId = getCookie('uid');
 									this.$router.push('/'+pathName)
 								}
 							}

@@ -7,7 +7,7 @@
 				</div>
 				<div class="center">充值</div>
 				<div class="right">
-				<a href="/"><i class="fa fa-home"></i></a>
+				<a :href="originHost"><i class="fa fa-home"></i></a>
 				</div>
 			</header>
 			<router-view></router-view>
@@ -21,12 +21,14 @@ export default {
   name: "app",
   data() {
     return {
-
+		originHost:null
 	};
   },
 
   created(){
-
+	axios.get("/apis/0.1/Url.php").then(res => {
+		this.originHost = res.data;
+	});
   }
 };
 </script>

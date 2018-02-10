@@ -8,15 +8,14 @@
 
 <script>
 import Vue from 'vue'
-import {isWeiXin,getCookie,setCookie} from './common/function'
+import {getCookie,setCookie} from './common/function'
 import axios from 'axios'
 import wx from 'weixin-js-sdk'
 export default {
   name: "app",
   data() {
-	let isWXFlag = isWeiXin();
     return {
-		isWeiXin:isWXFlag,   //是否处于微信环境
+
 	};
   },
   methods:{
@@ -30,14 +29,14 @@ export default {
 	  },
 	  //如果是在微信环境，则会自动登录，如果用户退出登录，从此不在微信内自动登录
 	  weixinAutoLogin(){
-		  let canAuto = this.isWeiXin&&getCookie(wxAutoLogin)!='no';
+		  let canAuto = this.$userInfo.isWeiXin&&getCookie(wxAutoLogin)!='no';
 		  if(!canAuto) return
 		  axios.get('/apis/0.1/User/wxLogin.php').then(res=>{
 
 		  })
 	  },
 	  isWeiXinFun(){
-		    if(!this.isWeiXin) return false
+		    if(!this.$userInfo.isWeiXin) return false
 			wx.config({
 				debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 				appId: '', // 必填，企业号的唯一标识，此处填写企业号corpid

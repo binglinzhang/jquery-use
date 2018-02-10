@@ -117,6 +117,11 @@ export default new Router({
 			path: "/book_ticket",
 			name: "book_ticket",
 			component: () => import("../components/book_ticket.vue")
+		},
+		{
+			path: "/members",
+			name: "members",
+			component: () => import("../components/members.vue")
 		}
 	]
 });

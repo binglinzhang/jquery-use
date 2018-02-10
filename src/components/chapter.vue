@@ -16,17 +16,18 @@
 					<p class="wraper-tip">———&nbsp;&nbsp;后续为付费章节，购买后可继续阅读&nbsp;&nbsp;———</p>
 					<div class="wraper-content">
 						<p class="pay-tit" v-if="charge_mode==3"><span>购买：{{chapter.chapter_name}}</span></p>
+						<p class="pay-price" v-if="charge_mode==3"><span>价格：</span> <span class="mainColor">{{realPrice}}</span> {{$config.coinName}}或书券</p>
 						<p class="pay-tit" v-if="charge_mode==2"><span>购买：{{bookname}}(整本)</span></p>
-						<p class="pay-price"><span>价格：</span> <span class="mainColor">{{chapter.price}}</span> {{$config.coinName}}或书券</p>
+						<p class="pay-price" v-if="charge_mode==2"><span>价格：</span> <span class="mainColor">{{realPrice}}</span> {{$config.coinName}}或书券</p>
 						<p class="pay-tit"><span>剩余{{$config.coinName}}：{{lessBookCoin}}</span></p>
 						<p class="pay-tit"><span>剩余书券：{{lessBookTicket}}</span></p>
-						<div class="auto-pay">
+						<div class="auto-pay" v-if="charge_mode==3">
 							<span style="margin-right:10px">自动购买</span>
 							<el-checkbox v-model="isAutoBuy"></el-checkbox>
 						</div> <!---->
 					</div>
 
-					<el-button type="primary" plain style="width:80%;margin:0 auto;display:block" @click.stop.native="buyChapter">
+					<el-button type="primary" style="width:80%;margin:0 auto;display:block" @click.stop.native="buyChapter">
 						{{isMoneyEnough?'立刻购买':'立即充值'}}
 					</el-button>
 				</div>
@@ -65,334 +66,337 @@ import axios from "axios";
 import BScroll from "better-scroll";
 import toolBar from "./chapter_tool.vue";
 import qs from "qs";
+import {setCookie} from '../common/function'
 export default {
-	name: "chapter",
-	data() {
-		return {
-			isLoading: true,
-			menuSetFlag: false,
-			nightFlag: false,
-			activeSkin: "skin-default",
-			fontSize: 16,
-			iscollected: 0,
-			chapter: {},
-			recommendList: [],
-			lessBookCoin: null,
-			lessBookTicket: null,
-			isAutoBuy: true,
-			charge_mode: null,
-			bookname: null,
-			nickname: null
-		};
+  name: "chapter",
+  data() {
+    return {
+      isLoading: true,
+      menuSetFlag: false,
+      nightFlag: false,
+      activeSkin: "skin-default",
+      fontSize: 16,
+      iscollected: 0,
+      chapter: {},
+      recommendList: [],
+      lessBookCoin: null,
+      lessBookTicket: null,
+      isAutoBuy: true,
+      charge_mode: null,
+      bookname: null,
+	  nickname: null,
+	  wholeBookPrice:null
+    };
+  },
+  computed: {
+	realPrice(){
+		return this.charge_mode == 2?this.wholeBookPrice:this.chapter.price;
 	},
-	computed: {
-		isMoneyEnough() {
-			return (
-				this.lessBookCoin > this.chapter.price ||
-				this.lessBookTicket > this.chapter.price
-			);
-		}
-	},
-	components: {
-		toolBar
-	},
-	watch: {
-		menuSetFlag(newOne, oldOne) {
-			if (!newOne) {
-				this.contentSetFlag = false;
-			}
-		},
-		fontSize(newOne, oldOne) {
-			localStorage.setItem("fontSize", newOne);
-		},
-		activeSkin(newOne, oldOne) {
-			localStorage.setItem("activeSkin", newOne);
-		},
-		nightFlag(newOne, oldOne) {
-			localStorage.setItem("nightFlag", newOne ? 1 : 0);
-		}
-	},
-	methods: {
-		init() {
-			axios
-				.get(
-					`/apis/0.1/Chapter/ChapterInfo.php?bookId=${
-						this.$route.query.bookId
-					}&chapterId=${this.$route.query.chapterId}`
-				)
-				.then(res => {
-					this.chapter = res.data.data;
-					this.$refs.content.scrollTop = 0;
-					this.isLoading = false;
-					this.setReadCord();
-					if (
-						res.data.data.UserLogin == 1 &&
-						!this.$userInfo.isLogin
-					) {
-						this.$turnToLogin(
-							"本章为扣费章节，是否前往登录",
-							`chapter?bookId=${
-								this.$route.query.bookId
-							}&chapterId=${this.$route.query.chapterId}`
-						);
-					}
-				});
+    isMoneyEnough() {
+      return (
+        Number(this.lessBookCoin) > Number(this.realPrice) ||
+        Number(this.lessBookTicket) > Number(this.realPrice)
+      );
+    }
+  },
+  components: {
+    toolBar
+  },
+  watch: {
+    menuSetFlag(newOne, oldOne) {
+      if (!newOne) {
+        this.contentSetFlag = false;
+      }
+    },
+    fontSize(newOne, oldOne) {
+      localStorage.setItem("fontSize", newOne);
+    },
+    activeSkin(newOne, oldOne) {
+      localStorage.setItem("activeSkin", newOne);
+    },
+    nightFlag(newOne, oldOne) {
+      localStorage.setItem("nightFlag", newOne ? 1 : 0);
+    }
+  },
+  methods: {
+    init() {
+      axios
+        .get(
+          `/apis/0.1/Chapter/ChapterInfo.php?bookId=${
+            this.$route.query.bookId
+          }&chapterId=${this.$route.query.chapterId}`
+        )
+        .then(res => {
+          this.chapter = res.data.data;
+          this.$refs.content.scrollTop = 0;
+          this.isLoading = false;
+		  this.setReadCord();
+          if (res.data.data.UserLogin == 1 && !this.$userInfo.isLogin) {
+            this.$turnToLogin(
+              "本章为扣费章节，是否前往登录",
+              `chapter?bookId=${this.$route.query.bookId}&chapterId=${
+                this.$route.query.chapterId
+              }`
+            );
+          }
+        });
 
-			axios.get("/apis/0.1/read-book-recommend.php").then(res => {
-				this.recommendList = res.data.data;
-			});
-			axios
-				.get(
-					`/apis/0.1/User/Usercheck.php?bookId=${
-						this.$route.query.bookId
-					}`
-				)
-				.then(res => {
-					this.iscollected = res.data.data.bookself;
-				});
-			axios.get("/apis/0.1/User/UserInfo.php").then(res => {
-				this.lessBookCoin = res.data.data.amount;
-				this.lessBookTicket = res.data.data.coin;
-				this.nickname = res.data.data.nicker;
-			});
-			axios
-				.get(
-					`/apis/0.1/BookInfo.php?bookId=${this.$route.query.bookId}`
-				)
-				.then(res => {
-					this.charge_mode = res.data.data.charge_mode;
-					this.bookname = res.data.data.name;
-				});
-		},
-		scrollInit() {
-			let scroll = new BScroll(this.$refs.content, {
-				click: true,
-				tap: true
-			});
-		},
-		getUserConfig() {
-			this.fontSize = Number(localStorage.getItem("fontSize")) || 16;
-			this.activeSkin =
-				localStorage.getItem("activeSkin") || "skin-default";
-			this.nightFlag = localStorage.getItem("nightFlag") == 1;
-		},
-		setReadCord() {
-			localStorage.setItem(
-				`book${this.$route.query.bookId}ReadCord`,
-				this.$route.query.chapterId
-			);
-		},
-		buyChapter() {
-			if (!this.isMoneyEnough) {
-				if (this.charge_mode == 2) {
-					window.location.href = `/recharge.html#/r_book?price=${
-						this.chapter.price
-					}&bookname=${this.bookname}`;
-				} else if (this.charge_mode == 3) {
-					window.location.href = `/recharge.html#/r_common`;
-				}
-				return;
-			}
-			let data = {
-				bookId: this.$route.query.bookId,
-				chapterId: this.$route.query.chapterId,
-				auto: this.isAutoBuy ? 2 : undefined,
-				confirm: "yes"
-			};
-			axios
-				.post("/apis/0.1/Chapter/BuyRead.php", qs.stringify(data))
-				.then(res => {
-					if (res.data.code == 200) {
-						this.$router.replace();
-					}
-				});
-		},
-		collectedStatusChange(newVal) {
-			this.iscollected = newVal;
-		},
-		skinChange(newVal) {
-			this.activeSkin = newVal;
-		},
-		fontSizeChange(newVal) {
-			this.fontSize = newVal;
-		}
+      axios.get("/apis/0.1/read-book-recommend.php").then(res => {
+        this.recommendList = res.data.data;
+      });
+      axios
+        .get(`/apis/0.1/User/Usercheck.php?bookId=${this.$route.query.bookId}`)
+        .then(res => {
+          this.iscollected = res.data.data.bookself;
+        });
+      axios.get("/apis/0.1/User/UserInfo.php").then(res => {
+        this.lessBookCoin = res.data.data.amount;
+        this.lessBookTicket = res.data.data.coin;
+        this.nickname = res.data.data.nicker;
+      });
+      axios
+        .get(`/apis/0.1/BookInfo.php?bookId=${this.$route.query.bookId}`)
+        .then(res => {
+          this.charge_mode = res.data.data.charge_mode;
+		  this.bookname = res.data.data.name;
+		  this.wholeBookPrice = res.data.data.price;
+        });
+    },
+    scrollInit() {
+      let scroll = new BScroll(this.$refs.content, {
+        click: true,
+        tap: true
+      });
+    },
+    getUserConfig() {
+      this.fontSize = Number(localStorage.getItem("fontSize")) || 16;
+      this.activeSkin = localStorage.getItem("activeSkin") || "skin-default";
+      this.nightFlag = localStorage.getItem("nightFlag") == 1;
+    },
+    setReadCord() {
+      localStorage.setItem(
+        `book${this.$route.query.bookId}ReadCord`,
+        this.$route.query.chapterId
+      );
+    },
+    buyChapter() {
+      if (!this.isMoneyEnough) {
+		this.goToRechargePage()
+        return;
+	  }
+	  //钱足够时
+      let data = {
+        bookId: this.$route.query.bookId,
+        chapterId: this.$route.query.chapterId,
+        auto: this.isAutoBuy ? 2 : undefined,
+        confirm: "yes"
+      };
+      axios
+        .post("/apis/0.1/Chapter/BuyRead.php", qs.stringify(data))
+        .then(res => {
+          if (res.data.code == 200) {
+            this.$router.go(0)
+          }
+        });
 	},
-	created() {
-		this.getUserConfig();
+	goToRechargePage(){
+		setCookie('recharge_back_url',window.location.href,60*60);
+        if (this.charge_mode == 2) {
+          window.location.href = `${this.$config.rechargeUrl}#/r_book?price=${
+            this.realPrice
+          }&bookId=${this.$route.query.bookId}`;
+        } else if (this.charge_mode == 3) {
+          window.location.href = `${this.$config.rechargeUrl}#/r_common`;
+        }
 	},
-	beforeRouteUpdate(to, from, next) {
-		next();
-		this.init();
-	},
-	mounted() {
-		this.init();
-		this.scrollInit();
-	},
-	beforeRouteLeave (to, from, next) {
-		localStorage.setItem(
-			"readRecord",
-			JSON.stringify({
-				//储存阅读记录
-				chapterName: this.chapter.chapter_name,
-				bookName: this.bookname,
-				chapterId: this.$route.query.chapterId,
-				bookId: this.$route.query.bookId
-			})
-		);
-		next();
-	}
+    collectedStatusChange(newVal) {
+      this.iscollected = newVal;
+    },
+    skinChange(newVal) {
+      this.activeSkin = newVal;
+    },
+    fontSizeChange(newVal) {
+      this.fontSize = newVal;
+    }
+  },
+  created() {
+    this.getUserConfig();
+  },
+  beforeRouteUpdate(to, from, next) {
+    console.log("router update");
+    next();
+    this.init();
+  },
+  mounted() {
+    console.log("mounted");
+    this.init();
+    this.scrollInit();
+  },
+  beforeRouteLeave(to, from, next) {
+    localStorage.setItem(
+      "readRecord",
+      JSON.stringify({
+        //储存阅读记录
+        chapterName: this.chapter.chapter_name,
+        bookName: this.bookname,
+        chapterId: this.$route.query.chapterId,
+        bookId: this.$route.query.bookId
+      })
+    );
+    next();
+  }
 };
 </script>
 
 <style lang="less" scoped>
 @import url("../common/mixin.less");
 .relative-recommend p i {
-	color: lighten(@mainColor, 6%);
+  color: lighten(@mainColor, 6%);
 }
 .chapter {
-	height: 100vh;
-	// overflow: auto;
+  height: 100vh;
+  // overflow: auto;
 }
 .loadingIcon {
-	position: fixed;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	width: 30%;
-	display: block;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+  display: block;
 }
 .read-content {
-	position: relative;
-	overflow: hidden;
-	color: rgba(0, 0, 0, 0.85);
-	min-height: 100%;
+  position: relative;
+  overflow: hidden;
+  color: rgba(0, 0, 0, 0.85);
+  min-height: 100%;
 }
 .read-content-content {
-	position: relative;
-	overflow: hidden;
-	padding: 10px 15px 50px;
-	font-size: 14px;
-	box-sizing: border-box;
-	min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  padding: 10px 15px 50px;
+  font-size: 14px;
+  box-sizing: border-box;
+  min-height: 100vh;
 }
 .read-content-content h4 {
-	font-size: 12px;
-	color: #666;
-	font-weight: 400;
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	line-height: 30px;
-	padding-left: 15px;
-	z-index: 9;
+  font-size: 12px;
+  color: #666;
+  font-weight: 400;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  line-height: 30px;
+  padding-left: 15px;
+  z-index: 9;
 }
 .read-content.onNight .read-content-content h4 {
-	color: hsla(0, 0%, 100%, 0.5);
-	background-color: #1a1a1a;
+  color: hsla(0, 0%, 100%, 0.5);
+  background-color: #1a1a1a;
 }
 .read-content-content button.nextChapter {
-	position: absolute;
-	bottom: 20px;
-	left: 10%;
-	display: block;
-	width: 80%;
-	font-size: 16px;
-	line-height: 36px;
-	border: none;
-	border-radius: 100px;
-	color: #fff;
-	background-color: #ed424b;
-	z-index: 9999;
-	outline: none;
+  position: absolute;
+  bottom: 20px;
+  left: 10%;
+  display: block;
+  width: 80%;
+  font-size: 16px;
+  line-height: 36px;
+  border: none;
+  border-radius: 100px;
+  color: #fff;
+  background-color: #ed424b;
+  z-index: 9999;
+  outline: none;
 }
 .purchase-wraper {
-	.wraper-tip {
-		font-size: 0.28rem;
-		text-align: center;
-		color: #666;
-	}
-	.wraper-content {
-		width: 80%;
-		margin: 16px auto;
-		font-size: 0.28rem;
-		line-height: 2em;
-	}
+  .wraper-tip {
+    font-size: 0.28rem;
+    text-align: center;
+    color: #666;
+  }
+  .wraper-content {
+    width: 80%;
+    margin: 16px auto;
+    font-size: 0.28rem;
+    line-height: 2em;
+  }
 }
 </style>
 <style lang="less">
 .read-content.onNight {
-	color: hsla(0, 0%, 100%, 0.5);
-	background-color: #1a1a1a;
+  color: hsla(0, 0%, 100%, 0.5);
+  background-color: #1a1a1a;
 }
 .read-content-content .content-list h3 {
-	margin: 30px 0 20px;
-	font-size: 20px;
-	font-weight: bold;
+  margin: 30px 0 20px;
+  font-size: 20px;
+  font-weight: bold;
 }
 .read-content-content .content-list p {
-	text-indent: 2em;
-	margin: 0.5em 0;
-	letter-spacing: 0;
-	line-height: 1.8;
+  text-indent: 2em;
+  margin: 0.5em 0;
+  letter-spacing: 0;
+  line-height: 1.8;
 }
 .read-content-content .content-list .chapterText {
-	min-height: 4rem;
+  min-height: 4rem;
 }
 .control-btns {
-	margin-top: 0.5rem;
-	display: flex;
-	justify-content: space-between;
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
 }
 .control-btns > div {
-	display: block;
-	width: 100%;
-	font-size: 14px;
-	line-height: 36px;
-	border: none;
-	border-radius: 100px;
-	color: #fff;
-	background-color: #ed424b;
-	z-index: 9999;
-	outline: none;
-	text-align: center;
-	margin-right: 20px;
-	&:last-child {
-		margin-right: 0;
-	}
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  line-height: 36px;
+  border: none;
+  border-radius: 100px;
+  color: #fff;
+  background-color: #ed424b;
+  z-index: 9999;
+  outline: none;
+  text-align: center;
+  margin-right: 20px;
+  &:last-child {
+    margin-right: 0;
+  }
 }
 .relative-recommend {
-	width: 7rem;
-	margin-top: 0.5rem;
+  width: 7rem;
+  margin-top: 0.5rem;
 }
 
 .relative-recommend p {
-	font-size: 0.3rem;
-	padding: 0.15rem 0;
-	margin: 0 0.15rem;
-	border-bottom: dashed 0.02rem #ebebeb;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	box-sizing:border-box;
-	max-width: 100%;
+  font-size: 0.3rem;
+  padding: 0.15rem 0;
+  margin: 0 0.15rem;
+  border-bottom: dashed 0.02rem #ebebeb;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 .skin-default {
-	background-color: #c4b395;
+  background-color: #c4b395;
 }
 .skin-blue {
-	background-color: #c3d4e6;
+  background-color: #c3d4e6;
 }
 .skin-green {
-	background-color: #c8e8c8;
+  background-color: #c8e8c8;
 }
 .skin-pink {
-	background-color: #f8c9c9;
+  background-color: #f8c9c9;
 }
 .skin-dark {
-	background-color: #3e4349;
+  background-color: #3e4349;
 }
 .skin-light {
-	background-color: #f6f7f9;
+  background-color: #f6f7f9;
 }
 </style>

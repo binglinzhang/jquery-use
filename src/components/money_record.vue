@@ -3,10 +3,10 @@
 	  <link-head>财务记录</link-head>
       <div class="container">
         <div class="tabs">
-          <router-link to="recharge_record">
+          <router-link to="recharge_record" replace>
             <span>充值记录</span>
           </router-link>
-          <router-link to="pay_record">
+          <router-link to="pay_record" replace>
             <span>消费记录</span>
           </router-link>
         </div>
@@ -62,7 +62,6 @@ export default {
 	.recharge .content .time {
 		color: #999;
 		float: right;
-		margin-top: 0.1rem;
 	}
 	.tabs a {
 		margin: 0 0.5rem;

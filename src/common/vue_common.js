@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import config from './config'
+import {isWeiXin} from './function'
 /* 公共模块 */
 Vue.filter('statusFilter',(val)=>{
 	return val==0?'已完结':'连载中'
@@ -12,15 +13,11 @@ Vue.prototype.$userInfo = {
 	userName:'',
 	userId:"",
 	isWeiXinFun:false,
+	isWeiXin:isWeiXin()
 }
 
 // 项目配置设置
-Vue.prototype.$config = {
-	coinName:config.coinName,
-	webName:config.webName,
-	telephone:config.telephone,
-	qq:config.qq
-}
+Vue.prototype.$config = config;
 
 Vue.prototype.$turnToLogin = function(alertText,backPathName){
 	this.$modal.show("dialog", {

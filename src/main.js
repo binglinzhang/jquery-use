@@ -54,7 +54,6 @@ router.beforeEach((to, from, next) => {
 					"/#" +
 					to.path
 			);
-			console.log('路由首位');
 			next({name:'login',query:{backurl}});
 		}
 	}

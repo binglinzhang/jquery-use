@@ -11,7 +11,7 @@
           <div class="comment-info">
             <h2>
               <span>{{reviewer.name}}</span>
-              <i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:reviewer.overtime==1}"></i>
+              <i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:reviewer.overtime==1}" v-if="$config.hasMembers"></i>
             </h2>
             <div class="text">
               {{reviewer.content}}

@@ -12,7 +12,7 @@
 				<div class="comment-info">
 					<h2>
 						<span>{{item.name}}</span>
-						<i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:item.overtime==1}"></i>
+						<i class="iconfont icon-VIP icon_vip" :class="{icon_isVip:item.overtime==1}" v-if="$config.hasMembers"></i>
 					</h2>
 					<div class="text">
 						<router-link :to="{name:'comment_page',query:{bookId:bookId,cId:item.id}}">{{item.content}}</router-link>

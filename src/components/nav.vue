@@ -9,7 +9,7 @@
             </div>
         </div>
 
-		<div class="readRecord">
+		<div class="readRecord" v-if="Object.keys(recordObj).length">
 			<div class="title">阅读记录</div>
 			<router-link :to="{path:'/chapter',query:{bookId:recordObj.bookId,chapterId:recordObj.chapterId}}" class="entry" tag="div">
 				<p class="bookname entry-item">{{recordObj.bookName}}</p>
@@ -41,7 +41,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <a href="/recharge.html#/r_common">
+                    <a @click="goToRecharge">
                         <span></span>
                         充值
                     </a>
@@ -77,7 +77,14 @@ export default {
 	},
 	methods:{
 		getReadRecord(){
-			this.recordObj = JSON.parse(localStorage.getItem('readRecord'));
+			this.recordObj = JSON.parse(localStorage.getItem('readRecord')) || {};
+		},
+		goToRecharge(){
+			if(!this.$userInfo.isLogin){
+				this.$router.push('/login');
+				return
+			}
+			window.location.href = this.$config.rechargeUrl+'#/r_common'
 		}
 	},
 	created() {
@@ -273,6 +280,7 @@ export default {
 		align-items: center;
 		flex-wrap: wrap;
 		padding: 9px 0 9px 14px;
+		min-width: 4.5rem;
 		.entry-item {
 			width: 100%;
 			text-align: left;

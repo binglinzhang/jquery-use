@@ -170,16 +170,19 @@ header .right {
 .online-pay .money{
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
-
+	margin-right: -.2rem;
+}
+.online-pay .way {
+	padding: 0 .12rem;
 }
 .online-pay .money label {
 	text-align: center;
 	padding: 0.2rem 0;
 	background-color: lighten(@mainColor,34%);
 	margin-top: 0.2rem;
+	margin-right: .2rem;
 	border-radius: 0.10rem;
-	width: 31%;
+	width: calc(~'(100% - 0.2rem * 3 - 0.2rem) / 3');
 	font-size: 0.30rem;
 	line-height: 1.5em;
 	display: flex;

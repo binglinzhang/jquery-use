@@ -8,21 +8,13 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-const createLintingRule = () => ({
-  test: /\.(js|vue)$/,
-  loader: 'eslint-loader',
-  enforce: 'pre',
-  include: [resolve('src'), resolve('test')],
-  options: {
-    formatter: require('eslint-friendly-formatter'),
-    emitWarning: !config.dev.showEslintErrorsInOverlay
-  }
-})
+
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: './src/main.js'
+	app: './src/main.js',
+	app2:'./src/recharge.js'
   },
   output: {
     path: config.build.assetsRoot,
@@ -40,7 +32,6 @@ module.exports = {
   },
   module: {
     rules: [
-      ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -74,7 +65,18 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      }
+      },
+      {
+        test:/\.less(\?.*)?$/,
+		use: [{
+			loader: "style-loader" // creates style nodes from JS strings
+		}, {
+			loader: "css-loader" // translates CSS into CommonJS
+		}, {
+			loader: "less-loader" // compiles Less to CSS
+		}]
+      },
+
     ]
   },
   node: {

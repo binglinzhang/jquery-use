@@ -10,13 +10,14 @@
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
-	"build": "node build/build.js",
-	"lint": "eslint --ext .js,.vue src test/unit test/e2e/specs"
+    "build": "node build/build.js",
+    "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs"
   },
   "dependencies": {
     "axios": "^0.17.1",
     "better-scroll": "^1.7.2",
     "element-ui": "^2.0.11",
+    "md5": "^2.2.1",
     "qs": "^6.5.1",
     "vee-validate": "^2.0.3",
     "vue": "^2.5.2",
@@ -31,8 +32,8 @@
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
-	"babel-core": "^6.22.1",
-	"babel-eslint": "^8.2.1",
+    "babel-core": "^6.22.1",
+    "babel-eslint": "^8.2.1",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-jest": "^21.0.2",
     "babel-loader": "^7.1.1",
