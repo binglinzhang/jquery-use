@@ -8,7 +8,7 @@
 				<h4 class="skin-default">{{bookname}}</h4>
 				<div class="content-list">
 					<h3>{{chapter.chapter_name}}</h3>
-					<div v-html="chapter.content" class="chapterText">
+					<div v-html="chapter.Buy==0?chapter.content:null" class="chapterText">
 					</div>
 				</div>
 
@@ -32,7 +32,7 @@
 					</el-button>
 				</div>
 
-				<div class="container relative-recommend">
+				<div class="container relative-recommend"  v-if="chapter.Buy==0">
 					<h1><span>热门推荐</span></h1>
 					<p v-for="item in recommendList" @click="$router.push(`/book?bookId=${item.book_id}`)"><i class="iconfont icon-tuijian"></i> {{item.intro}}</p>
 				</div>

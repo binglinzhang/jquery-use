@@ -33,7 +33,7 @@
 <script>
 import axios from "axios";
 import md5 from 'md5'
-import { parseUrlQuery,fetchDateYmd ,myAjax} from "../common/function";
+import { parseUrlQuery,fetchDateYmd ,myAjax,isWeiXin} from "../common/function";
 export default {
   name: "app",
   data() {

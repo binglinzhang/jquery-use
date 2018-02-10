@@ -3,7 +3,10 @@
 		<transition name="slideTopToBottom">
 			<div class="read-content-header" v-show="menuSetFlag">
 				<i class="iconfont icon-i-left" style="color:white;font-size:18px;" @click="$router.go(-1)"></i>
-				<i class="iconfont icon-moreif" style="color:white;font-size:20px;margin-right:0.12rem" @click="otherListFlag=!otherListFlag"></i>
+				<i class="iconfont icon-moreif" 
+					style="color:white;font-size:20px;margin-right:0.12rem" 
+					@click="otherListFlag=!otherListFlag">
+				</i>
 			</div>
 		</transition>
 		<div class="other-list" v-show="otherListFlag">
