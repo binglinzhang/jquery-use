@@ -66,7 +66,7 @@ import axios from "axios";
 import BScroll from "better-scroll";
 import toolBar from "./chapter_tool.vue";
 import qs from "qs";
-import {setCookie} from '../common/function'
+import { setCookie } from "../common/function";
 export default {
   name: "chapter",
   data() {
@@ -84,14 +84,14 @@ export default {
       isAutoBuy: true,
       charge_mode: null,
       bookname: null,
-	  nickname: null,
-	  wholeBookPrice:null
+      nickname: null,
+      wholeBookPrice: null
     };
   },
   computed: {
-	realPrice(){
-		return this.charge_mode == 2?this.wholeBookPrice:this.chapter.price;
-	},
+    realPrice() {
+      return this.charge_mode == 2 ? this.wholeBookPrice : this.chapter.price;
+    },
     isMoneyEnough() {
       return (
         Number(this.lessBookCoin) > Number(this.realPrice) ||
@@ -130,7 +130,7 @@ export default {
           this.chapter = res.data.data;
           this.$refs.content.scrollTop = 0;
           this.isLoading = false;
-		  this.setReadCord();
+          this.setReadCord();
           if (res.data.data.UserLogin == 1 && !this.$userInfo.isLogin) {
             this.$turnToLogin(
               "本章为扣费章节，是否前往登录",
@@ -158,9 +158,10 @@ export default {
         .get(`/apis/0.1/BookInfo.php?bookId=${this.$route.query.bookId}`)
         .then(res => {
           this.charge_mode = res.data.data.charge_mode;
-		  this.bookname = res.data.data.name;
-		  this.wholeBookPrice = res.data.data.price;
+          this.bookname = res.data.data.name;
+          this.wholeBookPrice = res.data.data.price;
         });
+      axios.get(`/apis/0.1/User/Msg.php?a=mulu?backurl=${encodeURIComponent(window.location.href)}`).then(res => {});
     },
     scrollInit() {
       let scroll = new BScroll(this.$refs.content, {
@@ -181,10 +182,10 @@ export default {
     },
     buyChapter() {
       if (!this.isMoneyEnough) {
-		this.goToRechargePage()
+        this.goToRechargePage();
         return;
-	  }
-	  //钱足够时
+      }
+      //钱足够时
       let data = {
         bookId: this.$route.query.bookId,
         chapterId: this.$route.query.chapterId,
@@ -195,20 +196,20 @@ export default {
         .post("/apis/0.1/Chapter/BuyRead.php", qs.stringify(data))
         .then(res => {
           if (res.data.code == 200) {
-            this.$router.go(0)
+            this.$router.go(0);
           }
         });
-	},
-	goToRechargePage(){
-		setCookie('recharge_back_url',window.location.href,60*60);
-        if (this.charge_mode == 2) {
-          window.location.href = `${this.$config.rechargeUrl}#/r_book?price=${
-            this.realPrice
-          }&bookId=${this.$route.query.bookId}`;
-        } else if (this.charge_mode == 3) {
-          window.location.href = `${this.$config.rechargeUrl}#/r_common`;
-        }
-	},
+    },
+    goToRechargePage() {
+      setCookie("recharge_back_url", window.location.href, 60 * 60);
+      if (this.charge_mode == 2) {
+        window.location.href = `${this.$config.rechargeUrl}#/r_book?price=${
+          this.realPrice
+        }&bookId=${this.$route.query.bookId}`;
+      } else if (this.charge_mode == 3) {
+        window.location.href = `${this.$config.rechargeUrl}#/r_common`;
+      }
+    },
     collectedStatusChange(newVal) {
       this.iscollected = newVal;
     },

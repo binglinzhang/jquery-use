@@ -22,7 +22,8 @@ export default {
       recordList: [],
       page: 0,
       pageCount: 0,
-      requestUrl: null
+      requestUrl: null,
+
     };
   },
   methods: {
@@ -52,4 +53,3 @@ export default {
   }
 };
 </script>
-

@@ -107,9 +107,6 @@ export default {
           this.$router.push("/");
         }
       });
-      if (this.$userInfo.isWeiXin) {
-        setCookie("wxAutoLogin", "no");
-      }
     },
     goToRecharge() {
       if (!this.$userInfo.isLogin) {

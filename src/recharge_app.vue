@@ -16,21 +16,24 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
   name: "app",
   data() {
     return {
-		originHost:null
-	};
+      originHost: null
+    };
   },
 
-  created(){
-	axios.get("/apis/0.1/Url.php").then(res => {
-		this.originHost = res.data;
-	});
+  created() {
+    axios.get("/apis/0.1/Url.php").then(res => {
+      this.originHost = res.data;
+    });
+    this.$nextTick(() => {
+      if (!this.$userInfo.isLogin&&this.$userInfo.isWeiXin) {
+        axios.get(`/apis/0.1/User/Msg.php?a=user&backurl=${encodeURIComponent(window.location.href)}`).then(res => {});
+      }
+    });
   }
 };
 </script>
-
-

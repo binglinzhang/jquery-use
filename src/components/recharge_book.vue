@@ -32,17 +32,23 @@
 
 <script>
 import axios from "axios";
-import md5 from 'md5'
-import { parseUrlQuery,fetchDateYmd ,myAjax,isWeiXin} from "../common/function";
+import md5 from "md5";
+import {
+  parseUrlQuery,
+  fetchDateYmd,
+  myAjax,
+  isWeiXin
+} from "../common/function";
 export default {
   name: "app",
   data() {
     return {
-      payType: isWeiXin()?'wx':"zfb",
+      payType: isWeiXin() ? "wx" : "zfb",
       price: null,
       bookname: null,
       nickname: null,
-      bookId: null
+      bookId: null,
+      wxPayConfig: {}
     };
   },
   computed: {
@@ -62,10 +68,60 @@ export default {
       });
       axios.get(`/apis/0.1/BookInfo.php?bookId=${this.bookId}`).then(res => {
         this.bookname = res.data.data.name;
-	  });
-	  axios.get("/apis/0.1/Url.php").then(res => {});
+      });
+      axios.get("/apis/0.1/Url.php").then(res => {});
+      axios.get("/apis/0.1/Pay/Pay.php").then(res => {
+        if (res.data.code == 200) {
+          this.wxPayConfig = res.data.data;
+        }
+      });
     },
     recharge() {
+      if (this.$userInfo.isWeiXin) {
+        weixinPay();
+      } else {
+        wapPay();
+      }
+    },
+    selectItem(item, index, obj) {
+      this.activeIndex = index;
+      this.selectMoney = item.cost;
+      this.selectType = obj.isEgold ? 101 : 103;
+    },
+    weixinPay() {
+      function onBridgeReady() {
+        WeixinJSBridge.invoke(
+          "getBrandWCPayRequest",
+          {
+            appId: "wx2421b1c4370ec43b", //公众号名称，由商户传入
+            timeStamp: "1395712654", //时间戳，自1970年以来的秒数
+            nonceStr: "e61463f8efa94090b1f366cccfbbb444", //随机串
+            package: "prepay_id=u802345jgfjsdfgsdg888",
+            signType: "MD5", //微信签名方式：
+            paySign: "70EA570631E4BB79628FBCA90534C63FF7FADD89" //微信签名
+          },
+          function(res) {
+            if (res.err_msg == "get_brand_wcpay_request:ok") {
+            } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+          }
+        );
+      }
+      if (typeof WeixinJSBridge == "undefined") {
+        if (document.addEventListener) {
+          document.addEventListener(
+            "WeixinJSBridgeReady",
+            onBridgeReady,
+            false
+          );
+        } else if (document.attachEvent) {
+          document.attachEvent("WeixinJSBridgeReady", onBridgeReady);
+          document.attachEvent("onWeixinJSBridgeReady", onBridgeReady);
+        }
+      } else {
+        onBridgeReady();
+      }
+    },
+    wapPay() {
       const data = {
         token: md5(`${fetchDateYmd()}${this.price}s3fhgrwwe`),
         money: this.price,
@@ -73,39 +129,32 @@ export default {
         type: 104,
         book_id: this.bookId
       };
-	  myAjax({
-		  methods:'post',
-		  url:'/apis/0.1/Pay/Pay.php',
-		  data,
-		  async:false,
-		  success:(res)=>{
-			let result = JSON.parse(res);
-			if (result.code == 206) {
-			this.$modal.show("dialog", {
-				text: `${result.msg}`,
-				buttons: [
-				{
-					title: "我知道了",
-					default: true,
-					handler: () => {
-					this.$modal.hide("dialog");
-					}
-				}
-				]
-			});
-			} else if (result.code == 200) {
-				window.location.href = result.data;
-			}
-		  },
-		  error:function(){
-
-		  }
-	  })
-    },
-    selectItem(item, index, obj) {
-      this.activeIndex = index;
-      this.selectMoney = item.cost;
-      this.selectType = obj.isEgold ? 101 : 103;
+      myAjax({
+        methods: "post",
+        url: "/apis/0.1/Pay/Pay.php",
+        data,
+        async: false,
+        success: res => {
+          let result = JSON.parse(res);
+          if (result.code == 206) {
+            this.$modal.show("dialog", {
+              text: `${result.msg}`,
+              buttons: [
+                {
+                  title: "我知道了",
+                  default: true,
+                  handler: () => {
+                    this.$modal.hide("dialog");
+                  }
+                }
+              ]
+            });
+          } else if (result.code == 200) {
+            window.location.href = result.data;
+          }
+        },
+        error: function() {}
+      });
     }
   },
   created() {
