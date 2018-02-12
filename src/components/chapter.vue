@@ -4,45 +4,45 @@
             <div class="read-action-mid">
             </div>
 
-			<div class="read-content-content" @click="menuSetFlag=!menuSetFlag" :style="{fontSize:fontSize+'px'}">
-				<h4 class="skin-default">{{bookname}}</h4>
-				<div class="content-list">
-					<h3>{{chapter.chapter_name}}</h3>
-					<div v-html="chapter.Buy==0?chapter.content:null" class="chapterText">
-					</div>
-				</div>
+            <div class="read-content-content" @click="menuSetFlag=!menuSetFlag" :style="{fontSize:fontSize+'px'}">
+              <h4 class="skin-default">{{bookname}}</h4>
+              <div class="content-list">
+                <h3>{{chapter.chapter_name}}</h3>
+                <div v-html="chapter.Buy==0?chapter.content:null" class="chapterText">
+                </div>
+              </div>
 
-				<div class="purchase-wraper" v-if="chapter.Buy==1">
-					<p class="wraper-tip">———&nbsp;&nbsp;后续为付费章节，购买后可继续阅读&nbsp;&nbsp;———</p>
-					<div class="wraper-content">
-						<p class="pay-tit" v-if="charge_mode==3"><span>购买：{{chapter.chapter_name}}</span></p>
-						<p class="pay-price" v-if="charge_mode==3"><span>价格：</span> <span class="mainColor">{{realPrice}}</span> {{$config.coinName}}或书券</p>
-						<p class="pay-tit" v-if="charge_mode==2"><span>购买：{{bookname}}(整本)</span></p>
-						<p class="pay-price" v-if="charge_mode==2"><span>价格：</span> <span class="mainColor">{{realPrice}}</span> {{$config.coinName}}或书券</p>
-						<p class="pay-tit"><span>剩余{{$config.coinName}}：{{lessBookCoin}}</span></p>
-						<p class="pay-tit"><span>剩余书券：{{lessBookTicket}}</span></p>
-						<div class="auto-pay" v-if="charge_mode==3">
-							<span style="margin-right:10px">自动购买</span>
-							<el-checkbox v-model="isAutoBuy"></el-checkbox>
-						</div> <!---->
-					</div>
+              <div class="purchase-wraper" v-if="chapter.Buy==1">
+                <p class="wraper-tip">———&nbsp;&nbsp;后续为付费章节，购买后可继续阅读&nbsp;&nbsp;———</p>
+                <div class="wraper-content">
+                  <p class="pay-tit" v-if="charge_mode==3"><span>购买：{{chapter.chapter_name}}</span></p>
+                  <p class="pay-price" v-if="charge_mode==3"><span>价格：</span> <span class="mainColor">{{realPrice}}</span> {{$config.coinName}}或书券</p>
+                  <p class="pay-tit" v-if="charge_mode==2"><span>购买：{{bookname}}(整本)</span></p>
+                  <p class="pay-price" v-if="charge_mode==2"><span>价格：</span> <span class="mainColor">{{realPrice}}</span> {{$config.coinName}}或书券</p>
+                  <p class="pay-tit"><span>剩余{{$config.coinName}}：{{lessBookCoin}}</span></p>
+                  <p class="pay-tit"><span>剩余书券：{{lessBookTicket}}</span></p>
+                  <div class="auto-pay" v-if="charge_mode==3">
+                    <span style="margin-right:10px">自动购买</span>
+                    <el-checkbox v-model="isAutoBuy"></el-checkbox>
+                  </div> <!---->
+                </div>
 
-					<el-button type="primary" style="width:80%;margin:0 auto;display:block" @click.stop.native="buyChapter">
-						{{isMoneyEnough?'立刻购买':'立即充值'}}
-					</el-button>
-				</div>
+                <el-button type="primary" style="width:80%;margin:0 auto;display:block" @click.stop.native="buyChapter">
+                  {{isMoneyEnough?'立刻购买':'立即充值'}}
+                </el-button>
+              </div>
 
-				<div class="container relative-recommend"  v-if="chapter.Buy==0">
-					<h1><span>热门推荐</span></h1>
-					<p v-for="item in recommendList" @click="$router.push(`/book?bookId=${item.book_id}`)"><i class="iconfont icon-tuijian"></i> {{item.intro}}</p>
-				</div>
+              <div class="container relative-recommend"  v-if="chapter.Buy==0">
+                <h1><span>热门推荐</span></h1>
+                <p v-for="item in recommendList" @click="$router.push(`/book?bookId=${item.book_id}`)"><i class="iconfont icon-tuijian"></i> {{item.intro}}</p>
+              </div>
 
-				<div class="control-btns" v-if="chapter.nextChapter">
-					<div class="prev" @click.stop="$router.replace({name:'chapter',query:{chapterId:chapter.prevChapter,bookId:$route.query.bookId}})">上一章</div>
-					<div class="list"  @click="$router.push(`/menu?bookId=${$route.query.bookId}`)">目录</div>
-					<div class="next" @click.stop="$router.replace({name:'chapter',query:{chapterId:chapter.nextChapter,bookId:$route.query.bookId}})">下一章</div>
-				</div>
-			</div>
+              <div class="control-btns" v-if="chapter.nextChapter">
+                <div class="prev" @click.stop="$router.replace({name:'chapter',query:{chapterId:chapter.prevChapter,bookId:$route.query.bookId}})">上一章</div>
+                <div class="list"  @click="$router.push(`/menu?bookId=${$route.query.bookId}`)">目录</div>
+                <div class="next" @click.stop="$router.replace({name:'chapter',query:{chapterId:chapter.nextChapter,bookId:$route.query.bookId}})">下一章</div>
+              </div>
+            </div>
         </section>
 		<tool-bar
 			:menuSetFlag='menuSetFlag'
@@ -56,6 +56,25 @@
 			@nightFlagToggle='nightFlag=!nightFlag'
 			@skinChange='skinChange'>
 		</tool-bar>
+    <transition name="fade">
+      <div class="js_dialog" v-show="weixinAttentionFlag">
+          <div class="weui-mask" @click="weixinAttentionFlag = false"></div>
+          <div class="weui-dialog">
+              <div class="weui-dialog__bd">
+                <p style="margin-bottom:20px">长按识别作者授权公众号继续阅读</p>
+                <p style="color:red;margin-bottom:8px">由于版权问题，</p>
+                <p style="color:red;margin-bottom:16px">请扫描下方二维码进行阅读</p>
+                <div>
+                  <img :src="$config.qrCodeUrl" alt="" style="width:60%;display:block;margin:0 auto">
+                </div>
+                <p style="margin-top:20px;font-weight:600">长按上图识别二维码</p>
+              </div>
+              <div class="weui-dialog__ft" @click="weixinAttentionFlag = false">
+                  <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+              </div>
+          </div>
+      </div>
+    </transition>
 
 		<v-dialog width="80%"></v-dialog>
     </div>
@@ -85,7 +104,9 @@ export default {
       charge_mode: null,
       bookname: null,
       nickname: null,
-      wholeBookPrice: null
+      wholeBookPrice: null,
+      isWeixinFun: true,
+      weixinAttentionFlag: false
     };
   },
   computed: {
@@ -97,6 +118,9 @@ export default {
         Number(this.lessBookCoin) > Number(this.realPrice) ||
         Number(this.lessBookTicket) > Number(this.realPrice)
       );
+    },
+    canNotRead() {
+      return this.$userInfo.isWeiXin && !this.isWeixinFun;
     }
   },
   components: {
@@ -139,6 +163,11 @@ export default {
               }`
             );
           }
+          if (this.canNotRead) {
+            this.weixinAttentionFlag =
+              Number(res.data.data.order_num) >
+              this.$config.weixinNotFunChapterLimit;
+          }
         });
 
       axios.get("/apis/0.1/read-book-recommend.php").then(res => {
@@ -161,7 +190,13 @@ export default {
           this.bookname = res.data.data.name;
           this.wholeBookPrice = res.data.data.price;
         });
-      axios.get(`/apis/0.1/User/Msg.php?a=mulu?backurl=${encodeURIComponent(window.location.href)}`).then(res => {});
+      axios
+        .get(
+          `/apis/0.1/User/Msg.php?a=mulu?backurl=${encodeURIComponent(
+            window.location.href
+          )}`
+        )
+        .then(res => {});
     },
     scrollInit() {
       let scroll = new BScroll(this.$refs.content, {
@@ -218,15 +253,25 @@ export default {
     },
     fontSizeChange(newVal) {
       this.fontSize = newVal;
+    },
+    getWxStatus() {
+      //当微信环境内且开启限制的时候，获取状态
+      if (this.$userInfo.isWeiXin && this.$config.isWeixinFunLimit) {
+        this.$getWeiXinFunsStatus().then(isFun => {
+          this.isWeixinFun = isFun;
+          console.log(isFun);
+        });
+      }
+    },
+    created() {
+      this.getUserConfig();
+      this.getWxStatus()
     }
   },
-  created() {
-    this.getUserConfig();
-  },
   beforeRouteUpdate(to, from, next) {
-    console.log("router update");
     next();
     this.init();
+    this.getWxStatus()
   },
   mounted() {
     console.log("mounted");

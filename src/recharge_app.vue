@@ -7,7 +7,7 @@
 				</div>
 				<div class="center">充值</div>
 				<div class="right">
-				<a :href="originHost"><i class="fa fa-home"></i></a>
+				<a :href="originUrl"><i class="fa fa-home"></i></a>
 				</div>
 			</header>
 			<router-view></router-view>
@@ -23,8 +23,8 @@ export default {
   name: "app",
   data() {
     return {
-	  originHost: null,
-	  openid:null
+      originUrl: null,
+      openid: null
     };
   },
   methods: {
@@ -33,7 +33,7 @@ export default {
       if (getCookie("user_uuid")) {
         return false;
       }
-
+      alert(getCookie("user_uuid"));
       if (!parseUrlQuery(window.location.search).code) {
         let targetUrl = `http://m.shengshixiwen.com/apis/0.1/User/weixin.html?appid=${
           this.$config.appid
@@ -42,8 +42,8 @@ export default {
         )}&response_type=code&scope=snsapi_base&state=${md5(
           new Date().getTime()
         )}#wechat_redirect`;
-		window.location.href = targetUrl;
-		return
+        window.location.href = targetUrl;
+        return;
       }
 
       axios
@@ -54,12 +54,18 @@ export default {
         )
         .then(res => {
           if (res.data.code == 200) {
-			  alert('缓存openid成功')
+            alert("缓存openid成功");
+          }else{
+            alert('获取openid失败')
           }
         });
     },
+    getOriginUrl(){
+      return getCookie('originurl')
+    }
   },
   created() {
+    this.originUrl = this.getOriginUrl();
     this.$nextTick(() => {
       if (this.$userInfo.isWeiXin) {
         this.getWeiXinFunsStatus();

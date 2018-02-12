@@ -33,7 +33,7 @@
 <script>
 import axios from "axios";
 import md5 from "md5";
-import qs from 'qs'
+import qs from "qs";
 import {
   parseUrlQuery,
   fetchDateYmd,
@@ -63,28 +63,55 @@ export default {
     init() {
       let queryObj = parseUrlQuery(window.location.hash);
       this.price = Number(queryObj.price) / 100;
-	  this.bookId = queryObj.bookId;
-	  //获取用户信息
+      this.bookId = queryObj.bookId;
+      //获取用户信息
       axios.get("/apis/0.1/User/UserInfo.php").then(res => {
         this.nickname = res.data.data.nicker;
-	  });
-	  //获取书本信息
+      });
+      //获取书本信息
       axios.get(`/apis/0.1/BookInfo.php?bookId=${this.bookId}`).then(res => {
         this.bookname = res.data.data.name;
-	  });
-		//获取位置支付的注册信息
-      axios.post("/apis/0.1/Pay/Pay.php",qs.stringify({openid:this.$userInfo.openid})).then(res => {
-        if (res.data.code == 200) {
-          this.wxPayConfig = res.data.data;
-        }
       });
     },
     recharge() {
-      if (this.$userInfo.isWeiXin) {
-        weixinPay();
-      } else {
-        wapPay();
-      }
+      const data = {
+        token: md5(`${fetchDateYmd()}${this.price}s3fhgrwwe`),
+        money: this.price,
+        chargetype: this.chargetype,
+        type: 104,
+        book_id: this.bookId
+      };
+      myAjax({
+        methods: "post",
+        url: "/apis/0.1/Pay/Pay.php",
+        data,
+        async: false,
+        success: res => {
+          let result = JSON.parse(res);
+          if (result.code == 200) {
+            if (this.chargetype == "wxpay") {
+              this.wxPayConfig = result.data.data;
+              this.weixinPay();
+            } else {
+              window.location.href = result.data;
+            }
+          } else {
+            this.$modal.show("dialog", {
+              text: `${result.msg}`,
+              buttons: [
+                {
+                  title: "我知道了",
+                  default: true,
+                  handler: () => {
+                    this.$modal.hide("dialog");
+                  }
+                }
+              ]
+            });
+          }
+        },
+        error: function() {}
+      });
     },
     selectItem(item, index, obj) {
       this.activeIndex = index;
@@ -105,7 +132,7 @@ export default {
           },
           function(res) {
             if (res.err_msg == "get_brand_wcpay_request:ok") {
-
+              alert("微信支付成功");
             }
           }
         );
@@ -124,66 +151,6 @@ export default {
       } else {
         onBridgeReady();
       }
-	},
-		 jsApiCall()
-	{
-		WeixinJSBridge.invoke(
-			'getBrandWCPayRequest',
-			<?php echo $jsApiParameters; ?>,
-			function(res){
-				WeixinJSBridge.log(res.err_msg);
-				alert(res.err_code+res.err_desc+res.err_msg);
-			}
-		);
-	},
-
-	 callpay()
-	{
-		if (typeof WeixinJSBridge == "undefined"){
-		    if( document.addEventListener ){
-		        document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
-		    }else if (document.attachEvent){
-		        document.attachEvent('WeixinJSBridgeReady', jsApiCall);
-		        document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
-		    }
-		}else{
-		    jsApiCall();
-		}
-	},
-    wapPay() {
-      const data = {
-        token: md5(`${fetchDateYmd()}${this.price}s3fhgrwwe`),
-        money: this.price,
-        chargetype: this.chargetype,
-        type: 104,
-        book_id: this.bookId
-      };
-      myAjax({
-        methods: "post",
-        url: "/apis/0.1/Pay/Pay.php",
-        data,
-        async: false,
-        success: res => {
-          let result = JSON.parse(res);
-          if (result.code == 206) {
-            this.$modal.show("dialog", {
-              text: `${result.msg}`,
-              buttons: [
-                {
-                  title: "我知道了",
-                  default: true,
-                  handler: () => {
-                    this.$modal.hide("dialog");
-                  }
-                }
-              ]
-            });
-          } else if (result.code == 200) {
-            window.location.href = result.data;
-          }
-        },
-        error: function() {}
-      });
     }
   },
   created() {

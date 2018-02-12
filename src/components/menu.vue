@@ -13,10 +13,10 @@
 				<div>
 					<ul>
 						<li class="chapter-item" v-for="(item,index) in chapterList" :class='{record:readRecordChapterId==item.chapter_id}'>
-							<router-link :to="{name:'chapter',query:{chapterId:item.chapter_id,bookId:item.book_id}}">
+							<a :class='{canNotRead}' @click.prevent="goToChapter(item)">
 								<span class="name">{{item.chapter_name}} </span>
 								<span class="vip" v-if="item.is_vip"></span>
-							</router-link>
+							</a>
 						</li>
 					</ul>
 					<div class="more" v-show="page<pageCount" @click="loadMore"  v-loading="loading">加载更多</div>
@@ -43,8 +43,14 @@ export default {
       chapterList: [],
       page: 0,
       pageCount: 0,
-      loading: false
+      loading: false,
+      isWeixinFun:true
     };
+  },
+  computed:{
+    canNotRead(){
+      return this.$userInfo.isWeiXin&&!this.isWeixinFun
+    }
   },
   components: {
     linkHead
@@ -114,6 +120,10 @@ export default {
           this.pageCount = res.data.data.pageCount;
         });
     },
+    goToChapter(item){
+      if(this.canNotRead) return;
+      this.$router.push({name:'chapter',query:{chapterId:item.chapter_id,bookId:item.book_id}})
+    },
     loadMore() {
       this.loading = true;
       axios
@@ -143,6 +153,12 @@ export default {
   },
   created() {
     this.init();
+    //当微信环境内且开启限制的时候，获取状态
+    if(this.$userInfo.isWeiXin&&this.$config.isWeixinFunLimit){
+      this.$getWeiXinFunsStatus().then(isFun=>{
+        this.isWeixinFun = isFun
+      });
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -160,6 +176,9 @@ export default {
 <style lang="less" scoped>
 @import url("../common/mixin.less");
 @chpaterHeadHeight: 40px;
+.chapter-item .canNotRead{
+  color: #999;
+}
 .chapter-head {
   display: flex;
   justify-content: space-between;

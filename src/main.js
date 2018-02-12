@@ -1,3 +1,5 @@
+import "./assets/rem.js";
+
 import Vue from "vue";
 import App from "./App";
 import router from "./router";
@@ -9,7 +11,6 @@ import Navigation from "vue-navigation";
 import {getCookie} from './common/function'
 
 import './common/setChannel.js'  //判断注册来源，写到cookie
-import "./assets/rem.js";
 import "./common/vue_common.js";
 import "!style-loader!css-loader!less-loader!./common/common.less";
 import "./common/vue_transition.css";

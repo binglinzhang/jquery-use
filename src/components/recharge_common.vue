@@ -118,7 +118,15 @@ export default {
         async: false,
         success: res => {
           let result = JSON.parse(res);
-          if (result.code == 206) {
+          console.log(result,'sdasdakjsdhiuo');
+          if (result.code == 200) {
+            if (this.chargetype == "wxpay") {
+              alert("准备开启wxpay");
+              this.weixinPay(result.data);
+            } else {
+              window.location.href = result.data;
+            }
+          } else {
             this.$modal.show("dialog", {
               text: `${result.msg}`,
               buttons: [
@@ -131,33 +139,53 @@ export default {
                 }
               ]
             });
-          } else if (result.code == 200) {
-            window.location.href = result.data;
           }
         },
         error: function() {}
       });
+      // axios.post("/apis/0.1/Pay/Pay.php", qs.stringify(data)).then(res => {
+      //   if (res.data.code == 200) {
+      //     if (this.chargetype == "wxpay") {
+      //       this.weixinPay(res.data.data);
+      //     } else {
+      //       window.location.href = res.data.data;
+      //     }
+      //   } else {
+      //     this.$modal.show("dialog", {
+      //       text: `${res.data.msg}`,
+      //       buttons: [
+      //         {
+      //           title: "我知道了",
+      //           default: true,
+      //           handler: () => {
+      //             this.$modal.hide("dialog");
+      //           }
+      //         }
+      //       ]
+      //     });
+      //   }
+      // });
     },
-    selectItem(item, index, obj) {
-      this.activeIndex = index;
-      this.selectMoney = item.cost;
-      this.selectType = obj.isEgold ? 101 : 103;
-    },
-    weixinPay() {
-      function onBridgeReady() {
+    weixinPay(wxPayConfigObj) {
+      let self = this;
+      console.log(wxPayConfigObj)
+      function onBridgeReady(){
+        alert("准备支付了");
         WeixinJSBridge.invoke(
           "getBrandWCPayRequest",
           {
-            appId: "wx2421b1c4370ec43b", //公众号名称，由商户传入
-            timeStamp: "1395712654", //时间戳，自1970年以来的秒数
-            nonceStr: "e61463f8efa94090b1f366cccfbbb444", //随机串
-            package: "prepay_id=u802345jgfjsdfgsdg888",
-            signType: "MD5", //微信签名方式：
-            paySign: "70EA570631E4BB79628FBCA90534C63FF7FADD89" //微信签名
+            "appId": wxPayConfigObj.appId, //公众号名称，由商户传入
+            "timeStamp": wxPayConfigObj.timeStamp, //时间戳，自1970年以来的秒数
+            "nonceStr": wxPayConfigObj.nonceStr, //随机串
+            "package": wxPayConfigObj.package,
+            "signType": wxPayConfigObj.signType, //微信签名方式：
+            "paySign": wxPayConfigObj.paySign //微信签名
           },
           function(res) {
+            console.log(res);
             if (res.err_msg == "get_brand_wcpay_request:ok") {
-            } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+              alert("微信支付成功");
+            }
           }
         );
       }
@@ -175,11 +203,15 @@ export default {
       } else {
         onBridgeReady();
       }
+    },
+    selectItem(item, index, obj) {
+      this.activeIndex = index;
+      this.selectMoney = item.cost;
+      this.selectType = obj.isEgold ? 101 : 103;
     }
   },
   created() {
     this.init();
-    axios.get("/apis/0.1/ces/Login.php").then(res => {});
   }
 };
 </script>

@@ -73,13 +73,11 @@ function fetchDateYmd() {
 	const now = new Date();
 	const year = now
 			.getFullYear()
-			.toString()
-			.padStart(2, "0"),
-		month = (now.getMonth() + 1).toString().padStart(2, "0"),
-		date = now
-			.getDate()
-			.toString()
-			.padStart(2, "0");
+			.toString(),
+		month = ('0'+(now.getMonth() + 1)).slice(-2),
+		date = ('0'+now
+			.getDate()).slice(-2)
+;
 	return `${year}${month}${date}`;
 }
 export {
