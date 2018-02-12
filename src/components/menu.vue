@@ -32,6 +32,8 @@
 import linkHead from "./link_header.vue";
 import axios from "axios";
 import BScroll from "better-scroll";
+import { getCookie, parseUrlQuery } from "../common/function";
+import md5 from "md5";
 export default {
   name: "book_menu",
   data() {
@@ -58,25 +60,48 @@ export default {
           this.page = res.data.data.page;
           this.pageCount = res.data.data.pageCount;
         });
-      this.getReadCordFromLocal();
+    //   this.getReadCordFromLocal();
     },
-    getWeiXinFunsStatus() {
-      let targetUrl = `/apis/0.1/User/weixin.html?appid=wxea6e68853a2b6e19&redirect_uri=${encodeURIComponent(
-        window.location.href
-      )}&response_type=code&scope=snsapi_userinfo&state=${md5(
-        new Date().getTime()
-      )}#wechat_redirect`;
-      axios
-        .get(`/apis/0.1/User/Msg.php?a=mulu?code=${this.$router.query.code}}`)
-        .then(res => {
-          if (res.data.code == 200) {
-            this.$userInfo.isWeiXinFun = res.data.data.subscribe == 1;
-          }
-        });
-    },
+    // getWeiXinFunsStatus() {
+    //   //如果存在web_uuid就话只需请求token
+    //   if (getCookie("web_uuid")) {
+    //     this.getTokens();
+    //     return false;
+    //   }
+
+    //   if (!parseUrlQuery(window.location.search).code) {
+    //     let targetUrl = `http://m.shengshixiwen.com/apis/0.1/User/weixin.html?appid=wxea6e68853a2b6e19&redirect_uri=${encodeURIComponent(
+    //       window.location.href
+    //     )}&response_type=code&scope=snsapi_base&state=${md5(
+    //       new Date().getTime()
+    //     )}#wechat_redirect`;
+    //     console.log(targetUrl);
+    //     window.location.href = targetUrl;
+    //   }
+
+    //   axios
+    //     .get(
+    //       `/apis/0.1/User/Msg.php?a=mulu&code=${
+    //         parseUrlQuery(window.location.search).code
+    //       }`
+    //     )
+    //     .then(res => {
+    //       if (res.data.code == 200) {
+
+    //       }
+    //     });
+    //   this.getTokens();
+    // },
+    // getTokens() {
+    //   axios.get("/apis/0.1/User/Msg.php?a=token").then(res => {
+	// 	  if(res.data.code==200){
+	// 		this.$userInfo.isWeiXinFun = res.data.data.subscribe == 1;
+	// 		alert(JSON.stringify(res.data))
+	// 	  }
+	//   });
+    // },
     reverse() {
       this.reverseFlag = !this.reverseFlag;
-
       axios
         .get(
           `/apis/0.1/Chapter/ChapterList.php?bookId=${
@@ -126,6 +151,8 @@ export default {
   },
   activated() {
     this.getReadCordFromLocal();
+	// this.getWeiXinFunsStatus();
+	// alert('activated');
   }
 };
 </script>

@@ -24,10 +24,9 @@ function delCookie(name) {
 }
 
 function parseUrlQuery(hash) {
-	let queryArr = hash
-		.match(/\?.+=.+/)[0]
-		.slice(1)
-		.split("&");
+	let queryArr = hash.match(/\?.+=.+/);
+	if (!queryArr) return {};
+	queryArr = queryArr[0].slice(1).split("&");
 	let parseResult = {};
 	queryArr.forEach(item => {
 		let arr = item.split("=");
@@ -83,4 +82,12 @@ function fetchDateYmd() {
 			.padStart(2, "0");
 	return `${year}${month}${date}`;
 }
-export { isWeiXin, setCookie, getCookie, delCookie, parseUrlQuery, myAjax,fetchDateYmd };
+export {
+	isWeiXin,
+	setCookie,
+	getCookie,
+	delCookie,
+	parseUrlQuery,
+	myAjax,
+	fetchDateYmd
+};

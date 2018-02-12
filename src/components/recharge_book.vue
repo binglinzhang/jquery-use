@@ -33,6 +33,7 @@
 <script>
 import axios from "axios";
 import md5 from "md5";
+import qs from 'qs'
 import {
   parseUrlQuery,
   fetchDateYmd,
@@ -62,15 +63,17 @@ export default {
     init() {
       let queryObj = parseUrlQuery(window.location.hash);
       this.price = Number(queryObj.price) / 100;
-      this.bookId = queryObj.bookId;
+	  this.bookId = queryObj.bookId;
+	  //获取用户信息
       axios.get("/apis/0.1/User/UserInfo.php").then(res => {
         this.nickname = res.data.data.nicker;
-      });
+	  });
+	  //获取书本信息
       axios.get(`/apis/0.1/BookInfo.php?bookId=${this.bookId}`).then(res => {
         this.bookname = res.data.data.name;
-      });
-      axios.get("/apis/0.1/Url.php").then(res => {});
-      axios.get("/apis/0.1/Pay/Pay.php").then(res => {
+	  });
+		//获取位置支付的注册信息
+      axios.post("/apis/0.1/Pay/Pay.php",qs.stringify({openid:this.$userInfo.openid})).then(res => {
         if (res.data.code == 200) {
           this.wxPayConfig = res.data.data;
         }
@@ -93,16 +96,17 @@ export default {
         WeixinJSBridge.invoke(
           "getBrandWCPayRequest",
           {
-            appId: "wx2421b1c4370ec43b", //公众号名称，由商户传入
-            timeStamp: "1395712654", //时间戳，自1970年以来的秒数
-            nonceStr: "e61463f8efa94090b1f366cccfbbb444", //随机串
-            package: "prepay_id=u802345jgfjsdfgsdg888",
-            signType: "MD5", //微信签名方式：
-            paySign: "70EA570631E4BB79628FBCA90534C63FF7FADD89" //微信签名
+            appId: this.wxPayConfig.appid, //公众号名称，由商户传入
+            timeStamp: this.wxPayConfig.timeStamp, //时间戳，自1970年以来的秒数
+            nonceStr: this.wxPayConfig.nonceStr, //随机串
+            package: this.wxPayConfig.package,
+            signType: this.wxPayConfig.signType, //微信签名方式：
+            paySign: this.wxPayConfig.paySign //微信签名
           },
           function(res) {
             if (res.err_msg == "get_brand_wcpay_request:ok") {
-            } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+
+            }
           }
         );
       }
@@ -120,7 +124,32 @@ export default {
       } else {
         onBridgeReady();
       }
-    },
+	},
+		 jsApiCall()
+	{
+		WeixinJSBridge.invoke(
+			'getBrandWCPayRequest',
+			<?php echo $jsApiParameters; ?>,
+			function(res){
+				WeixinJSBridge.log(res.err_msg);
+				alert(res.err_code+res.err_desc+res.err_msg);
+			}
+		);
+	},
+
+	 callpay()
+	{
+		if (typeof WeixinJSBridge == "undefined"){
+		    if( document.addEventListener ){
+		        document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+		    }else if (document.attachEvent){
+		        document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+		        document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+		    }
+		}else{
+		    jsApiCall();
+		}
+	},
     wapPay() {
       const data = {
         token: md5(`${fetchDateYmd()}${this.price}s3fhgrwwe`),

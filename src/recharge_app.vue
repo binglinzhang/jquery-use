@@ -17,21 +17,52 @@
 
 <script>
 import axios from "axios";
+import { getCookie, setCookie, parseUrlQuery } from "./common/function";
+import md5 from "md5";
 export default {
   name: "app",
   data() {
     return {
-      originHost: null
+	  originHost: null,
+	  openid:null
     };
   },
+  methods: {
+    getWeiXinFunsStatus() {
+      //如果存在web_uuid就话只需请求token
+      if (getCookie("user_uuid")) {
+        return false;
+      }
 
+      if (!parseUrlQuery(window.location.search).code) {
+        let targetUrl = `http://m.shengshixiwen.com/apis/0.1/User/weixin.html?appid=${
+          this.$config.appid
+        }&redirect_uri=${encodeURIComponent(
+          window.location.href
+        )}&response_type=code&scope=snsapi_base&state=${md5(
+          new Date().getTime()
+        )}#wechat_redirect`;
+		window.location.href = targetUrl;
+		return
+      }
+
+      axios
+        .get(
+          `/apis/0.1/User/Msg.php?a=user&code=${
+            parseUrlQuery(window.location.search).code
+          }`
+        )
+        .then(res => {
+          if (res.data.code == 200) {
+			  alert('缓存openid成功')
+          }
+        });
+    },
+  },
   created() {
-    axios.get("/apis/0.1/Url.php").then(res => {
-      this.originHost = res.data;
-    });
     this.$nextTick(() => {
-      if (!this.$userInfo.isLogin&&this.$userInfo.isWeiXin) {
-        axios.get(`/apis/0.1/User/Msg.php?a=user&backurl=${encodeURIComponent(window.location.href)}`).then(res => {});
+      if (this.$userInfo.isWeiXin) {
+        this.getWeiXinFunsStatus();
       }
     });
   }

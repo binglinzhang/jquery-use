@@ -90,15 +90,18 @@ export default {
   },
   methods: {
     init() {
+      //获取用户信息
       axios.get("/apis/0.1/User/UserInfo.php").then(res => {
         this.nickname = res.data.data.nicker;
         this.lessCoin = res.data.data.amount;
         this.lessTicket = res.data.data.coin;
       });
+      //获取支付选项
       axios.get("/apis/0.1/Pay/PayConfigs.php").then(res => {
         this.payChoose = res.data.data;
         this.selectMoney = this.payChoose.egold[0].cost;
       });
+      //是否过滤非会员选项
       this.membersRecharge = this.$route.query.members || false;
     },
     recharge() {
@@ -176,9 +179,7 @@ export default {
   },
   created() {
     this.init();
-    axios.get('/apis/0.1/ces/Login.php').then(res=>{
-
-    })
+    axios.get("/apis/0.1/ces/Login.php").then(res => {});
   }
 };
 </script>
