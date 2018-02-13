@@ -44,7 +44,7 @@ export default {
     this.storeIndexUrl();
     this.$nextTick(() => {
       if (this.$userInfo.isWeiXin) {
-        //this.weixinAutoLogin();
+        this.weixinAutoLogin();
       }
     });
   }

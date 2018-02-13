@@ -13,7 +13,7 @@
 				<div>
 					<ul>
 						<li class="chapter-item" v-for="(item,index) in chapterList" :class='{record:readRecordChapterId==item.chapter_id}'>
-							<a :class='{canNotRead:canNotRead&&index>$config.weixinNotFunChapterLimit}' @click.prevent="goToChapter(item,index)">
+							<a :class='{canNotRead:canNotRead&&index>$config.weixinNotFunChapterLimit-1}' @click.prevent="goToChapter(item,index)">
 								<span class="name">{{item.chapter_name}} </span>
 								<span class="vip" v-if="item.is_vip"></span>
 							</a>
@@ -123,8 +123,8 @@ export default {
     },
     //去到文章页
     goToChapter(item,index){
-      //如果不是微信粉丝而且想去大于设置的限制章节数时，返回
-      if(this.canNotRead&&index>this.$config.weixinNotFunChapterLimit) return;
+      //如果不是微信粉丝而且要去的章节超过设置的限制的章节数时，返回
+      if(this.canNotRead&&index>this.$config.weixinNotFunChapterLimit-1) return;
       this.$router.push({name:'chapter',query:{chapterId:item.chapter_id,bookId:item.book_id}})
     },
     //加载更多

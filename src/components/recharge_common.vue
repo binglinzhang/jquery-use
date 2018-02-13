@@ -126,6 +126,7 @@ export default {
             //公众号支付
             if (this.chargetype == "wxpay") {
               weixinPay(result.data);
+              alert(JSON.stringify(result))
             } else {
               window.location.href = result.data;
             }

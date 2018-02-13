@@ -274,7 +274,7 @@ export default {
       if (this.canNotRead) {
         //当前章节数大于设定的非粉丝阅读数时,弹窗提醒
         this.attentionDialogFlag =
-          Number(this.chapter.order_num) >
+          Number(this.chapter.order_num)+1 >
           this.$config.weixinNotFunChapterLimit;
         if(this.attentionDialogFlag) return;
       }
