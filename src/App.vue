@@ -25,7 +25,7 @@ export default {
         this.$userInfo.userId = uid;
       }
     },
-    //如果是在微信环境，则会自动登录，如果用户退出登录，从此不在微信内自动登录
+    //如果是在微信环境，则会自动登录。user_uid这个cookie，是判断是否应该执行这个自动登录的flag
     weixinAutoLogin() {
       let canAuto = !this.$userInfo.isLogin && !getCookie("user_uid");
       if (canAuto) {

@@ -3,7 +3,6 @@ import config from './config'
 import { getCookie, setCookie, parseUrlQuery, isWeiXin } from "./function";
 import axios from "axios";
 import md5 from "md5";
-import { resolve } from 'path';
 /* 公共模块 */
 Vue.filter('statusFilter', (val) => {
 	return val == 0 ? '已完结' : '连载中'
@@ -22,6 +21,7 @@ Vue.prototype.$userInfo = {
 // 项目配置设置
 Vue.prototype.$config = config;
 
+//去到登录页
 Vue.prototype.$turnToLogin = function (alertText, backPathName) {
 	this.$modal.show("dialog", {
 		text: alertText,
@@ -49,11 +49,12 @@ Vue.prototype.$turnToLogin = function (alertText, backPathName) {
 	});
 }
 
-Vue.prototype.$getWeiXinFunsStatus = () => {
-	return new Promise((ressolve, reject) => {
-		// 获取微信关注状态
+//获取微信公众号关注状态
+Vue.prototype.$getWeiXinFunsStatus = (vm) => {
+	return new Promise((resolve, reject) => {
+		getWeiXinFunsStatus();
 		function getWeiXinFunsStatus() {
-			if (Vue.$userInfo.isWeiXinFun) return false;
+			if (vm.$userInfo.isWeiXinFun) return false;
 			//如果存在web_uuid就话只需请求token
 			if (getCookie("web_uuid")) {
 				getTokens();
@@ -62,7 +63,7 @@ Vue.prototype.$getWeiXinFunsStatus = () => {
 
 			if (!parseUrlQuery(window.location.search).code) {
 				let targetUrl = `http://m.shengshixiwen.com/apis/0.1/User/weixin.html?appid=${
-					Vue.$config.appid
+					vm.$config.appid
 					}&redirect_uri=${encodeURIComponent(
 						window.location.href
 					)}&response_type=code&scope=snsapi_base&state=${md5(
@@ -88,11 +89,10 @@ Vue.prototype.$getWeiXinFunsStatus = () => {
 		function getTokens() {
 			axios.get("/apis/0.1/User/Msg.php?a=token").then(res => {
 				if (res.data.code == 200) {
-					Vue.$userInfo.isWeiXinFun = res.data.data.subscribe == 1;
-					resolve(Vue.$userInfo.isWeiXinFun);
+					vm.$userInfo.isWeiXinFun = res.data.data.subscribe == 1;
+					resolve(vm.$userInfo.isWeiXinFun);
 				}
 			});
 		}
 	})
 }
-

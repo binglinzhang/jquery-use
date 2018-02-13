@@ -36,9 +36,12 @@ import md5 from "md5";
 import qs from "qs";
 import {
   parseUrlQuery,
-  fetchDateYmd,
   myAjax,
-  isWeiXin
+  fetchDateYmd,
+  isWeiXin,
+  getCookie,
+  delCookie,
+  weixinPay
 } from "../common/function";
 export default {
   name: "app",
@@ -49,7 +52,6 @@ export default {
       bookname: null,
       nickname: null,
       bookId: null,
-      wxPayConfig: {}
     };
   },
   computed: {
@@ -90,8 +92,7 @@ export default {
           let result = JSON.parse(res);
           if (result.code == 200) {
             if (this.chargetype == "wxpay") {
-              this.wxPayConfig = result.data.data;
-              this.weixinPay();
+              weixinPay(result.data);
             } else {
               window.location.href = result.data;
             }
@@ -118,40 +119,6 @@ export default {
       this.selectMoney = item.cost;
       this.selectType = obj.isEgold ? 101 : 103;
     },
-    weixinPay() {
-      function onBridgeReady() {
-        WeixinJSBridge.invoke(
-          "getBrandWCPayRequest",
-          {
-            appId: this.wxPayConfig.appid, //公众号名称，由商户传入
-            timeStamp: this.wxPayConfig.timeStamp, //时间戳，自1970年以来的秒数
-            nonceStr: this.wxPayConfig.nonceStr, //随机串
-            package: this.wxPayConfig.package,
-            signType: this.wxPayConfig.signType, //微信签名方式：
-            paySign: this.wxPayConfig.paySign //微信签名
-          },
-          function(res) {
-            if (res.err_msg == "get_brand_wcpay_request:ok") {
-              alert("微信支付成功");
-            }
-          }
-        );
-      }
-      if (typeof WeixinJSBridge == "undefined") {
-        if (document.addEventListener) {
-          document.addEventListener(
-            "WeixinJSBridgeReady",
-            onBridgeReady,
-            false
-          );
-        } else if (document.attachEvent) {
-          document.attachEvent("WeixinJSBridgeReady", onBridgeReady);
-          document.attachEvent("onWeixinJSBridgeReady", onBridgeReady);
-        }
-      } else {
-        onBridgeReady();
-      }
-    }
   },
   created() {
     this.init();

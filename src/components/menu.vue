@@ -13,7 +13,7 @@
 				<div>
 					<ul>
 						<li class="chapter-item" v-for="(item,index) in chapterList" :class='{record:readRecordChapterId==item.chapter_id}'>
-							<a :class='{canNotRead}' @click.prevent="goToChapter(item)">
+							<a :class='{canNotRead:canNotRead&&index>$config.weixinNotFunChapterLimit}' @click.prevent="goToChapter(item,index)">
 								<span class="name">{{item.chapter_name}} </span>
 								<span class="vip" v-if="item.is_vip"></span>
 							</a>
@@ -106,6 +106,7 @@ export default {
 	// 	  }
 	//   });
     // },
+    //正序与倒序
     reverse() {
       this.reverseFlag = !this.reverseFlag;
       axios
@@ -120,10 +121,13 @@ export default {
           this.pageCount = res.data.data.pageCount;
         });
     },
-    goToChapter(item){
-      if(this.canNotRead) return;
+    //去到文章页
+    goToChapter(item,index){
+      //如果不是微信粉丝而且想去大于设置的限制章节数时，返回
+      if(this.canNotRead&&index>this.$config.weixinNotFunChapterLimit) return;
       this.$router.push({name:'chapter',query:{chapterId:item.chapter_id,bookId:item.book_id}})
     },
+    //加载更多
     loadMore() {
       this.loading = true;
       axios
@@ -139,6 +143,7 @@ export default {
           this.loading = false;
         });
     },
+    //获取本地浏览记录，高亮记录的章节
     getReadCordFromLocal() {
       this.readRecordChapterId = localStorage.getItem(
         `book${this.$route.query.bookId}ReadCord`
@@ -155,7 +160,7 @@ export default {
     this.init();
     //当微信环境内且开启限制的时候，获取状态
     if(this.$userInfo.isWeiXin&&this.$config.isWeixinFunLimit){
-      this.$getWeiXinFunsStatus().then(isFun=>{
+      this.$getWeiXinFunsStatus(this).then(isFun=>{
         this.isWeixinFun = isFun
       });
     }
@@ -167,8 +172,6 @@ export default {
   },
   activated() {
     this.getReadCordFromLocal();
-	// this.getWeiXinFunsStatus();
-	// alert('activated');
   }
 };
 </script>

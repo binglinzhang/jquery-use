@@ -60,7 +60,10 @@ import {
   parseUrlQuery,
   myAjax,
   fetchDateYmd,
-  isWeiXin
+  isWeiXin,
+  getCookie,
+  delCookie,
+  weixinPay
 } from "../common/function";
 export default {
   name: "app",
@@ -72,13 +75,13 @@ export default {
         month: []
       },
       activeIndex: 0,
-      lessCoin: null,
+      lessCoin: null,     //剩余金币
       nickname: null,
-      lessTicket: null,
-      selectMoney: 0,
-      selectType: 101,
-      originHost: null,
-      membersRecharge: true
+      lessTicket: null,   //剩余书券
+      selectMoney: 0,     //已选择的金额
+      selectType: 101,   //支付方式
+      originHost: null,  //来源的域名
+      membersRecharge: true,   
     };
   },
   computed: {
@@ -104,6 +107,7 @@ export default {
       //是否过滤非会员选项
       this.membersRecharge = this.$route.query.members || false;
     },
+    //开始支付
     recharge() {
       const data = {
         token: md5(`${fetchDateYmd()}${this.selectMoney}s3fhgrwwe`),
@@ -118,15 +122,14 @@ export default {
         async: false,
         success: res => {
           let result = JSON.parse(res);
-          console.log(result,'sdasdakjsdhiuo');
           if (result.code == 200) {
+            //公众号支付
             if (this.chargetype == "wxpay") {
-              alert("准备开启wxpay");
-              this.weixinPay(result.data);
+              weixinPay(result.data);
             } else {
               window.location.href = result.data;
             }
-          } else {
+          } else {    //h5支付
             this.$modal.show("dialog", {
               text: `${result.msg}`,
               buttons: [
@@ -165,44 +168,6 @@ export default {
       //     });
       //   }
       // });
-    },
-    weixinPay(wxPayConfigObj) {
-      let self = this;
-      console.log(wxPayConfigObj)
-      function onBridgeReady(){
-        alert("准备支付了");
-        WeixinJSBridge.invoke(
-          "getBrandWCPayRequest",
-          {
-            "appId": wxPayConfigObj.appId, //公众号名称，由商户传入
-            "timeStamp": wxPayConfigObj.timeStamp, //时间戳，自1970年以来的秒数
-            "nonceStr": wxPayConfigObj.nonceStr, //随机串
-            "package": wxPayConfigObj.package,
-            "signType": wxPayConfigObj.signType, //微信签名方式：
-            "paySign": wxPayConfigObj.paySign //微信签名
-          },
-          function(res) {
-            console.log(res);
-            if (res.err_msg == "get_brand_wcpay_request:ok") {
-              alert("微信支付成功");
-            }
-          }
-        );
-      }
-      if (typeof WeixinJSBridge == "undefined") {
-        if (document.addEventListener) {
-          document.addEventListener(
-            "WeixinJSBridgeReady",
-            onBridgeReady,
-            false
-          );
-        } else if (document.attachEvent) {
-          document.attachEvent("WeixinJSBridgeReady", onBridgeReady);
-          document.attachEvent("onWeixinJSBridgeReady", onBridgeReady);
-        }
-      } else {
-        onBridgeReady();
-      }
     },
     selectItem(item, index, obj) {
       this.activeIndex = index;

@@ -72,14 +72,64 @@ function myAjax({ methods, url, async, data, success, error }) {
 function fetchDateYmd() {
 	const now = new Date();
 	const year = now
-			.getFullYear()
-			.toString(),
-		month = ('0'+(now.getMonth() + 1)).slice(-2),
-		date = ('0'+now
+		.getFullYear()
+		.toString(),
+		month = ('0' + (now.getMonth() + 1)).slice(-2),
+		date = ('0' + now
 			.getDate()).slice(-2)
-;
+		;
 	return `${year}${month}${date}`;
 }
+
+//微信公众号支付
+function weixinPay(wxPayConfigObj) {
+	function onBridgeReady() {
+		WeixinJSBridge.invoke(
+			"getBrandWCPayRequest",
+			{
+				"appId": wxPayConfigObj.appId, //公众号名称，由商户传入
+				"timeStamp": wxPayConfigObj.timeStamp, //时间戳，自1970年以来的秒数
+				"nonceStr": wxPayConfigObj.nonceStr, //随机串
+				"package": wxPayConfigObj.package,
+				"signType": wxPayConfigObj.signType, //微信签名方式：
+				"paySign": wxPayConfigObj.paySign //微信签名
+			},
+			function (res) {
+				if (res.err_msg == "get_brand_wcpay_request:ok") {
+					const backUrl = getCookie("recharge_back_url") || location.host;
+					delCookie("recharge_back_url");
+					this.$modal.show("dialog", {
+						text: `恭喜，已充值成功`,
+						buttons: [
+							{
+								title: "点击返回",
+								default: true,
+								handler: () => {
+									window.location.href = backUrl;
+								}
+							}
+						]
+					});
+				}
+			}
+		);
+	}
+	if (typeof WeixinJSBridge == "undefined") {
+		if (document.addEventListener) {
+			document.addEventListener(
+				"WeixinJSBridgeReady",
+				onBridgeReady,
+				false
+			);
+		} else if (document.attachEvent) {
+			document.attachEvent("WeixinJSBridgeReady", onBridgeReady);
+			document.attachEvent("onWeixinJSBridgeReady", onBridgeReady);
+		}
+	} else {
+		onBridgeReady();
+	}
+}
+
 export {
 	isWeiXin,
 	setCookie,
@@ -87,5 +137,6 @@ export {
 	delCookie,
 	parseUrlQuery,
 	myAjax,
-	fetchDateYmd
+	fetchDateYmd,
+	weixinPay
 };

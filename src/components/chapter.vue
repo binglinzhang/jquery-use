@@ -40,7 +40,7 @@
               <div class="control-btns" v-if="chapter.nextChapter">
                 <div class="prev" @click.stop="$router.replace({name:'chapter',query:{chapterId:chapter.prevChapter,bookId:$route.query.bookId}})">上一章</div>
                 <div class="list"  @click="$router.push(`/menu?bookId=${$route.query.bookId}`)">目录</div>
-                <div class="next" @click.stop="$router.replace({name:'chapter',query:{chapterId:chapter.nextChapter,bookId:$route.query.bookId}})">下一章</div>
+                <div class="next" @click.stop="nextChapter">下一章</div>
               </div>
             </div>
         </section>
@@ -57,8 +57,8 @@
 			@skinChange='skinChange'>
 		</tool-bar>
     <transition name="fade">
-      <div class="js_dialog" v-show="weixinAttentionFlag">
-          <div class="weui-mask" @click="weixinAttentionFlag = false"></div>
+      <div class="js_dialog" v-show="attentionDialogFlag">
+          <div class="weui-mask" @click="attentionDialogFlag = false"></div>
           <div class="weui-dialog">
               <div class="weui-dialog__bd">
                 <p style="margin-bottom:20px">长按识别作者授权公众号继续阅读</p>
@@ -69,7 +69,7 @@
                 </div>
                 <p style="margin-top:20px;font-weight:600">长按上图识别二维码</p>
               </div>
-              <div class="weui-dialog__ft" @click="weixinAttentionFlag = false">
+              <div class="weui-dialog__ft" @click="attentionDialogFlag = false">
                   <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
               </div>
           </div>
@@ -106,19 +106,22 @@ export default {
       nickname: null,
       wholeBookPrice: null,
       isWeixinFun: true,
-      weixinAttentionFlag: false
+      attentionDialogFlag: false,
     };
   },
   computed: {
+    //价格
     realPrice() {
       return this.charge_mode == 2 ? this.wholeBookPrice : this.chapter.price;
     },
+    //钱足够
     isMoneyEnough() {
       return (
         Number(this.lessBookCoin) > Number(this.realPrice) ||
         Number(this.lessBookTicket) > Number(this.realPrice)
       );
     },
+    //不能阅读(在微信环境且不是微信粉丝)
     canNotRead() {
       return this.$userInfo.isWeiXin && !this.isWeixinFun;
     }
@@ -144,6 +147,7 @@ export default {
   },
   methods: {
     init() {
+      //获取章节信息
       axios
         .get(
           `/apis/0.1/Chapter/ChapterInfo.php?bookId=${
@@ -163,26 +167,24 @@ export default {
               }`
             );
           }
-          if (this.canNotRead) {
-            this.weixinAttentionFlag =
-              Number(res.data.data.order_num) >
-              this.$config.weixinNotFunChapterLimit;
-          }
         });
-
+      //获取推荐列表
       axios.get("/apis/0.1/read-book-recommend.php").then(res => {
         this.recommendList = res.data.data;
       });
+      //获取这本书是否已经书架的信息
       axios
         .get(`/apis/0.1/User/Usercheck.php?bookId=${this.$route.query.bookId}`)
         .then(res => {
           this.iscollected = res.data.data.bookself;
         });
+      //请求用户信息
       axios.get("/apis/0.1/User/UserInfo.php").then(res => {
         this.lessBookCoin = res.data.data.amount;
         this.lessBookTicket = res.data.data.coin;
         this.nickname = res.data.data.nicker;
       });
+      //请求书本信息
       axios
         .get(`/apis/0.1/BookInfo.php?bookId=${this.$route.query.bookId}`)
         .then(res => {
@@ -190,31 +192,34 @@ export default {
           this.bookname = res.data.data.name;
           this.wholeBookPrice = res.data.data.price;
         });
-      axios
-        .get(
-          `/apis/0.1/User/Msg.php?a=mulu?backurl=${encodeURIComponent(
-            window.location.href
-          )}`
-        )
-        .then(res => {});
+      //获取微信关注状态
+      if (this.$userInfo.isWeiXin && this.$config.isWeixinFunLimit) {
+        this.$getWeiXinFunsStatus(this).then(isFun => {
+          this.isWeixinFun = isFun;
+        });
+      }
     },
+    //安装better-scroll
     scrollInit() {
       let scroll = new BScroll(this.$refs.content, {
         click: true,
         tap: true
       });
     },
+    //从本地存储获取用户设置
     getUserConfig() {
       this.fontSize = Number(localStorage.getItem("fontSize")) || 16;
       this.activeSkin = localStorage.getItem("activeSkin") || "skin-default";
       this.nightFlag = localStorage.getItem("nightFlag") == 1;
     },
+    //设置阅读记录
     setReadCord() {
       localStorage.setItem(
         `book${this.$route.query.bookId}ReadCord`,
         this.$route.query.chapterId
       );
     },
+    //购买
     buyChapter() {
       if (!this.isMoneyEnough) {
         this.goToRechargePage();
@@ -235,6 +240,7 @@ export default {
           }
         });
     },
+    //去到充值页面
     goToRechargePage() {
       setCookie("recharge_back_url", window.location.href, 60 * 60);
       if (this.charge_mode == 2) {
@@ -245,40 +251,52 @@ export default {
         window.location.href = `${this.$config.rechargeUrl}#/r_common`;
       }
     },
+    //书架状态改变
     collectedStatusChange(newVal) {
       this.iscollected = newVal;
     },
+    //改变皮肤
     skinChange(newVal) {
       this.activeSkin = newVal;
     },
+    //改变文字大小
     fontSizeChange(newVal) {
       this.fontSize = newVal;
     },
-    getWxStatus() {
-      //当微信环境内且开启限制的时候，获取状态
-      if (this.$userInfo.isWeiXin && this.$config.isWeixinFunLimit) {
-        this.$getWeiXinFunsStatus().then(isFun => {
-          this.isWeixinFun = isFun;
-          console.log(isFun);
-        });
-      }
+    //获取是否是微信公众号粉丝
+    getWeiXinAttentionStatus() {
+      this.$getWeiXinFunsStatus(this).then(isFun => {
+        this.isWeixinFun = isFun;
+      });
     },
-    created() {
-      this.getUserConfig();
-      this.getWxStatus()
+    //点击下一章
+    nextChapter() {
+      if (this.canNotRead) {
+        //当前章节数大于设定的非粉丝阅读数时,弹窗提醒
+        this.attentionDialogFlag =
+          Number(this.chapter.order_num) >
+          this.$config.weixinNotFunChapterLimit;
+        if(this.attentionDialogFlag) return;
+      }
+      this.$router.replace({
+        name: "chapter",
+        query: { chapterId: this.chapter.nextChapter, bookId: this.$route.query.bookId }
+      });
     }
   },
   beforeRouteUpdate(to, from, next) {
     next();
     this.init();
-    this.getWxStatus()
+  },
+  created() {
+    this.getUserConfig();
   },
   mounted() {
-    console.log("mounted");
     this.init();
     this.scrollInit();
   },
   beforeRouteLeave(to, from, next) {
+    //存储阅读记录，用于首页
     localStorage.setItem(
       "readRecord",
       JSON.stringify({
