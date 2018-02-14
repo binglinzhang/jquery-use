@@ -33,7 +33,6 @@ export default {
       if (getCookie("user_uuid")) {
         return false;
       }
-      alert(getCookie("user_uuid"));
       if (!parseUrlQuery(window.location.search).code) {
         let targetUrl = `http://m.shengshixiwen.com/apis/0.1/User/weixin.html?appid=${
           this.$config.appid
@@ -54,9 +53,6 @@ export default {
         )
         .then(res => {
           if (res.data.code == 200) {
-            alert("缓存openid成功");
-          }else{
-            alert('获取openid失败')
           }
         });
     },

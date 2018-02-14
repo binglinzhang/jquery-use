@@ -1,6 +1,5 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import "./assets/rem.js";
 import Vue from "vue";
 import App from './recharge_app.vue'
 import VModal from "vue-js-modal";
@@ -11,6 +10,7 @@ import './common/setChannel.js'  //判断注册来源，写到cookie
 import "./common/vue_common.js";
 import "!style-loader!css-loader!less-loader!./common/recharge.less";
 import "./assets/font-awesome.min.css";
+import './assets/fonts2/iconfont.css'
 
 Vue.use(Button);
 Vue.use(Radio);

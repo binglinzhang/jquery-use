@@ -126,7 +126,6 @@ export default {
             //公众号支付
             if (this.chargetype == "wxpay") {
               weixinPay(result.data);
-              alert(JSON.stringify(result))
             } else {
               window.location.href = result.data;
             }
@@ -147,28 +146,6 @@ export default {
         },
         error: function() {}
       });
-      // axios.post("/apis/0.1/Pay/Pay.php", qs.stringify(data)).then(res => {
-      //   if (res.data.code == 200) {
-      //     if (this.chargetype == "wxpay") {
-      //       this.weixinPay(res.data.data);
-      //     } else {
-      //       window.location.href = res.data.data;
-      //     }
-      //   } else {
-      //     this.$modal.show("dialog", {
-      //       text: `${res.data.msg}`,
-      //       buttons: [
-      //         {
-      //           title: "我知道了",
-      //           default: true,
-      //           handler: () => {
-      //             this.$modal.hide("dialog");
-      //           }
-      //         }
-      //       ]
-      //     });
-      //   }
-      // });
     },
     selectItem(item, index, obj) {
       this.activeIndex = index;

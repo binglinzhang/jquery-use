@@ -1,5 +1,3 @@
-import "./assets/rem.js";
-
 import Vue from "vue";
 import App from "./App";
 import router from "./router";
@@ -15,6 +13,7 @@ import "./common/vue_common.js";
 import "!style-loader!css-loader!less-loader!./common/common.less";
 import "./common/vue_transition.css";
 import "./assets/font-awesome.min.css";
+import './assets/fonts2/iconfont.css'
 import "swiper/dist/css/swiper.css";
 
 
