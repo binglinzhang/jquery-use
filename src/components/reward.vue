@@ -6,7 +6,7 @@
           </h1>
           <div class="award">
             <ul>
-              <li :class="{active:activeFlag==index}" @click="activeFlag=index" v-for="(item,index) in reward" :style="{backgroundImage:`url(${item.img})`}">
+              <li :class="{active:activeFlag==index}" @click="activeFlag=index" v-for="(item,index) in reward" :key="index" :style="{backgroundImage:`url(${item.img})`}">
                 <span>{{item.name}}</span>
               </li>
             </ul>

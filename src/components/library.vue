@@ -6,10 +6,10 @@
           <span>筛选条件</span>
         </h1>
         <div class="items" style="max-height: 7.4rem;">
-          <div class="item" v-for="(item,index) in configArr">
+          <div class="item" v-for="(item,index) in configArr" :key="index">
             <span>{{item.title}}：</span>
             <p>
-              <a :class="{active:activeFlag[index]==_index}" @click="labelSelect(index,_index)" v-for="(_item,_index) in item.list">{{_item}}</a>
+              <a :class="{active:activeFlag[index]==_index}" @click="labelSelect(index,_index)" v-for="(_item,_index) in item.list" :key="_index">{{_item}}</a>
             </p>
             <!---->
           </div>
@@ -20,7 +20,7 @@
       </div>
       <div class="container" v-loading='loading'>
         <div class="no-notes" v-show="books.length<1&&!loading">亲，没有相关书籍哦！— ^_^</div>
-        <div class="content" v-for="item in books">
+        <div class="content" v-for="(item,index) in books" :key="index">
           <router-link :to="{name:'book',query:{bookId:item.bookId}}">
             <div class="img">
               <img v-lazy="item.img">

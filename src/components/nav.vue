@@ -3,7 +3,9 @@
         <div class="banner-box">
             <div class="banner-box">
                 <swiper :options="swiperOption" ref="mySwiper">
-                    <swiper-slide v-for="item in banners"><img :src="item.image" class="banner-img" @click="$router.push(`/book/?bookId=${item.book_id}`)"/></swiper-slide>
+                    <swiper-slide v-for="(item,index) in banners" :key="index">
+						<img :src="item.image" class="banner-img" @click="$router.push(`/book/?bookId=${item.book_id}`)"/>
+					</swiper-slide>
                     <div class="swiper-pagination"  slot="pagination"></div>
                 </swiper>
             </div>

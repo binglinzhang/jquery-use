@@ -4,7 +4,7 @@
         没有打赏记录
         </div>
         <div class="comment-list">
-			<div class="content comment-item" v-for="item in rewardList">
+			<div class="content comment-item" v-for="(item,index) in rewardList" :key="index">
 				<div class="user-head">
 					<img v-lazy="item.avatar">
 				</div>

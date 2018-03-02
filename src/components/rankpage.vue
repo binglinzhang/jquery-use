@@ -15,7 +15,7 @@
             <a :class="{active:timeActiveFlag==2}" @click="timeActiveFlag=2">月</a>
           </div>
         </h1>
-        <div class="content" v-for="(item,index) in activeRank[timeActiveRank]">
+        <div class="content" v-for="(item,index) in activeRank[timeActiveRank]" :key="index">
           <router-link :to="{name:'book',query:{bookId:item.bookId}}">
             <div class="img">
               <img v-lazy="item.cover">

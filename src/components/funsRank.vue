@@ -5,7 +5,7 @@
         </h1>
         <div class="content" style="max-height: 3.28rem;" :class="{maxHeightAuto:maxHeightFlag}">
           <ul>
-            <li :class="{top:index<3}"  v-for="(item,index) in funs">
+            <li :class="{top:index<3}"  v-for="(item,index) in funs" :key="index">
               <span>{{index+1}}</span>
               <p>{{item.name}}</p>
               <transition name="fade">

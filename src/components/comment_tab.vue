@@ -4,7 +4,7 @@
 		<div class="content no-content" v-if="!comment.length">
 			还没有评论哦，赶紧来抢沙发吧！
 		</div>
-		<div class="comment-list" v-for="item in comment">
+		<div class="comment-list" v-for="(item,index) in comment" :key="index">
 			<div class="content comment-item">
 				<div class="user-head">
 					<img v-lazy="item.avatar">
@@ -30,7 +30,7 @@
 							<a @click="commentReplay(item)">回复</a>
 						</div>
 					</div>
-					<div class="top-reply" v-for="x in item.childComment.slice(0,2)">
+					<div class="top-reply" v-for="(x,xindex) in item.childComment.slice(0,2)" :key="xindex">
 						<p><span>{{x.name}}</span>：{{x.content}}</p>
 					</div>
 				</div>

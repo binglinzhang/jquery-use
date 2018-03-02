@@ -9,7 +9,7 @@
 		<transition name="fadeTab">
 			<div class="common-question" v-show="activeTabFlag==0">
 				<ul>
-					<li class="content" v-for="(item,index) in problemsList" :class="{active:problemActiveIndex==index}" @click="problemActiveIndex=index">
+					<li class="content" v-for="(item,index) in problemsList" :key="index" :class="{active:problemActiveIndex==index}" @click="problemActiveIndex=index">
 						<div class="cq-title">
 							<span>{{index+1 +'. '+item.title}}</span>
 						</div>
@@ -23,10 +23,10 @@
 		<transition name="fadeTab">
         <div class="reader-help">
           <ul>
-            <li v-for="tab in helpList">
+            <li v-for="(tab,tabindex) in helpList" :key="tabindex">
               <a>{{tab.tabTitle}}:</a>
               <ul>
-                <li class="content" v-for="(item,index) in tab.problems" :class="{active:item._index==helpActiveIndex}" @click="helpActiveIndex=item._index">
+                <li class="content" v-for="(item,index) in tab.problems" :key="index" :class="{active:item._index==helpActiveIndex}" @click="helpActiveIndex=item._index">
                   <div class="rh-title">
                     <span>{{index+1+'.'+item.title}}</span>
                   </div>

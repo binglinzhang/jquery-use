@@ -2,7 +2,7 @@
     <div class="bookTicketContainer">
         <link-head><span>我的书券</span></link-head>
 		<ul class="ticketList">
-			<li class="ticketList-item" v-for="item in ticketList" :class="{hasUsed:item.source=='已使用',overTime:item.source=='已过期'}">
+			<li class="ticketList-item" v-for="(item,index) in ticketList" :key="index" :class="{hasUsed:item.source=='已使用',overTime:item.source=='已过期'}">
 				<div class="item-tab1">
 					<div class="left">{{item.name}}</div>
 					<div class="right">

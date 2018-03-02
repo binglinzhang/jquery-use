@@ -15,9 +15,11 @@
 			</a>
 		</div>
 		<div class="content">
-			<dl v-for="(item,index) in activeRank" :class="{top:index<3}">
+			<dl v-for="(item,index) in activeRank" :class="{top:index<3}" :key="index">
 				<router-link :to="{name:'book',query:{bookId:item.bookId}}">
-					<span :class="{hot:index<3}">{{index<3?"":index+1}}</span>
+					<span :class="{hot:index<3}">
+						{{index<3?"":index+1}}
+					</span>
 					<dt>{{item.name}}</dt>
 					<dd v-if="false">{{item.num}}</dd>
 				</router-link>
@@ -47,31 +49,21 @@ export default {
   },
   methods() {},
   created() {
-    axios
-      .get(
-        "/apis/0.1/TopList.php?type=recommend_month"
-      )
-      .then(res => {
-        this.recommendRank = res.data.data.bookinfo;
-      });
-    axios
-      .get(
-        "/apis/0.1/TopList.php?type=subscribe_month"
-      )
-      .then(res => {
-        this.orderRank = res.data.data.bookinfo;
-      });
-    axios
-      .get("/apis/0.1/TopList.php?type=click_month")
-      .then(res => {
-        this.clickRank = res.data.data.bookinfo;
-      });
+    axios.get("/apis/0.1/TopList.php?type=recommend_month").then(res => {
+      this.recommendRank = res.data.data.bookinfo;
+    });
+    axios.get("/apis/0.1/TopList.php?type=subscribe_month").then(res => {
+      this.orderRank = res.data.data.bookinfo;
+    });
+    axios.get("/apis/0.1/TopList.php?type=click_month").then(res => {
+      this.clickRank = res.data.data.bookinfo;
+    });
   }
 };
 </script>
 
 <style lang="less" scoped>
-@import url('../common/mixin.less');
+@import url("../common/mixin.less");
 .ranking-list .button {
   height: 0.52rem;
   border-bottom: solid 0.02rem #f1f1f1;

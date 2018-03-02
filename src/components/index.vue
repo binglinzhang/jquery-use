@@ -9,7 +9,7 @@
                 <span> 热门推荐</span>
             </h1>
             <div class="content">
-                <div class="img" v-for="item in hotRecommend">
+                <div class="img" v-for="(item,index) in hotRecommend" :key="index">
                     <router-link :to='{name:"book",query:{bookId:item.book_id}}'>
                         <img v-lazy="item.cover"> {{item.short_name}}
                     </router-link>
@@ -38,7 +38,7 @@
                                 </div>
                             </router-link>
                         </li>
-                        <li v-for="item in newBookRecommend.slice(1)">
+                        <li v-for="(item,index) in newBookRecommend.slice(1)" :key="index">
                             <router-link :to='{name:"book", query:{bookId:newBookRecommend[0].book_id} }' :class="{hot:item.color==1}">
                                 <span>[{{item.cate_name}}]</span> {{item.title||item.short_name}}
                             </router-link>
@@ -54,7 +54,7 @@
                 <span> 短言情</span>
             </h1>
             <div class="content">
-                <div class="img" v-for="item in shortLove" :class="{hot:item.color==1}">
+                <div class="img" v-for="(item,index) in shortLove" :class="{hot:item.color==1}" :key="index">
                     <router-link :to='{name:"book", query:{bookId:item.book_id} }'>
                         <img :src="item.cover"> {{item.short_name}}
                     </router-link>
@@ -81,7 +81,7 @@
                                 </div>
                             </router-link>
                         </li>
-                        <li v-for="item in newBookRecommend.slice(1)">
+                        <li v-for="(item,index) in newBookRecommend.slice(1)" :key="index">
                             <router-link :to='{name:"book", query:{bookId:newBookRecommend[0].book_id} }' :class="{hot:item.color==1}">
                                 <span>[{{item.cate_name}}]</span> {{item.title||item.short_name}}
                             </router-link>

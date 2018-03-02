@@ -13,7 +13,7 @@
               <i class="fa fa-angle-left"></i>
             </a>
             <div class="date">
-              <span :class="{signed:sign.hasSigned.includes(item)}" v-for="item in Number(sign.dayNum)">{{item}}</span>
+              <span :class="{signed:sign.hasSigned.includes(item)}" v-for="(item,index) in Number(sign.dayNum)" :key="index">{{item}}</span>
             </div>
             <a class="next" @click="turnToMonth(sign.next_month)" v-if="sign.next_month">
               <i class="fa fa-angle-right"></i>

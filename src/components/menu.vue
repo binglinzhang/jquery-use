@@ -12,7 +12,7 @@
 			<div class="container" ref="menuContent">
 				<div>
 					<ul>
-						<li class="chapter-item" v-for="(item,index) in chapterList" :class='{record:readRecordChapterId==item.chapter_id}'>
+						<li class="chapter-item" v-for="(item,index) in chapterList" :key="index" :class='{record:readRecordChapterId==item.chapter_id}'>
 							<a :class='{canNotRead:canNotRead&&index>$config.weixinNotFunChapterLimit-1}' @click.prevent="goToChapter(item,index)">
 								<span class="name">{{item.chapter_name}} </span>
 								<span class="vip" v-if="item.is_vip"></span>

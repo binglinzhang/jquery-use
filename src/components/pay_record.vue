@@ -1,7 +1,7 @@
 <template>
 	<div class="recharge">
 		<div class="no-notes" v-if="!recordList.length">暂无充值记录</div>
-		<div class="content" v-for="item in recordList">
+		<div class="content" v-for="(item,index) in recordList" :key="index">
 			<span class="mainColor" style="width:1rem">{{item.price+item.coin_type}}</span>
 			<span>{{item.type}}</span>
 			<span class="time">{{item.create_time}}</span>

@@ -34,7 +34,7 @@
 
               <div class="container relative-recommend"  v-if="chapter.Buy==0">
                 <h1><span>热门推荐</span></h1>
-                <p v-for="item in recommendList" @click="$router.push(`/book?bookId=${item.book_id}`)"><i class="iconfont icon-tuijian"></i> {{item.intro}}</p>
+                <p v-for="(item,index) in recommendList" :key="index" @click="$router.push(`/book?bookId=${item.book_id}`)"><i class="iconfont icon-tuijian"></i> {{item.intro}}</p>
               </div>
 
               <div class="control-btns" v-if="chapter.nextChapter">

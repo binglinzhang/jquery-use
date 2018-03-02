@@ -16,12 +16,12 @@
       <div class="container recommend-label-container" v-show="!searchResult.length">
         <h1><span>搜索热词</span></h1>
         <ul class="label-list">
-			<router-link class="label-item" v-for="item in recommendList" :to="{name:'book',query:{bookId:item.book_id}}" tag="li">{{item.short_name}}</router-link>
+			<router-link class="label-item" v-for="(item,index) in recommendList" :key="index" :to="{name:'book',query:{bookId:item.book_id}}" tag="li">{{item.short_name}}</router-link>
         </ul>
       </div>
 
       <div class="search-result" v-show="searchResult.length">
-        <div class="search-item" v-for="item in searchResult">
+        <div class="search-item" v-for="(item,index) in searchResult" :key="index">
           <router-link :to="{name:'book',query:{bookId:item.book_id}}">
             <div class="img">
               <img v-lazy="item.cover">
@@ -165,8 +165,6 @@ export default {
 }
 .search-page .search-result .info p span {
 	color: @mainColor;
-}
-.recommend-label-container {
 }
 .label-list {
 	display: flex;

@@ -35,7 +35,7 @@
             <span>全部回复</span>
             <a style="font-size: 0.28rem; color: rgb(153, 153, 153);">共{{reviewer.childComment.length}}条</a>
           </h1>
-          <div class="content comment-item" v-for="item in reviewer.childComment.data">
+          <div class="content comment-item" v-for="(item,index) in reviewer.childComment.data" :key="index">
             <div class="user-head">
               <img v-lazy="item.avatar">
             </div>

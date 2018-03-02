@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="no-notes" v-if="!readList.length">亲，你还没有阅读记录哦！— ^_^</div>
-        <div class="content" v-for="item in readList" v-if="readList.length">
+        <div class="content" v-for="(item,index) in readList" v-if="readList.length" :key="index">
             <router-link :to="{name:'book',query:{bookId:item.bookid}}" class="clearfix">
                 <div class="img">
                     <img v-lazy="item.cover">

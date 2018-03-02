@@ -15,7 +15,7 @@
 					<span>（1元=100{{$config.coinName}}）</span>
 				</h2>
 				<div class="money">
-					<label v-for="(item,index) in payChoose.egold"
+					<label v-for="(item,index) in payChoose.egold" :key="index"
 						:class="{active:activeIndex==index}"
 						@click="selectItem(item,index,{isEgold:true})"
 						v-if="!membersRecharge">
@@ -24,7 +24,7 @@
 						<p v-if="Number(item.coin)"><span>赠送{{item.coin}}</span>书券</p>
 					</label>
 					<label
-						v-for="(item,index) in payChoose.month"
+						v-for="(item,index) in payChoose.month" :key="index"
 						:class="{active:activeIndex==(membersRecharge?index:index+payChoose.egold.length)}"
 						@click="selectItem(item,membersRecharge?index:index+payChoose.egold.length,{isMonth:true})">
 						<p>畅读会员</p>
@@ -81,7 +81,7 @@ export default {
       selectMoney: 0,     //已选择的金额
       selectType: 101,   //支付方式
       originHost: null,  //来源的域名
-      membersRecharge: true,   
+      membersRecharge: true,
     };
   },
   computed: {
